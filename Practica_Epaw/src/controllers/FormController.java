@@ -15,7 +15,7 @@ import models.BeanUser;
 /**
  * Servlet implementation class FormController
  */
-@WebServlet("/FormController")
+//@WebServlet("/FormController")
 public class FormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

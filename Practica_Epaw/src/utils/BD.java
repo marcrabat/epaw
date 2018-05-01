@@ -1,3 +1,5 @@
+package utils;
+
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,12 +17,16 @@ public class BD {
 	}
 	
 	public BD(String url, String user, String password) {
-		this.connection = this.createConnection(url, user, password);
+		try {
+			this.connection = this.createConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public setConnection(Connection connection) { this.connection = connection; }
+	public void setConnection(Connection connection) { this.connection = connection; }
 	
-	private Connection createConnection(String url, String user, Stirng password) throws SQLException {
+	private Connection createConnection(String url, String user, String password) throws SQLException {
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection con = DriverManager.getConnection(url, user, password);
 		return con;
@@ -33,7 +39,7 @@ public class BD {
 				Statement st = this.connection.createStatement();
 				succes = st.executeUpdate(sql);
 			}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return succes;
@@ -44,20 +50,26 @@ public class BD {
 	 * permitiendo acceder a sus valores, por fila i columna.
 	 */
 	public ResultSet getResultSet(String sql) {
-		Statement st = this.connection.createStatement();
-		ResultSet rs = st.executeQuery(sql);
+		Statement st;
+		ResultSet rs = null;
+		try {
+			st = this.connection.createStatement();
+			rs = st.executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return rs;
 	}
 	
 	/* No se si te funcionara, Es un poco experimental, para ahorrar un poco de escritura,
 		por que no iva a crear una copia de los metodos del ResultSet. */
-	public <T> getValue(ResultSet set, String column, T returnType, String method) {
+	public <T> Class<T> getValue(ResultSet set, String column, T returnType, String method) {
 		Class<T> res = null;
 		
 		try {
 			Class c = Class.forName(set.getClass().getName());
 			Method m = c.getMethod(method, null);
-			res = res.cast(m.invoke(set, column)); 
+			res = (Class<T>) res.cast(m.invoke(set, column)); 
 		} catch (Exception e) {
 			res = null;
 		}

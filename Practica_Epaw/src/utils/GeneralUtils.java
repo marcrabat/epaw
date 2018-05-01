@@ -46,6 +46,17 @@ public class GeneralUtils {
 		return success;
 	}
 	
+	public static <T, S> boolean removeObjectToMap(Map<T, S> map, T key) {
+		boolean success = false;
+		if (map != null) {
+			if (existObjectInMap(map, key) == true) {
+				map.remove(key);
+				success = true;
+			}
+		}
+		return success;
+	}
+	
 	public static <T, S> S getMapValue(Map<T, S> map, T key) {
 		return map.get(key);
 	}
