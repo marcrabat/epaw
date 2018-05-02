@@ -2,6 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -78,20 +81,67 @@ public class RegisterController extends Servlet {
 	}
 	
 	private ErrorMessages validateUserInformation(BeanUser user) {
+		String youtubeChannel = "https://www.youtube.com/channel/";
+		String twitchChannel = "https://www.twitch.tv/";
 		ErrorMessages error = new ErrorMessages();
 		
-		if ((ValidationUtils.isEmpty(user.getUser())) == true
-				&& (ValidationUtils.haveMinimumLength(user.getUser(), 5)) == false) {
-			error.addError("user", "The field is wrong!");
+		if ((ValidationUtils.isEmpty(user.getName())) == true
+				|| (ValidationUtils.isBetweenLength(user.getName(), 3, 30)) == false) {
+			error.addError("name", "The field is wrong!");
 		}
 		
-		if (ValidationUtils.isEmpty(user.getMail()) == true) {
+		if ((ValidationUtils.isEmpty(user.getSurname())) == true
+				|| (ValidationUtils.isBetweenLength(user.getSurname(), 3, 30)) == false) {
+			error.addError("surname", "The field is wrong!");
+		}
+		
+		if ((ValidationUtils.isEmpty(user.getMail()) == true)
+			|| (ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail()) == false)) {
+
+			error.addError("email", "The email need to have the format xx@xx.xx");
+			
+			/*
 			String[] aux = GeneralUtils.split(user.getMail(), "@");
 			if (aux.length != 2) {
 				error.addError("email", "The email need to have the format xx@xx");
 			}
+			*/
 		}
 		
+		if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
+			//int age = Calendar.getInstance().YEAR - user.getBirthDate().getYear();
+			int age = 0;
+			if (ValidationUtils.isBetweenLength(age, 18, 90) == false) {
+				error.addError("birthDate", "the birthDate is not correct, your age is not between 18 and 90");
+			}
+		} else {
+			error.addError("birthDate", "the field is wrong");
+		}
+		
+		if ((ValidationUtils.isEmpty(user.getUser())) == true
+				|| (ValidationUtils.isBetweenLength(user.getUser(), 4, 30)) == false) {
+			error.addError("user", "The field is wrong!");
+		}
+		
+		if ((ValidationUtils.isEmpty(user.getPassword())) == true
+				|| (ValidationUtils.isBetweenLength(user.getPassword(), 8, 20)) == false) {
+			error.addError("password", "The field is wrong!");
+		}
+		
+		if (ValidationUtils.haveMaxLength(user.getDescription(), 255) == true) {
+			error.addError("description", "the field not accept more of 255 characters!");
+		}
+
+		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false)
+			&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
+			error.addError("youtube", "the field is wrong");
+		}
+		
+		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == false)
+			&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
+			error.addError("twitch", "the field is wrong");
+		}
+
 		return error;
 	}
 

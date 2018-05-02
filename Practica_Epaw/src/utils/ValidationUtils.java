@@ -6,10 +6,14 @@
 
 package utils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class ValidationUtils {
+	
+	public static final String REGEX_EMAIL = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})";
 
 	public static <T, S> boolean equals(T a, S b) {
 		boolean result = false;
@@ -49,6 +53,8 @@ public class ValidationUtils {
 			if (isNull(obj) == false) {
 				if (obj instanceof String) {
 					result = equals(obj, "");
+				} else if (obj instanceof List || obj instanceof Map) {
+					result = ValidationUtils.haveMinimumLength(obj, 0);
 				}
 			}
 		} catch(Exception e) {
@@ -66,11 +72,13 @@ public class ValidationUtils {
 		
 		try {
 			if (obj instanceof String) {
-				if (((String) obj).length() < length) { haveMinimum = true; }
+				if (((String) obj).length() <= length) { haveMinimum = true; }
 			} else if (obj instanceof List) {
-				if (((List) obj).size() < length) { haveMinimum = true; }
+				if (((List) obj).size() <= length) { haveMinimum = true; }
 			} else if (obj instanceof Map) {
-				if (((Map) obj).size() < length) { haveMinimum = true; }
+				if (((Map) obj).size() <= length) { haveMinimum = true; }
+			} else if (obj instanceof Number) {
+				if (((Number) obj).floatValue() <= length) { haveMinimum = true; }
 			}
 		} catch (Exception e) {
 			haveMinimum = false;
@@ -85,11 +93,13 @@ public class ValidationUtils {
 		
 		try {
 			if (obj instanceof String) {
-				if (((String) obj).length() > length) { haveMinimum = true; }
+				if (((String) obj).length() >= length) { haveMinimum = true; }
 			} else if (obj instanceof List) {
-				if (((List) obj).size() > length) { haveMinimum = true; }
+				if (((List) obj).size() >= length) { haveMinimum = true; }
 			} else if (obj instanceof Map) {
-				if (((Map) obj).size() > length) { haveMinimum = true; }
+				if (((Map) obj).size() >= length) { haveMinimum = true; }
+			} else if (obj instanceof Number) {
+				if (((Number) obj).floatValue() >= length) { haveMinimum = true; }
 			}
 		} catch (Exception e) {
 			haveMinimum = false;
@@ -104,11 +114,15 @@ public class ValidationUtils {
 		
 		try {
 			if (obj instanceof String) {
-				if ( (((String) obj).length() > lengthA) && (((String) obj).length() < lengthB)) { haveMinimum = true; }
+				if ( ((String) obj).length() >= lengthA && ((String) obj).length() <= lengthB ) { haveMinimum = true; }
 			} else if (obj instanceof List) {
-				if ( (((List) obj).size() > lengthA) && (((List) obj).size() < lengthB)) { haveMinimum = true; }
+				if ( ((List) obj).size() >= lengthA && ((List) obj).size() <= lengthB ) { haveMinimum = true; }
 			} else if (obj instanceof Map) {
-				if ( (((Map) obj).size() > lengthA) && (((Map) obj).size() < lengthB)) { haveMinimum = true; }
+				if ( ((Map) obj).size() >= lengthA && ((Map) obj).size() <= lengthB ) { haveMinimum = true; }
+			} else if (obj instanceof Number) {
+				if ( ((Number) obj).floatValue() >= lengthA && ((Number) obj).floatValue() <= lengthB ) {
+					haveMinimum = true;
+				}
 			}
 		} catch (Exception e) {
 			haveMinimum = false;
@@ -118,5 +132,39 @@ public class ValidationUtils {
 		return haveMinimum;
 	}
 	
+	public static boolean isPatternMatches(String pattern, String txt) {
+		return Pattern.matches(pattern, txt);
+	}
+	
+	public static <T> boolean objPropertiesNotHaveValue(T obj) {
+		boolean isEmpty = false;
+		try{
+			Class c = Class.forName(obj.getClass().getName());
+			Field[] fields = c.getDeclaredFields();
+
+			for(Field field : fields) {
+				
+				if ((field.get(obj) instanceof String)
+						|| (field.get(obj) instanceof List) || (field.get(obj) instanceof Map)) {
+					
+					if ((ValidationUtils.isNull(field.get(obj)) == true) 
+							|| (ValidationUtils.isEmpty(obj)) == true) {
+						isEmpty = true;
+						break;
+					}
+					
+				} else {
+					if (ValidationUtils.isNull(field.get(obj)) == true) {
+						isEmpty = true;
+						break;
+					}
+				}
+			}
+
+		} catch(Exception e) {
+			isEmpty = true;
+		}
+		return isEmpty;
+	}
 	
 }

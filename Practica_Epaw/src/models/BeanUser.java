@@ -1,8 +1,11 @@
 package models;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+
 //import java.text.SimpleDateFormat;
-import src.utils.GeneralUtils;
+import utils.GeneralUtils;
 
 public class BeanUser implements Serializable  {
 
@@ -27,7 +30,7 @@ public class BeanUser implements Serializable  {
 	private String youtubeChannelID = "";
 	private String twitchChannelID = "";
 	
-	public BeanUser();
+	public BeanUser() {}
 	
 	/* Getters */
 	

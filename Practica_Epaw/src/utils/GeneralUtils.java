@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -154,7 +155,7 @@ public class GeneralUtils {
         return terms;
     }
 	
-	public static String [] tokenize(String txt, String splitter) {
+	public static String[] tokenize(String txt, String splitter) {
 		StringTokenizer tokenizer = new StringTokenizer(txt, splitter);
 		String[] result = new String[tokenizer.countTokens()];
 		List<String> tokenize = new ArrayList<String>();
@@ -169,12 +170,16 @@ public class GeneralUtils {
 		return tokenize.toArray(result);
 	}
 	
-	public static String [] split(String txt, String splitter) {
+	public static String[] split(String txt, String splitter) {
 		try {
 			return txt.split(splitter);
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static List<String> splitList(String txt, String splitter) {
+		return Arrays.asList(split(txt, splitter));
 	}
 	
 	public static <T> boolean fillFromResultSet(ResultSet rs, T obj){
@@ -186,9 +191,9 @@ public class GeneralUtils {
 				String name = field.getName();
 				field.setAccessible(true);
 				
-				if(field.getType().isAssignableFrom(Integer.TYPE)){
+				if(field.getType().isAssignableFrom(Boolean.TYPE)){
 					
-					Integer value = rs.getInt(name);
+					boolean value = rs.getBoolean(name);
 		            field.set(obj, value);
 		            
 				} else if(field.getType().isAssignableFrom(String.class)){
@@ -196,11 +201,26 @@ public class GeneralUtils {
 					String value = rs.getString(name);
 		            field.set(obj, value);
 		            
-				} else if(field.getType().isAssignableFrom(Double.TYPE)){
+				} else if (field.getType().isAssignableFrom(Integer.TYPE)){
 					
-					Double value = rs.getDouble(name);
+					Integer value = rs.getInt(name);
 		            field.set(obj, value);
 		            
+				} else if(field.getType().isAssignableFrom(Double.TYPE)){
+					
+					double value = rs.getDouble(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(Float.TYPE)){
+					
+					float value = rs.getFloat(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(Date.class)){
+					
+					Date value = rs.getDate(name);
+		            field.set(obj, value);
+
 				} 
 				
 			}
