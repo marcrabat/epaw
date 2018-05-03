@@ -1,6 +1,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,14 +11,12 @@ import utils.GeneralUtils;
 public class BeanUser implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
-	/*  Control which parameters have been correctly filled */
-	private int[] error = {0,0}; 
 	
 	// Mandatory Fields
 	private String name = "";
 	private String surname = "";
 	private String mail = ""; //In our seminar, our email
-	private String birthDate = "";
+	private Date birthDate = null;
 	private String user = ""; //In our seminar, our username
 	private String password = "";
 	
@@ -34,10 +33,6 @@ public class BeanUser implements Serializable  {
 	
 	/* Getters */
 	
-	public int[] getError() {
-		return error;
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -50,7 +45,7 @@ public class BeanUser implements Serializable  {
 		return mail;
 	}
 	
-	public String getBirthDate() {
+	public Date getBirthDate() {
 		return birthDate;
 	}
 	
@@ -103,17 +98,14 @@ public class BeanUser implements Serializable  {
 		this.mail = mail;
 	}
 	
-	public void setBirthDate(String birthDate) {
+	public void setBirthDate(Date birthDate) {
 		System.out.println("Filling birthDate field");
 		this.birthDate = birthDate;
 	}
 	
 	public void setUser(String user){
-		
 		System.out.println("Filling user field");
-		/* We simulate a user with the same unsername exists in our DB */
-		error[0] = 1;
-		
+		this.user = user;
 	}
 	
 	public void setPassword(String password) {
@@ -150,18 +142,5 @@ public class BeanUser implements Serializable  {
 		System.out.println("Filling youtubeChannelID field");
 		this.twitchChannelID = twitchChannelID;
 	}
-	
-	/* Logic Functions */
-	
-	/*Check if all the fields are filled correctly */
-	/*TODO: es aqui on hauriem de fer la validacio?*/
-	
-	public boolean isComplete() {
-	    return(hasValue(getUser()) &&
-	           hasValue(getMail()) );
-	}
-	
-	private boolean hasValue(String val) {
-		return((val != null) && (!val.equals("")));
-	}
+
 }

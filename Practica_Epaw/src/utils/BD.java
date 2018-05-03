@@ -10,6 +10,10 @@ import java.sql.Statement;
 
 public class BD {
 	
+	public static final String url = "jdbc:mysql://localhost/epawTwitter";
+	public static final String user = "root";
+	public static final String password = "";
+
 	public Connection connection;
 	
 	public BD() {
@@ -30,6 +34,10 @@ public class BD {
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection con = DriverManager.getConnection(url, user, password);
 		return con;
+	}
+	
+	public void disconnectBD() throws SQLException {
+		this.connection.close();
 	}
 	
 	public int executeSQL(String sql) {
