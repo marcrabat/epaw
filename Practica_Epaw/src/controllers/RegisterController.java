@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +25,7 @@ import utils.ValidationUtils;
 import utils.JSONUtils;
 import utils.Servlet;
 
-@WebServlet("/FormController")
+@WebServlet("/register")
 public class RegisterController extends Servlet {
 	
 	public RegisterController() {}
