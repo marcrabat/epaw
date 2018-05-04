@@ -59,8 +59,8 @@ public class RegisterController extends Servlet {
 			result = true;
 			
 			/*
-			if (userDAO.existUser(user.getUser(), user.getMail()) == false) {
-				userDAO.insertUser(user);
+			if (UserDAO.existUser(user.getUser(), user.getMail()) == false) {
+				UserDAO.insertUser(user);
 				result = true;
 			} else {
 				error.addError("userExist", "The user already exist!!!");

@@ -14,7 +14,7 @@ public class BD {
 	public static final String user = "root";
 	public static final String password = "";
 
-	public Connection connection;
+	private Connection connection;
 	
 	public BD() {
 		this.connection = null;
@@ -28,6 +28,7 @@ public class BD {
 		}
 	}
 	
+	public Connection getConnection() { return this.connection; }
 	public void setConnection(Connection connection) { this.connection = connection; }
 	
 	private Connection createConnection(String url, String user, String password) throws SQLException {
@@ -46,6 +47,7 @@ public class BD {
 			if (this.connection != null) {
 				Statement st = this.connection.createStatement();
 				succes = st.executeUpdate(sql);
+				st.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,6 +65,7 @@ public class BD {
 		try {
 			st = this.connection.createStatement();
 			rs = st.executeQuery(sql);
+			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
