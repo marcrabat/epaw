@@ -184,7 +184,7 @@ public class GeneralUtils {
 	
 	public static String concatArrayOfString(String[] array, String concatener) {
 		String concat = "";
-		for (String s : array) { concat += s + concatener + ""; }
+		for (String s : array) { concat += s + concatener + " "; }
 		if (concat.equals("") == false) {
 			concat = concat.substring(0, concat.length() - (concatener.length() + 1));
 		}
@@ -193,7 +193,7 @@ public class GeneralUtils {
 	
 	public static String concatListOfString(List<String> list, String concatener) {
 		String concat = "";
-		for (String s : list) { concat += s + concatener + ""; }
+		for (String s : list) { concat += s + concatener + " "; }
 		if (concat.equals("") == false) {
 			concat = concat.substring(0, concat.length() - (concatener.length() + 1));
 		}

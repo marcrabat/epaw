@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class BD {
 	
 	public static final String url = "jdbc:mysql://localhost/epawTwitter";
@@ -23,7 +22,8 @@ public class BD {
 	public BD(String url, String user, String password) {
 		try {
 			this.connection = this.createConnection(url, user, password);
-		} catch (SQLException e) {
+		} catch (Exception e) {
+			this.connection = null;
 			e.printStackTrace();
 		}
 	}
@@ -31,9 +31,15 @@ public class BD {
 	public Connection getConnection() { return this.connection; }
 	public void setConnection(Connection connection) { this.connection = connection; }
 	
-	private Connection createConnection(String url, String user, String password) throws SQLException {
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		Connection con = DriverManager.getConnection(url, user, password);
+	private Connection createConnection(String url, String user, String password) {
+		Connection con = null;
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			con = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			con = null;
+		}
 		return con;
 	}
 	
@@ -63,9 +69,11 @@ public class BD {
 		Statement st;
 		ResultSet rs = null;
 		try {
-			st = this.connection.createStatement();
-			rs = st.executeQuery(sql);
-			st.close();
+			if (this.connection != null) {
+				st = this.connection.createStatement();
+				rs = st.executeQuery(sql);
+				st.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

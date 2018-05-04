@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import database.UserDAO;
 import models.BeanUser;
 import utils.BD;
 import utils.ErrorMessages;
@@ -36,6 +37,7 @@ public class RegisterController extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
 		
+		UserDAO userDAO = new UserDAO();
 		// JSONUtils Falla, crec que hi ha un problema amb la llibreria.
 		
 		boolean result = false;
@@ -53,19 +55,17 @@ public class RegisterController extends Servlet {
 			e.printStackTrace();
 		}
 		
-		ErrorMessages errors = this.validateUserInformation(vistaUser);
+		ErrorMessages errors = new ErrorMessages();//this.validateUserInformation(vistaUser);
 		if (errors.haveErrors() == false) {
 			
 			result = true;
-			
-			/*
-			if (UserDAO.existUser(user.getUser(), user.getMail()) == false) {
-				UserDAO.insertUser(user);
-				result = true;
+
+			if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) {
+				result = userDAO.insertUser(vistaUser);
+				if (result == false) { errors.addError("userInsert", "The user can not insert in BD"); }
 			} else {
-				error.addError("userExist", "The user already exist!!!");
+				errors.addError("userExist", "The user already exist!!!");
 			}
-			*/
 			
 		}
 

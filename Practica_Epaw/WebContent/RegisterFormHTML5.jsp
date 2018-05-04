@@ -23,11 +23,11 @@ else {
 <p>
 <label> User id (Required, minimum 5 characters) </label>
 <input type="text" name="user" id="user" value="<%=user.getUser() %>" required minlength="5"/>
-<% 	
+<%--	
 	if ( user.getError()[0] == 1) {
 		out.println("The username already exists in our DB!");
 	}
-%>
+--%>
 </p>
 <p>
 <label> E-mail (Required, valid e-mail adress) </label>
