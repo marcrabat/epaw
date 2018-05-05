@@ -17,7 +17,6 @@ public class BeanUser implements Serializable {
 	private String name = "";
 	private String surname = "";
 	private String mail = ""; // In our seminar, our email
-	//private Date birthDate = null;
 	private String user = ""; // In our seminar, our username
 	private String password = "";
     private String birthDate = "";
@@ -26,7 +25,6 @@ public class BeanUser implements Serializable {
 	// Optional Fields
 	private String description = "";
 	private String gender = "";
-	/* Utilitzar src.utils.GeneralUtils per les llistes */
 	private List<String> userConsoles; 
 	private List<String> gameGenres; 
 	private String youtubeChannelID = "";
@@ -104,12 +102,12 @@ public class BeanUser implements Serializable {
 		this.mail = mail;
 	}
 
-	public void setBirthDate(int year, int month, int day) { //Date constructor set the date to 1900 + year by default!
+	public void setBirthDate(int year, int month, int day) { 
 		System.out.println("Filling birthDate field");
-		Date date = new Date(year - 1900, month-1, day);
+		Date date = new Date(year - 1900, month-1, day); //Date constructor set the date to 1900 + year by default!
 		SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String stringDate = ymdFormat.format(date);
-		System.out.println("My date formatted: " + stringDate);
+		//System.out.println("My date formatted: " + stringDate);
 		this.birthDate = stringDate;
 	}
 

@@ -81,10 +81,10 @@ public class UserDAO {
 		return insert;
 	}
 	
-	public boolean deleteUser(String userNameToDelete) {
+	public boolean deleteUser(String fieldName, String toDelete) {
 		boolean delete = false;
 		if(this.bd != null) {
-			String sql = "DELETE FROM " + this.tableName + " WHERE " + this.fields[0] + " LIKE '" + userNameToDelete + "';"; //TODO pretty way to take the name of the column?
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + this.getFieldNamed(fieldName) + " LIKE '" + toDelete + "';"; //TODO pretty way to take the name of the column?
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
 			
 			int result = this.bd.executeSQL(sql);
@@ -195,6 +195,15 @@ public class UserDAO {
 
 		}
 		return update;
+	}
+	
+	public String getFieldNamed(String fieldName) {
+		for(String field : this.fields) {
+			if(field.equals(fieldName)) {
+				return field;
+			}
+		}
+		return "";
 	}
 	
 }

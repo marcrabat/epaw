@@ -43,18 +43,14 @@ public class RegisterController extends Servlet {
 		UserDAO userDAO = new UserDAO();
 		// JSONUtils Falla, crec que hi ha un problema amb la llibreria.
 		
-		
-		
-	
-		
 		boolean result = false;
 		//BeanUser vistaUser = JSONUtils.returnJSONObject(request.getParameter("user"), BeanUser.class);
 		
 		/* Codigo provisional, cunado sepa que recivo des de la vista, y que tengo que devolver lo adapto */
 		
-		BeanUser vistaUser = new BeanUser();
-		//TEST INSERT USER
 		
+		//TEST INSERT USER
+		BeanUser vistaUser = new BeanUser();
 		//TODO Do the same with view data
 		vistaUser.setUser("UserMarc");
 		vistaUser.setName("Marc");
@@ -72,8 +68,11 @@ public class RegisterController extends Servlet {
 		consoles.add("console1");
 		vistaUser.setUserConsoles(consoles);
 		vistaUser.setBirthDate(1996, 5, 4); //Ull que esta deprecated
-		userDAO.insertUser(vistaUser);
-		userDAO.deleteUser("UserMarc");
+		//userDAO.insertUser(vistaUser);
+		//Many ways of delete, for consistence, preferabily user and mail
+		//userDAO.deleteUser("user", "UserMarc");
+		//userDAO.deleteUser("mail", "marc@mail.com");
+		
 		// Fill the bean with the request parmeters
 		
 		
@@ -90,9 +89,9 @@ public class RegisterController extends Servlet {
 			
 			result = true;
 
-			if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) {
+			if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) { //TODO falla, diu que l'statement no es tanca, pero es tanca
 				result = userDAO.insertUser(vistaUser);
-				if (result == false) { errors.addError("userInsert", "The user can not insert in BD"); }
+				if (result == false) { errors.addError("userInsert", "The user can not be inserted in BD"); }
 			} else {
 				errors.addError("userExist", "The user already exist!!!");
 			}
