@@ -73,11 +73,10 @@ public class BD {
 	 * permitiendo acceder a sus valores, por fila i columna.
 	 */
 	public ResultSet getResultSet(String sql) {
-		Statement st;
 		ResultSet rs = null;
 		try {
 			if (this.connection != null) {
-				st = this.connection.createStatement();
+				Statement st = this.connection.createStatement();
 				rs = st.executeQuery(sql);
 				st.close();
 			}

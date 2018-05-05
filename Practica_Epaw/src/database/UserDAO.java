@@ -83,7 +83,7 @@ public class UserDAO {
 	
 	public boolean deleteUser(String fieldName, String toDelete) {
 		boolean delete = false;
-		if(this.bd != null) {
+		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
 			String sql = "DELETE FROM " + this.tableName + " WHERE " + this.getFieldNamed(fieldName) + " LIKE '" + toDelete + "';"; //TODO pretty way to take the name of the column?
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
 			

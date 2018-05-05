@@ -18,7 +18,7 @@ else {
 }
 %>
 
-<form action="/Lab_2/FormController" method="post" id="registerForm">
+<form action="/Lab_2/register" method="post" id="registerForm">
 <fieldset>
 <p>
 <label> User id (Required, minimum 5 characters) </label>

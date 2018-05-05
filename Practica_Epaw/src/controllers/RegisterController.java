@@ -73,9 +73,10 @@ public class RegisterController extends Servlet {
 		//userDAO.deleteUser("user", "UserMarc");
 		//userDAO.deleteUser("mail", "marc@mail.com");
 		
+		System.out.println(JSONUtils.getJSON(vistaUser));
+		
 		// Fill the bean with the request parmeters
-		
-		
+		/*
 		try {
 			BeanUtils.populate(vistaUser, request.getParameterMap());
 		} catch (IllegalAccessException e) {
@@ -83,8 +84,9 @@ public class RegisterController extends Servlet {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		*/
 		
-		ErrorMessages errors = new ErrorMessages();//this.validateUserInformation(vistaUser);
+		ErrorMessages errors = this.validateUserInformation(vistaUser);
 		if (errors.haveErrors() == false) {
 			
 			result = true;
