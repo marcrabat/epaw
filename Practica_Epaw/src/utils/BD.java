@@ -41,8 +41,6 @@ public class BD {
 	private Connection createConnection(String url, String user, String password) throws SQLException, IllegalAccessException, ClassNotFoundException, Exception {
 		Connection con = null;
 		try {
-			//String driver = "com.mysql.jdbc.Driver";
-			//Class.forName("com.mysql.jdbc.Driver").newInstance();
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			con = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {

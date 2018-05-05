@@ -13,7 +13,7 @@ public class UserDAO {
 	private BD bd;
 	private String[] fields = { "user", "name", "surname", "birthDate", "password",
 								"description", "gender", "youtubeChannelID", "twitchChannelID",
-								"gamesGenres", "userConsoles", "mail" };
+								"gameGenres", "userConsoles", "mail" };
 	//private Statement statement;
 
 	public UserDAO() {
@@ -61,15 +61,16 @@ public class UserDAO {
 	}
 	
 	public boolean insertUser(BeanUser user) {
+		
 		boolean insert = false;
 		if (this.bd != null) {
 
 			String sql = "INSERT INTO " + this.tableName + " (" + GeneralUtils.concatArrayOfString(fields, ",") + ")";
 			sql += " VALUES ('" + user.getUser() + "', '" + user.getName() + "', '" + user.getSurname() + "', ";
-			sql += "'" + user.getBirthDate() + "', '" + user.getPassword() + ", " + user.getDescription() + "', ";
-			sql += "'" + user.getGender() + "', '" + user.getYoutubeChannelID() + ", " + user.getTwitchChannelID() + "', ";
-			sql += "'" + GeneralUtils.concatListOfString(user.getGameGenres(), ",") + "', ";
-			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), ",") + "', ";
+			sql += "'" + user.getBirthDate() + "', '" + user.getPassword() + "', '" + user.getDescription() + "', ";
+			sql += "'" + user.getGender() + "', '" + user.getYoutubeChannelID() + "' , '" + user.getTwitchChannelID() + "', ";
+			sql += "'" + GeneralUtils.concatListOfString(user.getGameGenres(), "' ,") + "', ";
+			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), "' ,") + "', ";
 			sql += "'" + user.getMail() + "');";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL INSERT: " + sql);
@@ -78,6 +79,18 @@ public class UserDAO {
 			insert = (result == 1) ? true : false;
 		}
 		return insert;
+	}
+	
+	public boolean deleteUser(String userNameToDelete) {
+		boolean delete = false;
+		if(this.bd != null) {
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + this.fields[0] + " LIKE '" + userNameToDelete + "';"; //TODO pretty way to take the name of the column?
+			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
+			
+			int result = this.bd.executeSQL(sql);
+			delete = (result == 1) ? true : false;
+		}
+		return delete;
 	}
 	
 	public boolean updateUserAllInfo(BeanUser user) {

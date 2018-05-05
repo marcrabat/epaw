@@ -1,6 +1,6 @@
 /**
  * Classe Statica con utilidades genericas.
- * @author Marc Pérez - 173287
+ * @author Marc Pï¿½rez - 173287
  * @author Marc Rabat - 172808
  * @author Marc Alcaraz - 183790
  *
@@ -192,6 +192,9 @@ public class GeneralUtils {
 	}
 	
 	public static String concatListOfString(List<String> list, String concatener) {
+		if(list == null) {
+			return "";
+		}
 		String concat = "";
 		for (String s : list) { concat += s + concatener + " "; }
 		if (concat.equals("") == false) {

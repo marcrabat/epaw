@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
@@ -41,13 +43,40 @@ public class RegisterController extends Servlet {
 		UserDAO userDAO = new UserDAO();
 		// JSONUtils Falla, crec que hi ha un problema amb la llibreria.
 		
+		
+		
+	
+		
 		boolean result = false;
 		//BeanUser vistaUser = JSONUtils.returnJSONObject(request.getParameter("user"), BeanUser.class);
 		
 		/* Codigo provisional, cunado sepa que recivo des de la vista, y que tengo que devolver lo adapto */
 		
 		BeanUser vistaUser = new BeanUser();
+		//TEST INSERT USER
+		
+		//TODO Do the same with view data
+		vistaUser.setUser("UserMarc");
+		vistaUser.setName("Marc");
+		vistaUser.setPassword("emdicmarc");
+		vistaUser.setDescription("aixo es una prova");
+		List<String> genres = new LinkedList<String>();
+		genres.add("genre1");
+		vistaUser.setGameGenres(genres);
+		vistaUser.setGender("Male");
+		vistaUser.setMail("marc@mail.com");
+		vistaUser.setSurname("1");
+		vistaUser.setTwitchChannelID("twitchchan");
+		vistaUser.setYoutubeChannelID("youtubechan");
+		List<String> consoles = new LinkedList<String>();
+		consoles.add("console1");
+		vistaUser.setUserConsoles(consoles);
+		vistaUser.setBirthDate(1996, 5, 4); //Ull que esta deprecated
+		userDAO.insertUser(vistaUser);
+		userDAO.deleteUser("UserMarc");
 		// Fill the bean with the request parmeters
+		
+		
 		try {
 			BeanUtils.populate(vistaUser, request.getParameterMap());
 		} catch (IllegalAccessException e) {
