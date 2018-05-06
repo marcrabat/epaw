@@ -44,13 +44,13 @@ public class UserDAO {
 		boolean exist = false;
 		try {
 			if (this.bd != null) {
-				String sql = "SELECT COUNT(*) FROM " + this.tableName;
+				String sql = "SELECT COUNT(*) AS exist FROM " + this.tableName;
 				sql += " WHERE user = '" + user + "' and mail = '" + mail + "';";
 				
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
 				ResultSet rs = this.bd.getResultSet(sql);
-				int result = (rs != null) ? rs.getInt(0) : 1;
+				int result = (rs != null) ? rs.getInt("exist") : 1;
 				exist = (result >= 1) ? true : false;
 			}
 		} catch (SQLException e) {

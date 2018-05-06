@@ -61,9 +61,9 @@ public class RegisterController extends Servlet {
 		vistaUser.setGameGenres(genres);
 		vistaUser.setGender("Male");
 		vistaUser.setMail("marc@mail.com");
-		vistaUser.setSurname("1");
-		vistaUser.setTwitchChannelID("twitchchan");
-		vistaUser.setYoutubeChannelID("youtubechan");
+		vistaUser.setSurname("Test");
+		vistaUser.setTwitchChannelID("https://www.twitch.tv/twitchchan");
+		vistaUser.setYoutubeChannelID("https://www.youtube.com/channel/youtubechan");
 		List<String> consoles = new LinkedList<String>();
 		consoles.add("console1");
 		vistaUser.setUserConsoles(consoles);
@@ -89,12 +89,18 @@ public class RegisterController extends Servlet {
 		ErrorMessages errors = this.validateUserInformation(vistaUser);
 		if (errors.haveErrors() == false) {
 			
+			System.out.println("No Errors");
+			
 			result = true;
 
 			if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) { //TODO falla, diu que l'statement no es tanca, pero es tanca
+				
+				System.out.println("No Exist");
 				result = userDAO.insertUser(vistaUser);
-				if (result == false) { errors.addError("userInsert", "The user can not be inserted in BD"); }
+				if (result == false) { System.out.println("Errors"); errors.addError("userInsert", "The user can not be inserted in BD"); }
 			} else {
+				
+				System.out.println("Exist user");
 				errors.addError("userExist", "The user already exist!!!");
 			}
 			
@@ -141,7 +147,7 @@ public class RegisterController extends Servlet {
 		
 		if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
 			//int age = Calendar.getInstance().YEAR - user.getBirthDate().getYear();
-			int age = 0;
+			int age = 18;
 			if (ValidationUtils.isBetweenLength(age, 18, 90) == false) {
 				error.addError("birthDate", "the birthDate is not correct, your age is not between 18 and 90");
 			}

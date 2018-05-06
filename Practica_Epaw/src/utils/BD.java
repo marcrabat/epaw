@@ -12,8 +12,8 @@ import com.mysql.jdbc.Driver;
 public class BD {
 
 	public static final String url = "jdbc:mysql://localhost/epawTwitter";
-	public static final String user = "mysql";
-	public static final String password = "prac";
+	public static final String user = "root"; //"mysql";
+	public static final String password = ""; //"prac";
 
 	private Connection connection;
 
@@ -78,7 +78,7 @@ public class BD {
 			if (this.connection != null) {
 				Statement st = this.connection.createStatement();
 				rs = st.executeQuery(sql);
-				st.close();
+				//st.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
