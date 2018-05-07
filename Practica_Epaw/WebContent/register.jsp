@@ -20,15 +20,17 @@
         function fillJson() {
             var userConsoles = "";
             $("input:checkbox[name=consoles]:checked").each(function(){
-                if(userConsoles == "") userConsoles += $(this).val()
-                else userConsoles += "," + $(this).val();
+                if(userConsoles == "") userConsoles += '"' + $(this).val() + '"';
+                else userConsoles += "," + '"' + $(this).val() + '"';
             });
+			userConsoles = "[" + userConsoles + "]";
 
            var gameGenres = "";
             $("input:checkbox[name=genres]:checked").each(function(){
-                if(gameGenres == "") gameGenres += $(this).val()
-                else gameGenres += "," + $(this).val();
+                if(gameGenres == "") gameGenres += '"' + $(this).val() + '"';
+                else gameGenres += "," + '"' + $(this).val() + '"';
             });     
+		    gameGenres = "[" + gameGenres + "]";
 
             var json =  {
                             "name": $('#name').val(),
@@ -48,6 +50,17 @@
             return  json;
         }
 
+        function manageErrors(data) {
+
+            if(typeof data.errors == "undefined") return;
+
+            for (i in data.errors)
+            {
+                $('#'+i.name+'Danger').append(i.error);       
+
+            }
+        }    
+
         function jsonRequest(e) {
 
             e.preventDefault();
@@ -57,8 +70,7 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
-                    //Mostrar respuesta por la pantalla
-                    //$('#target').html(data.msg);
+                    manageErrors(JSON.parse(data));
                 },
                 data: fillJson()
             });
@@ -102,15 +114,18 @@
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name">
+                        <span class="text-danger" id="nameDanger"></span>
                     </div>
                 </div>
             </div>
+
 
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
                         <label for="surname">Surname</label>
                         <input type="text" class="form-control" id="surname">
+                        <span class="text-danger" id="surnameDanger"></span>
                     </div>
                 </div>
             </div>    
@@ -120,6 +135,7 @@
                     <div class="form-group">
                         <label for="mail">E-Mail Adress</label>
                         <input type="text" class="form-control" id="mail" placeholder="example@domain.com">
+                        <span class="text-danger" id="mailDanger"></span>
                     </div>
                 </div>
             </div>
@@ -129,6 +145,7 @@
                     <div class="form-group">
                         <label for="user">Username</label>
                         <input type="text" class="form-control" id="user">
+                        <span class="text-danger" id="userDanger"></span>
                     </div>
                 </div>
             </div>
@@ -138,6 +155,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password">
+                        <span class="text-danger" id="passwordDanger"></span>
                     </div>
                 </div>
             </div>        
@@ -156,6 +174,7 @@
                     <div class="form-group">
                         <label for="birthDate">Date of birth</label>
                         <input type="text" class="form-control" id="birthDate" placeholder="10/03/1995">
+                        <span class="text-danger" id="birthDateDanger"></span>
                     </div>
                 </div>
             </div>
@@ -165,6 +184,7 @@
                     <div class="form-group">
                         <label for="description">Description</label>
                         <textarea class="form-control" id="description"></textarea>
+                        <span class="text-danger" id="descriptionDanger"></span>
                     </div>
                 </div>
             </div>  
@@ -173,15 +193,16 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                            <br><label class="radio-inline">
-                                Male<input type="radio" class="form-control" name="gender" value="male" checked> 
-                            </label>
-                            <label class="radio-inline">
-                                Female<input type="radio" class="form-control" name="gender" value="female">
-                            </label>
-                            <label class="radio-inline">
-                                Other<input type="radio" class="form-control" name="gender" value="other">
-                            </label>
+                        <br><label class="radio-inline">
+                            Male<input type="radio" class="form-control" name="gender" value="male" checked> 
+                        </label>
+                        <label class="radio-inline">
+                            Female<input type="radio" class="form-control" name="gender" value="female">
+                        </label>
+                        <label class="radio-inline">
+                            Other<input type="radio" class="form-control" name="gender" value="other">
+                        </label>
+                        <span class="text-danger" id="genderDanger"></span>
                     </div>
                 </div>
             </div>  
@@ -229,6 +250,7 @@
                         <div class="checkbox">     
                             <label><input type="checkbox" name="consoles" value="Others">   Others</label>
                         </div>
+                        <span class="text-danger" id="consolesDanger"></span>
                     </div>
                 </div>
             </div>  
@@ -261,6 +283,7 @@
                         <div class="checkbox">     
                             <label><input type="checkbox" name="genres" value="Other">   Other</label>
                         </div>
+                        <span class="text-danger" id="genresDanger"></span>
                     </div>
                 </div>
             </div>    
@@ -270,6 +293,7 @@
                     <div class="form-group">
                         <label for="youtubeChannelID">Youtube Channel ID</label>
                         <input type="text" class="form-control" id="youtubeChannelID" placeholder="youtube.com/user/ID">
+                        <span class="text-danger" id="youtubeChannelIDDanger"></span>
                     </div>
                 </div>
             </div>
@@ -279,6 +303,7 @@
                     <div class="form-group">
                         <label for="twitchChannelID">Twitch Channel ID</label>
                         <input type="text" class="form-control" id="twitchChannelID" placeholder="twitch.tv/ID">
+                        <span class="text-danger" id="twitchChannelIDDanger"></span>
                     </div>
                 </div>
             </div>            
