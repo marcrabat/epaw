@@ -67,10 +67,10 @@ public class RegisterController extends Servlet {
 		List<String> consoles = new LinkedList<String>();
 		consoles.add("console1");
 		vistaUser.setUserConsoles(consoles);
-		vistaUser.setBirthDate(1996, 5, 4); //Ull que esta deprecated
+		vistaUser.setBirthDate(1996, 12, 4); //Ull que esta deprecated
 		//userDAO.insertUser(vistaUser);
 		//Many ways of delete, for consistence, preferabily user and mail
-		//userDAO.deleteUser("user", "UserMarc");
+		userDAO.deleteUser("user", "UserMarc");
 		//userDAO.deleteUser("mail", "marc@mail.com");
 		
 		System.out.println(JSONUtils.getJSON(vistaUser));
@@ -85,7 +85,7 @@ public class RegisterController extends Servlet {
 			e.printStackTrace();
 		}
 		*/
-		
+
 		ErrorMessages errors = this.validateUserInformation(vistaUser);
 		if (errors.haveErrors() == false) {
 			
@@ -106,13 +106,17 @@ public class RegisterController extends Servlet {
 			
 		}
 
+		errors.addError("surname", "The field is wrong!");
+		errors.addError("birthDate", "the field is wrong");
+		
+		System.out.println(errors.getJSON());
 		//System.out.println(JSONUtils.getJSON(errors));
 		
 		// Put the bean into the request as an attribute
 		request.setAttribute("user", vistaUser);
 		request.setAttribute("result", result);
 		//request.setAttribute("errors", JSONUtils.getJSON(errors));
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/RegisterForm.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
 		dispatcher.forward(request, response);
 		
 	}

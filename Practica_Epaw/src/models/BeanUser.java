@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 //import java.text.SimpleDateFormat;
 import utils.GeneralUtils;
@@ -110,7 +111,7 @@ public class BeanUser implements Serializable {
 		//System.out.println("My date formatted: " + stringDate);
 		this.birthDate = stringDate;
 	}
-
+	
 	public void setUser(String user) {
 		System.out.println("Filling user field");
 		this.user = user;

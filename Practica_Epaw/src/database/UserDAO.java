@@ -50,6 +50,7 @@ public class UserDAO {
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
 				ResultSet rs = this.bd.getResultSet(sql);
+				rs.next();
 				int result = (rs != null) ? rs.getInt("exist") : 1;
 				exist = (result >= 1) ? true : false;
 			}
@@ -59,7 +60,7 @@ public class UserDAO {
 		}
 		return exist;
 	}
-	
+
 	public boolean insertUser(BeanUser user) {
 		
 		boolean insert = false;
