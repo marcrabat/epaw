@@ -18,35 +18,41 @@
         /////////////////////// FUNCTIONS ////////////////////////    
 
         function fillJson() {
-            var userConsoles = "";
+			var userConsoles = new Array();
             $("input:checkbox[name=consoles]:checked").each(function(){
-                if(userConsoles == "") userConsoles += '"' + $(this).val() + '"';
+                if ($(this).val() != "") { userConsoles.push($(this).val()); }
+            	/*
+            	if(userConsoles == "") userConsoles += '"' + $(this).val() + '"';
                 else userConsoles += "," + '"' + $(this).val() + '"';
+                */
             });
-			userConsoles = "[" + userConsoles + "]";
-
-           var gameGenres = "";
-            $("input:checkbox[name=genres]:checked").each(function(){
+			//userConsoles = "[" + userConsoles + "]";
+			
+			var gameGenres = new Array();
+			$("input:checkbox[name=genres]:checked").each(function(){
+				if ($(this).val() != "") { gameGenres.push($(this).val()); }
+				/*
                 if(gameGenres == "") gameGenres += '"' + $(this).val() + '"';
                 else gameGenres += "," + '"' + $(this).val() + '"';
-            });     
-		    gameGenres = "[" + gameGenres + "]";
+				*/
+            });
+			//gameGenres = "[" + gameGenres + "]";
 
             var json =  {
-                            "name": $('#name').val(),
-                            "surname": $('#surname').val(),
-                            "mail": $('#mail').val(),
-                            "user": $('#user').val(),
-                            "password": $('#password').val(),
-                            "birthDate": $('#birthDate').val(),
-                            "description": $('#description').val(),
-                            "gender": $("input:radio[name=gender]:checked").val(),
-                            "userConsoles": userConsoles,
-                            "gameGenres": gameGenres,                   
-                            "youtubeChannelID": $('#youtubeChannelID').val(),
-                            "twitchChannelID": $('#twitchChannelID').val()                           
+                            name: $('#name').val(),
+                            surname: $('#surname').val(),
+                            mail: $('#mail').val(),
+                            user: $('#user').val(),
+                            password: $('#password').val(),
+                            birthDate: $('#birthDate').val(),
+                            description: $('#description').val(),
+                            gender: $("input:radio[name=gender]:checked").val(),
+                            userConsoles: userConsoles,
+                            gameGenres: gameGenres,                   
+                            youtubeChannelID: $('#youtubeChannelID').val(),
+                            twitchChannelID: $('#twitchChannelID').val()                           
                         };
-                    
+            
             return  json;
         }
 
@@ -66,13 +72,15 @@
             e.preventDefault();
 
             $.ajax({
-                url: '/register',
+                url: '/Lab_2/register',
                 type: 'post',
                 dataType: 'json',
+                data: {data: JSON.stringify(fillJson()) },
                 success: function (data) {
+                	console.log(data);
                     manageErrors(JSON.parse(data));
                 },
-                data: fillJson()
+                onError: function() { alert("Error"); }
             });
 
             console.log(JSON.stringify(fillJson()));
@@ -98,7 +106,7 @@
 
 <body>
     <div class="container">
-        <form>
+        <!-- <form onSubmit="return false;"> -->
 
             <!-- Title -->
             <div class="row top-buffer">
@@ -312,12 +320,12 @@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <button type="submit" id="validate" class="btn btn-primary">Submit</button>
+                        <button id="validate" class="btn btn-primary">Submit</button>
                     </div>
                 </div>                              
             </div>       
 
-        </form>
+       <!-- </form> -->
     </div>
 
 </body>

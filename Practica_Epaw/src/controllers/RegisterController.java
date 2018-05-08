@@ -40,16 +40,18 @@ public class RegisterController extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
 		
+		BeanUser vistaUser = null;
 		UserDAO userDAO = new UserDAO();
-		// JSONUtils Falla, crec que hi ha un problema amb la llibreria.
-		
 		boolean result = false;
-		//BeanUser vistaUser = JSONUtils.returnJSONObject(request.getParameter("user"), BeanUser.class);
+		ErrorMessages errors = new ErrorMessages();
+		String jsonData = request.getParameter("data");
 		
-		/* Codigo provisional, cunado sepa que recivo des de la vista, y que tengo que devolver lo adapto */
-		
-		
+		if (ValidationUtils.isEmpty(jsonData) == false) {
+			vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class);
+		}
+
 		//TEST INSERT USER
+		/*
 		BeanUser vistaUser = new BeanUser();
 		//TODO Do the same with view data
 		vistaUser.setUser("UserMarc");
@@ -72,8 +74,8 @@ public class RegisterController extends Servlet {
 		//Many ways of delete, for consistence, preferabily user and mail
 		userDAO.deleteUser("user", "UserMarc");
 		//userDAO.deleteUser("mail", "marc@mail.com");
-		
-		System.out.println(JSONUtils.getJSON(vistaUser));
+		*/
+		//System.out.println(JSONUtils.getJSON(vistaUser));
 		
 		// Fill the bean with the request parmeters
 		/*
@@ -86,38 +88,48 @@ public class RegisterController extends Servlet {
 		}
 		*/
 
-		ErrorMessages errors = this.validateUserInformation(vistaUser);
-		if (errors.haveErrors() == false) {
-			
-			System.out.println("No Errors");
-			
-			result = true;
-
-			if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) { //TODO falla, diu que l'statement no es tanca, pero es tanca
+		if (vistaUser != null) {
+		
+			errors = this.validateUserInformation(vistaUser);
+			if (errors.haveErrors() == false) {
 				
-				System.out.println("No Exist");
-				result = userDAO.insertUser(vistaUser);
-				if (result == false) { System.out.println("Errors"); errors.addError("userInsert", "The user can not be inserted in BD"); }
-			} else {
+				System.out.println("No Errors");
 				
-				System.out.println("Exist user");
-				errors.addError("userExist", "The user already exist!!!");
+				result = true;
+	
+				if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) { //TODO falla, diu que l'statement no es tanca, pero es tanca
+					
+					System.out.println("No Exist");
+					result = userDAO.insertUser(vistaUser);
+					if (result == false) { System.out.println("Errors"); errors.addError("userInsert", "The user can not be inserted in BD"); }
+				} else {
+					
+					System.out.println("Exist user");
+					errors.addError("userExist", "The user already exist!!!");
+				}
+				
 			}
 			
-		}
+			System.out.println(errors.getJSON());
+			//System.out.println(JSONUtils.getJSON(errors));
+			
+			//Put the bean into the request as an attribute
+			request.setAttribute("user", vistaUser);
+			request.setAttribute("result", result);
 
-		errors.addError("surname", "The field is wrong!");
-		errors.addError("birthDate", "the field is wrong");
+		}
 		
-		System.out.println(errors.getJSON());
-		//System.out.println(JSONUtils.getJSON(errors));
-		
-		// Put the bean into the request as an attribute
-		request.setAttribute("user", vistaUser);
-		request.setAttribute("result", result);
-		//request.setAttribute("errors", JSONUtils.getJSON(errors));
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-		dispatcher.forward(request, response);
+		if (errors.haveErrors() == true) {
+			this.setResponseJSONHeader(response);
+			
+			request.setAttribute("errors", errors.getJSON());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+			dispatcher.forward(request, response);
+		}
 		
 	}
 	
