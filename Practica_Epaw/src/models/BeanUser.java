@@ -2,6 +2,7 @@ package models;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -110,6 +111,16 @@ public class BeanUser implements Serializable {
 		String stringDate = ymdFormat.format(date);
 		//System.out.println("My date formatted: " + stringDate);
 		this.birthDate = stringDate;
+	}
+	
+	public void setBirthDate(String date) {
+		System.out.println("Filling birthDate field");
+		String[] splitDate = date.split("/");
+		String year = splitDate[2];
+		String month = splitDate[1];
+		String day = splitDate[0];
+		
+		this.birthDate = year + "-" + month + "-" + day;
 	}
 	
 	public void setUser(String user) {

@@ -41,8 +41,7 @@ public class RegisterController extends Servlet {
 							throws ServletException, IOException {
 		
 		BeanUser vistaUser = null;
-		UserDAO userDAO = new UserDAO();
-		boolean result = false;
+		boolean insertUser = false;
 		ErrorMessages errors = new ErrorMessages();
 		String jsonData = request.getParameter("data");
 		
@@ -89,47 +88,20 @@ public class RegisterController extends Servlet {
 		*/
 
 		if (vistaUser != null) {
+			
+			errors.addError(registerUser(vistaUser, request));
 		
-			errors = this.validateUserInformation(vistaUser);
-			if (errors.haveErrors() == false) {
-				
-				System.out.println("No Errors");
-				
-				result = true;
-	
-				if (userDAO.existUser(vistaUser.getUser(), vistaUser.getMail()) == false) { //TODO falla, diu que l'statement no es tanca, pero es tanca
-					
-					System.out.println("No Exist");
-					result = userDAO.insertUser(vistaUser);
-					if (result == false) { System.out.println("Errors"); errors.addError("userInsert", "The user can not be inserted in BD"); }
-				} else {
-					
-					System.out.println("Exist user");
-					errors.addError("userExist", "The user already exist!!!");
-				}
-				
-			}
+			if (errors.haveErrors() == false) { insertUser = true; }
 			
 			System.out.println(errors.getJSON());
-			//System.out.println(JSONUtils.getJSON(errors));
 			
 			//Put the bean into the request as an attribute
 			request.setAttribute("user", vistaUser);
-			request.setAttribute("result", result);
+			request.setAttribute("resultRegister", insertUser);
 
 		}
 		
-		if (errors.haveErrors() == true) {
-			this.setResponseJSONHeader(response);
-			
-			request.setAttribute("errors", errors.getJSON());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-			dispatcher.forward(request, response);
-		} else {
-			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-			dispatcher.forward(request, response);
-		}
+		redirect(request, response, errors);
 		
 	}
 	
@@ -196,6 +168,55 @@ public class RegisterController extends Servlet {
 		}
 
 		return error;
+	}
+	
+	private ErrorMessages registerUser(BeanUser user, HttpServletRequest request) {
+		UserDAO userDAO = new UserDAO();
+		ErrorMessages errors = new ErrorMessages();
+		
+		errors = this.validateUserInformation(user);
+		if (errors.haveErrors() == false) {
+			
+			System.out.println("No Errors");
+			
+			boolean existUser = userDAO.existUser(UserDAO.USER, user.getUser());
+
+			if (existUser == false) {
+				
+				System.out.println("No Exist");
+				boolean insertUser = userDAO.insertUser(user);
+				
+				if (insertUser == false) {
+					System.out.println("Errors");
+					errors.addError("userInsert", "The user can not be inserted in BD");
+				}
+				
+			} else {
+				
+				System.out.println("Exist user");
+				errors.addError("userExist", "The user already exist!!!");
+			}
+			
+		}
+		
+		return errors;
+		
+	}
+	
+	private void redirect(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
+																		throws ServletException, IOException {
+		if (errors.haveErrors() == true) {
+			this.setResponseJSONHeader(response);
+		
+			request.setAttribute("errors", errors.getJSON());
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+			dispatcher.forward(request, response);
+		} else {
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+			dispatcher.forward(request, response);
+		}
+		
 	}
 
 }

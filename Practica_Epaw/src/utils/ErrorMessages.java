@@ -2,6 +2,7 @@ package utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ErrorMessages {
 	
@@ -35,11 +36,12 @@ public class ErrorMessages {
 	public boolean addError(ErrorMessages other) {
 		boolean add = true;
 		try {
-			List<String> keys = (List<String>) other.getErrors().keySet();
+			Set<String> keys = (Set<String>) other.getErrors().keySet();
 			for (String key : keys) {
 				GeneralUtils.addObjectToMap(this.errors, key, other.getErrorMessage(key));
 			}
 		} catch(Exception e) {
+			e.printStackTrace();
 			add = false;
 		}
 		return add;

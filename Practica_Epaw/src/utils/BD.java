@@ -11,9 +11,9 @@ import com.mysql.jdbc.Driver;
 
 public class BD {
 
-	public static final String url = "jdbc:mysql://localhost/epawTwitter";
-	public static final String user = "root"; //"mysql";
-	public static final String password = ""; //"prac";
+	public static final String URL = "jdbc:mysql://localhost/epawTwitter";
+	public static final String USER = "root"; //"mysql";
+	public static final String PASSWORD = ""; //"prac";
 
 	private Connection connection;
 
@@ -90,13 +90,13 @@ public class BD {
 	 * No se si te funcionara, Es un poco experimental, para ahorrar un poco de
 	 * escritura, por que no iva a crear una copia de los metodos del ResultSet.
 	 */
-	public <T> Class<T> getValue(ResultSet set, String column, T returnType, String method) {
+	public <T> Class<T> getValue(ResultSet resultSet, String column, T returnType, String method) {
 		Class<T> res = null;
 
 		try {
-			Class c = Class.forName(set.getClass().getName());
+			Class c = Class.forName(resultSet.getClass().getName());
 			Method m = c.getMethod(method, null);
-			res = (Class<T>) res.cast(m.invoke(set, column));
+			res = (Class<T>) res.cast(m.invoke(resultSet, column));
 		} catch (Exception e) {
 			res = null;
 		}
