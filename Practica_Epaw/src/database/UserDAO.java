@@ -85,14 +85,18 @@ public class UserDAO {
 		
 		boolean insert = false;
 		if (this.bd != null) {
+			
+			// Por algun motivo no se parsea correctamente la fecha cuando se le assigna el valor,
+			// haciendo esto conseguimos un formato correcto para la BD.
+			user.setBirthDate(user.getBirthDate());
 
 			String sql = "INSERT INTO " + this.tableName + " (" + GeneralUtils.concatArrayOfString(fields, ",") + ")";
-			sql += " VALUES ('" + user.getUser() + "', '" + user.getName() + "', '" + user.getSurname() + "', ";
-			sql += "'" + user.getBirthDate() + "', '" + user.getPassword() + "', '" + user.getDescription() + "', ";
-			sql += "'" + user.getGender() + "', '" + user.getYoutubeChannelID() + "' , '" + user.getTwitchChannelID() + "', ";
-			sql += "'" + GeneralUtils.concatListOfString(user.getGameGenres(), "' ,") + "', ";
-			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), "' ,") + "', ";
-			sql += "'" + user.getMail() + "');";
+			sql += " VALUES ('" + user.getUser() + "', '" + user.getMail() + "', '" + user.getName() + "', ";
+			sql += "'" + user.getSurname() + "', '" + user.getBirthDate() + "', '" + user.getPassword() + "', ";
+			sql += "'" + user.getDescription() + "', '" + user.getGender() + "', ";
+			sql += "'" + user.getYoutubeChannelID() + "' , '" + user.getTwitchChannelID() + "', ";
+			sql += "'" + GeneralUtils.concatListOfString(user.getGameGenres(), " ,") + "', ";
+			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), " ,") + "');";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL INSERT: " + sql);
 			
@@ -107,7 +111,7 @@ public class UserDAO {
 		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
 			String sql = "DELETE FROM " + this.tableName + " WHERE " + fieldName + " LIKE '" + toDelete + "';";
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
-			
+
 			int result = this.bd.executeSQL(sql);
 			delete = (result == 1) ? true : false;
 		}

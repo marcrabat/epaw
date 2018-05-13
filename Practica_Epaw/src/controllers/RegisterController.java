@@ -46,7 +46,7 @@ public class RegisterController extends Servlet {
 		String jsonData = request.getParameter("data");
 		
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class);
+			vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
 		}
 
 		//TEST INSERT USER
@@ -98,9 +98,10 @@ public class RegisterController extends Servlet {
 			//Put the bean into the request as an attribute
 			request.setAttribute("user", vistaUser);
 			request.setAttribute("resultRegister", insertUser);
+			errors.addError("result", String.valueOf(insertUser));
 
 		}
-		
+
 		redirect(request, response, errors);
 		
 	}
@@ -123,7 +124,7 @@ public class RegisterController extends Servlet {
 		if ((ValidationUtils.isEmpty(user.getMail()) == true)
 			|| (ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail()) == false)) {
 
-			error.addError("email", "The email need to have the format xx@xx.xx");
+			error.addError("mail", "The email need to have the format xx@xx.xx");
 			
 			/*
 			String[] aux = GeneralUtils.split(user.getMail(), "@");
@@ -157,24 +158,24 @@ public class RegisterController extends Servlet {
 			error.addError("description", "the field not accept more of 255 characters!");
 		}
 
-		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false)
-			&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
-			error.addError("youtube", "the field is wrong");
+		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == true)) {
+			//&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
+			error.addError("youtubeChannelID", "the field is wrong");
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == false)
-			&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
-			error.addError("twitch", "the field is wrong");
+		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == true)) {
+			//&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
+			error.addError("twitchChannelID", "the field is wrong");
 		}
 
 		return error;
 	}
 	
 	private ErrorMessages registerUser(BeanUser user, HttpServletRequest request) {
-		UserDAO userDAO = new UserDAO();
-		ErrorMessages errors = new ErrorMessages();
 		
-		errors = this.validateUserInformation(user);
+		UserDAO userDAO = new UserDAO();
+		ErrorMessages errors = this.validateUserInformation(user);
+		
 		if (errors.haveErrors() == false) {
 			
 			System.out.println("No Errors");
@@ -206,13 +207,13 @@ public class RegisterController extends Servlet {
 	private void redirect(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
 																		throws ServletException, IOException {
 		if (errors.haveErrors() == true) {
-			this.setResponseJSONHeader(response);
-		
-			request.setAttribute("errors", errors.getJSON());
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-			dispatcher.forward(request, response);
-		} else {
 			
+			this.setResponseJSONHeader(response);
+			request.setAttribute("errors", errors.getJSON());
+			response.getWriter().print(errors.getJSON());
+			
+		} else {
+
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
 			dispatcher.forward(request, response);
 		}

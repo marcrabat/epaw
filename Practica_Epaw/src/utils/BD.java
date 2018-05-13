@@ -95,7 +95,7 @@ public class BD {
 
 		try {
 			Class c = Class.forName(resultSet.getClass().getName());
-			Method m = c.getMethod(method, null);
+			Method m = c.getMethod(method, new Class[]{String.class});
 			res = (Class<T>) res.cast(m.invoke(resultSet, column));
 		} catch (Exception e) {
 			res = null;

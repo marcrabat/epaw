@@ -38,7 +38,7 @@ public class Servlet extends HttpServlet {
 	}
 
 	protected void setResponseJSONHeader(HttpServletResponse response) {
-		response.setContentType("application/json");
+		response.setContentType("application/json;charset=UTF-8");
 	}
 	
 	/** Funcion que modifica el header del response para añadir un archivo pdf, attachment o inline.

@@ -16,7 +16,7 @@
     <script type="text/javascript">
 
         /////////////////////// FUNCTIONS ////////////////////////    
-
+        
         function fillJson() {
 			var userConsoles = new Array();
             $("input:checkbox[name=consoles]:checked").each(function(){
@@ -60,30 +60,46 @@
 
             if(typeof data.errors == "undefined") return;
 
+            for (var i = 0; i < data.errors.length; i++) {
+            	var error = data.errors[i];
+            	$('#'+ error.name + 'Danger').append(error.error);
+            }
+            
+            /* D'aquesta manera no es mostren els missatges, la i l'agafa com a numero, y per tant no te propietats
+            * i.name = 'undefined'. */
+			/*
             for (i in data.errors)
             {
-                $('#'+i.name+'Danger').append(i.error);       
-
+            	$('#'+i.name+'Danger').append(i.error);
             }
+            */
         }    
 
         function jsonRequest(e) {
 
+        	var jsonObject = JSON.stringify(fillJson());
+        	
             e.preventDefault();
-
+			
             $.ajax({
                 url: '/Lab_2/register',
                 type: 'post',
-                dataType: 'json',
-                data: {data: JSON.stringify(fillJson()) },
+                dataType: 'text',
+                data: {data: jsonObject },
                 success: function (data) {
+                	alert(data);
                 	console.log(data);
-                    manageErrors(JSON.parse(data));
+                	
+                	var result = JSON.parse(data);
+                	
+                	if (result.errors[0].name !== "result") { manageErrors(result); }
+                	else { alert("User inserted correctly, please redirect to login in the next practica XD"); }
+                	
                 },
-                onError: function() { alert("Error"); }
+                error: function(xhr,status,error) { alert("Error: " + error); }
             });
-
-            console.log(JSON.stringify(fillJson()));
+			
+            console.log(jsonObject);
         }
         //////////////////////////////////////////////////////////
 

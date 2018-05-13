@@ -56,13 +56,15 @@ public class ErrorMessages {
 	}
 	
 	public String getJSON() {
-		String json = "{'origin':'" + this.origin + "', 'errors':[";
+		String json = "{\"origin\":\"" + this.origin + "\", \"errors\":[";
 		for(String key : this.errors.keySet()) {
-			json += "{'name':'" + key + "', ";
-			json += "'error':'" + this.errors.get(key) + "'}";
+			json += "{\"name\":\"" + key + "\", ";
+			json += "\"error\":\"" + this.errors.get(key) + "\"}";
 			json += ", ";
 		}
-		json = json.substring(0, json.length() - ", ".length());
+		if (this.errors.size() > 0) {
+			json = json.substring(0, json.length() - ", ".length());
+		}
 		json += "]}";
 		return json;
 	}
