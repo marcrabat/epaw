@@ -27,7 +27,7 @@ import utils.ValidationUtils;
 import utils.JSONUtils;
 import utils.Servlet;
 
-@WebServlet("/register")
+@WebServlet("/checkErrors")
 public class RegisterController extends Servlet {
 	
 	public RegisterController() {}
@@ -100,6 +100,7 @@ public class RegisterController extends Servlet {
 			//Put the bean into the request as an attribute
 			request.setAttribute("user", vistaUser);
 			request.setAttribute("resultRegister", insertUser);
+			
 
 		}
 
@@ -136,13 +137,16 @@ public class RegisterController extends Servlet {
 		}
 		
 		if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
-			//int age = Calendar.getInstance().YEAR - user.getBirthDate().getYear();
-			int age = 18;
+			
+			String year = GeneralUtils.split(user.getBirthDate(), "/")[2];
+			int age = Calendar.getInstance().YEAR - Integer.valueOf(year);
+			
 			if (ValidationUtils.isBetweenLength(age, 18, 90) == false) {
-				error.addError("birthDate", "the birthDate is not correct, your age is not between 18 and 90");
+				error.addError("birthDate", "The birthDate is not correct, your age is not between 18 and 90");
 			}
+			
 		} else {
-			error.addError("birthDate", "the field is wrong");
+			error.addError("birthDate", "The field is wrong");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getUser())) == true
@@ -156,17 +160,17 @@ public class RegisterController extends Servlet {
 		}
 		
 		if (ValidationUtils.haveMaxLength(user.getDescription(), 255) == true) {
-			error.addError("description", "the field not accept more of 255 characters!");
+			error.addError("description", "The field not accept more of 255 characters!");
 		}
 
 		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == true)) {
 			//&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
-			error.addError("youtubeChannelID", "the field is wrong");
+			error.addError("youtubeChannelID", "The field is wrong");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == true)) {
 			//&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
-			error.addError("twitchChannelID", "the field is wrong");
+			error.addError("twitchChannelID", "The field is wrong");
 		}
 
 		return error;
@@ -214,9 +218,10 @@ public class RegisterController extends Servlet {
 			response.getWriter().print(errors.getJSON());
 			
 		} else {
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-			dispatcher.forward(request, response);
+			
+			request.setAttribute("errors", errors.getJSON());
+			response.getWriter().print(errors.getJSON());
+			
 		}
 		
 	}
