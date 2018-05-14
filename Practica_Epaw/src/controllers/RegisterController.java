@@ -115,12 +115,12 @@ public class RegisterController extends Servlet {
 		
 		if ((ValidationUtils.isEmpty(user.getName())) == true
 				|| (ValidationUtils.isBetweenLength(user.getName(), 3, 30)) == false) {
-			error.addError("name", "The field is wrong!");
+			error.addError("name", "The field is empty.");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getSurname())) == true
 				|| (ValidationUtils.isBetweenLength(user.getSurname(), 3, 30)) == false) {
-			error.addError("surname", "The field is wrong!");
+			error.addError("surname", "The field is empty.");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getMail()) == true)
@@ -139,8 +139,7 @@ public class RegisterController extends Servlet {
 		if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
 			
 			String year = GeneralUtils.split(user.getBirthDate(), "/")[2];
-			int age = Calendar.getInstance().YEAR - Integer.valueOf(year);
-			
+			int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.valueOf(year) -1;
 			if (ValidationUtils.isBetweenLength(age, 18, 90) == false) {
 				error.addError("birthDate", "The birthDate is not correct, your age is not between 18 and 90");
 			}
@@ -151,26 +150,26 @@ public class RegisterController extends Servlet {
 		
 		if ((ValidationUtils.isEmpty(user.getUser())) == true
 				|| (ValidationUtils.isBetweenLength(user.getUser(), 4, 30)) == false) {
-			error.addError("user", "The field is wrong!");
+			error.addError("user", "Wrong Username or Already Existing");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getPassword())) == true
 				|| (ValidationUtils.isBetweenLength(user.getPassword(), 8, 20)) == false) {
-			error.addError("password", "The field is wrong!");
+			error.addError("password", "Check that your password is between 8 and 20 characters-length.");
 		}
 		
 		if (ValidationUtils.haveMaxLength(user.getDescription(), 255) == true) {
-			error.addError("description", "The field not accept more of 255 characters!");
+			error.addError("description", "This field doesn't accept more than 255 characters!");
 		}
 
 		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == true)) {
 			//&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
-			error.addError("youtubeChannelID", "The field is wrong");
+			error.addError("youtubeChannelID", "The field is empty.");
 		}
 		
 		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == true)) {
 			//&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
-			error.addError("twitchChannelID", "The field is wrong");
+			error.addError("twitchChannelID", "The field is empty.");
 		}
 
 		return error;

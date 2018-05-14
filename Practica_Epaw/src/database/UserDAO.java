@@ -70,7 +70,7 @@ public class UserDAO {
 			if (this.bd != null) {
 				String sql = "SELECT COUNT(*) AS exist FROM " + this.tableName;
 				sql += " WHERE " + USER + " = '" + user + "'";
-				sql += " AND " + MAIL + " = '" + mail + "';";
+				sql += " OR " + MAIL + " = '" + mail + "';";
 				
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				

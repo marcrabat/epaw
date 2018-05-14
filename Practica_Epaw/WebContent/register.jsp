@@ -45,7 +45,7 @@
             
             return  json;
         }
-
+ 
         function manageErrors(data) {
 
             if(typeof data.errors == "undefined") return;        
@@ -75,13 +75,12 @@
                 dataType: 'text',
                 data: {data: jsonObject },
                 success: function (data) {
-                	alert(data);
                 	console.log(data);
                 	
                 	var result = JSON.parse(data);
                 	
-                	if (result.errors[0].name !== "result") { manageErrors(result); }
-                	else { alert("User inserted correctly, please redirect to login in the next practica XD"); }
+                	if (result.errors[0].name !== "result") { manageErrors(result);}
+                	else { alert("Your registry has been completed successfully"); }
                 	
                 },
                 error: function(xhr,status,error) { alert("Error: " + error); }
