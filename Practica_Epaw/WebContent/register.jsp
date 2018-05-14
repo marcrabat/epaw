@@ -21,22 +21,12 @@
 			var userConsoles = new Array();
             $("input:checkbox[name=consoles]:checked").each(function(){
                 if ($(this).val() != "") { userConsoles.push($(this).val()); }
-            	/*
-            	if(userConsoles == "") userConsoles += '"' + $(this).val() + '"';
-                else userConsoles += "," + '"' + $(this).val() + '"';
-                */
             });
-			//userConsoles = "[" + userConsoles + "]";
 			
 			var gameGenres = new Array();
 			$("input:checkbox[name=genres]:checked").each(function(){
 				if ($(this).val() != "") { gameGenres.push($(this).val()); }
-				/*
-                if(gameGenres == "") gameGenres += '"' + $(this).val() + '"';
-                else gameGenres += "," + '"' + $(this).val() + '"';
-				*/
             });
-			//gameGenres = "[" + gameGenres + "]";
 
             var json =  {
                             name: $('#name').val(),
@@ -62,17 +52,8 @@
 
             for (var i = 0; i < data.errors.length; i++) {
             	var error = data.errors[i];
-            	$('#'+ error.name + 'Danger').append(error.error);
+            	$('#'+ error.name + 'Danger').html(error.error);
             }
-            
-            /* D'aquesta manera no es mostren els missatges, la i l'agafa com a numero, y per tant no te propietats
-            * i.name = 'undefined'. */
-			/*
-            for (i in data.errors)
-            {
-            	$('#'+i.name+'Danger').append(i.error);
-            }
-            */
         }    
 
         function jsonRequest(e) {
@@ -82,7 +63,7 @@
             e.preventDefault();
 			
             $.ajax({
-                url: '/Lab_2/register',
+                url: '/Lab_2/checkErrors',
                 type: 'post',
                 dataType: 'text',
                 data: {data: jsonObject },

@@ -27,10 +27,10 @@ import utils.ValidationUtils;
 import utils.JSONUtils;
 import utils.Servlet;
 
-@WebServlet("/register")
-public class RegisterController extends Servlet {
+@WebServlet("/checkErrors")
+public class ErrorsController extends Servlet {
 	
-	public RegisterController() {}
+	public ErrorsController() {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -100,6 +100,7 @@ public class RegisterController extends Servlet {
 			//Put the bean into the request as an attribute
 			request.setAttribute("user", vistaUser);
 			request.setAttribute("resultRegister", insertUser);
+			
 
 		}
 
@@ -214,9 +215,10 @@ public class RegisterController extends Servlet {
 			response.getWriter().print(errors.getJSON());
 			
 		} else {
-
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-			dispatcher.forward(request, response);
+			request.setAttribute("errors", errors.getJSON());
+			response.getWriter().print(errors.getJSON());
+			//RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+			//dispatcher.forward(request, response);
 		}
 		
 	}
