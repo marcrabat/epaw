@@ -180,7 +180,7 @@ public class RegisterController extends Servlet {
 			
 			System.out.println("No Errors");
 			
-			boolean existUser = userDAO.existUser(UserDAO.USER, user.getUser());
+			boolean existUser = userDAO.existUser(user.getUser(), user.getMail());
 
 			if (existUser == false) {
 				

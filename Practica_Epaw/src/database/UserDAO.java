@@ -39,6 +39,11 @@ public class UserDAO {
 		this.tableName = "registeredusers"; //"User";
 		try {
 			this.bd = new BD(BD.URL, BD.USER, BD.PASSWORD);
+			
+			if (this.bd.getConnection() == null) {
+				this.bd = null;
+			}
+			
 		} catch (Exception e) {
 			this.bd = null;
 		}
@@ -47,7 +52,7 @@ public class UserDAO {
 	
 	public BeanUser returnUser(String fieldName, String value) {
 		BeanUser user = null;
-		if (this.existUser(fieldName, value) == true) {
+		if (this.existUserSelectingField(fieldName, value) == true) {
 			String sql = "SELECT * FROM " + this.tableName;
 			sql += " WHERE " + fieldName + " = '" + value + "';";
 			ResultSet rs = this.bd.getResultSet(sql);
@@ -59,7 +64,30 @@ public class UserDAO {
 		return user;
 	}
 	
-	public boolean existUser(String fieldName, String value) {
+	public boolean existUser(String user, String mail) {
+		boolean exist = false;
+		try {
+			if (this.bd != null) {
+				String sql = "SELECT COUNT(*) AS exist FROM " + this.tableName;
+				sql += " WHERE " + USER + " = '" + user + "'";
+				sql += " AND " + MAIL + " = '" + mail + "';";
+				
+				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
+				
+				ResultSet rs = this.bd.getResultSet(sql);
+				rs.next();
+				System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
+				int result = (rs != null) ? rs.getInt("exist") : 1;
+				exist = (result >= 1) ? true : false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			exist = true;
+		}
+		return exist;
+	}
+	
+	public boolean existUserSelectingField(String fieldName, String value) {
 		boolean exist = false;
 		try {
 			if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
