@@ -48,8 +48,8 @@
 
         function manageErrors(data) {
 
-            if(typeof data.errors == "undefined") return;
-
+            if(typeof data.errors == "undefined") return;        
+            
             for (var i = 0; i < data.errors.length; i++) {
             	var error = data.errors[i];
             	$('#'+ error.name + 'Danger').html(error.error);
@@ -59,6 +59,13 @@
         function jsonRequest(e) {
 
         	var jsonObject = JSON.stringify(fillJson());
+        	if($('#name').val()=="") $('#nameDanger').html("The field is wrong!");
+        	if($('#surname').val()=="") $('#surnameDanger').html("The field is wrong!");
+        	if($('#mail').val()=="") $('#mailDanger').html("The email need to have the format xx@xx.xx");
+        	if($('#user').val()=="") $('#userDanger').html("The field is wrong!");
+        	if($('#password').val()=="") $('#passwordDanger').html("The field is wrong!");
+        	if($('#birthDate').val()=="") $('#birthDateDanger').html("The field is wrong!");        	
+        	if($('#password').val()!=$('#password_conf').val()) $('#passwordDanger').html("Password is not equal");
         	
             e.preventDefault();
 			
