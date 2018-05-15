@@ -27,7 +27,7 @@
 			$("input:checkbox[name=genres]:checked").each(function(){
 				if ($(this).val() != "") { gameGenres.push($(this).val()); }
             });
-
+			
             var json =  {
                             name: $('#name').val(),
                             surname: $('#surname').val(),
@@ -52,40 +52,100 @@
             
             for (var i = 0; i < data.errors.length; i++) {
             	var error = data.errors[i];
-            	$('#'+ error.name + 'Danger').html(error.error);
+            	if($('#'+ error.name + 'Danger').length){
+            		$('#'+ error.name + 'Danger').html(error.error);
+            	} else{
+            		$('#serverSideDanger').append(error.error + "\n");
+            	}
             }
         }    
 
+        function clear(){
+        	$('#nameDanger').html("");
+        	$('#surnameDanger').html("");
+        	$('#mailDanger').html("");
+        	$('#userDanger').html("");
+        	$('#passwordDanger').html("");
+        	$('#birthDateDanger').html("");
+        	$('#passwordDanger').html("");
+        	$('#serverSideDanger').html("");
+        	$('#validateDanger').html("");
+        };
+        
+        function hasErrors(){
+        	
+        	clear();
+        	var hasError = false;
+        	
+        	if($('#name').val()=="") {
+        		hasError = true;
+        		$('#nameDanger').html("The field is wrong!");
+        	}
+        	
+        	if($('#surname').val()==""){
+        		hasError = true;
+        		$('#surnameDanger').html("The field is wrong!");
+        	} 
+        	
+        	if($('#mail').val()==""){ 
+        		hasError = true;
+        		$('#mailDanger').html("The email need to have the format xx@xx.xx");
+        	}
+        	
+        	if($('#user').val()=="") {
+        		hasError = true;
+        		$('#userDanger').html("The field is wrong!");
+        	}
+        	
+        	if($('#password').val()=="") {
+        		hasError = true;
+        		$('#passwordDanger').html("The field is wrong!");
+        	}
+        	
+        	if($('#birthDate').val()=="") {
+        		hasError = true;
+        		$('#birthDateDanger').html("The field is wrong!");
+        	}        	
+        	if($('#password').val()!=$('#password_conf').val()) {
+        		hasError = true;
+        		$('#passwordDanger').html("Password is not equal");
+        	}
+        	
+        	return hasError;
+        }
+        
         function jsonRequest(e) {
-
+        	
+        	
+        	
         	var jsonObject = JSON.stringify(fillJson());
-        	if($('#name').val()=="") $('#nameDanger').html("The field is wrong!");
-        	if($('#surname').val()=="") $('#surnameDanger').html("The field is wrong!");
-        	if($('#mail').val()=="") $('#mailDanger').html("The email need to have the format xx@xx.xx");
-        	if($('#user').val()=="") $('#userDanger').html("The field is wrong!");
-        	if($('#password').val()=="") $('#passwordDanger').html("The field is wrong!");
-        	if($('#birthDate').val()=="") $('#birthDateDanger').html("The field is wrong!");        	
-        	if($('#password').val()!=$('#password_conf').val()) $('#passwordDanger').html("Password is not equal");
+        
         	
             e.preventDefault();
 			
-            $.ajax({
-                url: '/Lab_2/checkErrors',
-                type: 'post',
-                dataType: 'text',
-                data: {data: jsonObject },
-                success: function (data) {
-                	console.log(data);
-                	
-                	var result = JSON.parse(data);
-                	
-                	if (result.errors[0].name !== "result") { manageErrors(result);}
-                	else { alert("Your registry has been completed successfully"); }
-                	
-                },
-                error: function(xhr,status,error) { alert("Error: " + error); }
-            });
-			
+            if(hasErrors() == false){
+            	$.ajax({
+                    url: '/Lab_2/checkErrors',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {data: jsonObject },
+                    success: function (data) {
+                    	console.log(data);
+                    	
+                    	var result = JSON.parse(data);
+                    	
+                    	if (result.errors.length > 0) { 
+                    		manageErrors(result);
+                    		$('#validateDanger').html("Check the form errors!");
+                    	}else { 
+                    		alert("Your registry has been completed successfully"); 
+                    	}
+                    	
+                    },
+                    error: function(xhr,status,error) { alert("Error: " + error);} });
+            } else{
+            	$('#validateDanger').html("Check the form errors!");
+            }
             console.log(jsonObject);
         }
         //////////////////////////////////////////////////////////
@@ -97,6 +157,7 @@
 
             //Sends data to the server
             $('#validate').click(jsonRequest);
+            
             //////////////////////////////////////////////////////////
 
         });
@@ -116,14 +177,15 @@
                 <div class="col">
                     <h2>Register</h2>
                     <hr>
+                    <span class="text-danger" id="serverSideDanger"></span>
                 </div>
             </div>
-
+			
             <!-- Main Parameters -->
             <div class="row">
                 <div class="col">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name">Name *</label>
                         <input type="text" class="form-control" id="name">
                         <span class="text-danger" id="nameDanger"></span>
                     </div>
@@ -134,7 +196,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="surname">Surname</label>
+                        <label for="surname">Surname *</label>
                         <input type="text" class="form-control" id="surname">
                         <span class="text-danger" id="surnameDanger"></span>
                     </div>
@@ -144,7 +206,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="mail">E-Mail Adress</label>
+                        <label for="mail">E-Mail Adress *</label>
                         <input type="text" class="form-control" id="mail" placeholder="example@domain.com">
                         <span class="text-danger" id="mailDanger"></span>
                     </div>
@@ -154,7 +216,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="user">Username</label>
+                        <label for="user">Username *</label>
                         <input type="text" class="form-control" id="user">
                         <span class="text-danger" id="userDanger"></span>
                     </div>
@@ -164,7 +226,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Password *</label>
                         <input type="password" class="form-control" id="password">
                         <span class="text-danger" id="passwordDanger"></span>
                     </div>
@@ -174,7 +236,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="password_conf">Password Confirmation</label>
+                        <label for="password_conf">Password Confirmation *</label>
                         <input type="password" class="form-control" id="password_conf">
                     </div>
                 </div>
@@ -183,7 +245,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="birthDate">Date of birth</label>
+                        <label for="birthDate">Date of birth *</label>
                         <input type="text" class="form-control" id="birthDate" placeholder="10/03/1995">
                         <span class="text-danger" id="birthDateDanger"></span>
                     </div>
@@ -324,6 +386,7 @@
                 <div class="col">
                     <div class="form-group">
                         <button id="validate" class="btn btn-primary">Submit</button>
+                        <span class="text-danger" id="validateDanger"></span>
                     </div>
                 </div>                              
             </div>       
