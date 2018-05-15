@@ -110,26 +110,40 @@ public class ValidationUtils {
 	}
 	
 	public static <T> boolean isBetweenLength(T obj, int lengthA, int lengthB) {
-		boolean haveMinimum = false;
+		boolean isBetween = false;
 		
 		try {
 			if (obj instanceof String) {
-				if ( ((String) obj).length() >= lengthA && ((String) obj).length() <= lengthB ) { haveMinimum = true; }
-			} else if (obj instanceof List) {
-				if ( ((List) obj).size() >= lengthA && ((List) obj).size() <= lengthB ) { haveMinimum = true; }
-			} else if (obj instanceof Map) {
-				if ( ((Map) obj).size() >= lengthA && ((Map) obj).size() <= lengthB ) { haveMinimum = true; }
-			} else if (obj instanceof Number) {
-				if ( ((Number) obj).floatValue() >= lengthA && ((Number) obj).floatValue() <= lengthB ) {
-					haveMinimum = true;
+				
+				if ( ((String) obj).length() >= lengthA && ((String) obj).length() <= lengthB ) {
+					isBetween = true;
 				}
+				
+			} else if (obj instanceof List) {
+				
+				if ( ((List) obj).size() >= lengthA && ((List) obj).size() <= lengthB ) {
+					isBetween = true;
+				}
+				
+			} else if (obj instanceof Map) {
+				
+				if ( ((Map) obj).size() >= lengthA && ((Map) obj).size() <= lengthB ) {
+					isBetween = true;
+				}
+				
+			} else if (obj instanceof Number) {
+				
+				if ( ((Number) obj).floatValue() >= lengthA && ((Number) obj).floatValue() <= lengthB ) {
+					isBetween = true;
+				}
+				
 			}
 		} catch (Exception e) {
-			haveMinimum = false;
+			isBetween = false;
 			e.printStackTrace();
 		}
 		
-		return haveMinimum;
+		return isBetween;
 	}
 	
 	public static boolean isPatternMatches(String pattern, String txt) {

@@ -229,7 +229,7 @@ public class UserDAO {
 	
 	public <T> boolean updateUserField(String user, String mail, String fieldName, T value) {
 		boolean update = false;
-		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), value)) == true) {
+		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
 
 			String sql = "UPDATE " + this.tableName;
 			sql += " SET " + fieldName + " = ";
@@ -250,6 +250,29 @@ public class UserDAO {
 
 		}
 		return update;
+	}
+	
+	public boolean loginUser(String fieldName, String user, String password) {
+		boolean login = false;
+		try {
+			if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
+				String sql = "SELECT COUNT(*) AS login FROM " + this.tableName;
+				sql += " WHERE " + fieldName + " = '" + user + "'";
+				sql += " AND " + PASSWORD + " = '" + password + "';";
+				
+				System.out.println("------------ UserDAO.java ------------ SQL Login: " + sql);
+				
+				ResultSet rs = this.bd.getResultSet(sql);
+				rs.next();
+				System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
+				int result = (rs != null) ? rs.getInt("login") : 1;
+				login = (result >= 1) ? true : false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			login = false;
+		}
+		return login;
 	}
 	
 }
