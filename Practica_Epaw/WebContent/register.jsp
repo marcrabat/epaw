@@ -67,7 +67,6 @@
         	$('#userDanger').html("");
         	$('#passwordDanger').html("");
         	$('#birthDateDanger').html("");
-        	$('#passwordDanger').html("");
         	$('#serverSideDanger').html("");
         	$('#validateDanger').html("");
         };

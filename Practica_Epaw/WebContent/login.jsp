@@ -18,30 +18,49 @@
 
         /////////////////////// FUNCTIONS ////////////////////////    
         
-        function fillJson() {
-			var userConsoles = new Array();
-            $("input:checkbox[name=consoles]:checked").each(function(){
-                if ($(this).val() != "") { userConsoles.push($(this).val()); }
-            });
-			
-			var gameGenres = new Array();
-			$("input:checkbox[name=genres]:checked").each(function(){
-				if ($(this).val() != "") { gameGenres.push($(this).val()); }
-            });
+        
 
+        
+        function clear(){
+        	$('#userDanger').html("");
+        	$('#passwordDanger').html("");
+        	$('#serverSideDanger').html("");
+        };
+        
+        function hasErrors(){
+        	
+        	clear();
+        	var hasError = false;
+        	
+        	if($('#user').val()=="") {
+        		hasError = true;
+        		$('#userDanger').html("The field is wrong!");
+        	}
+        	
+        	if($('#password').val()=="") {
+        		hasError = true;
+        		$('#passwordDanger').html("The field is wrong!");
+        	}
+        	
+        	return hasError;
+        }
+        
+        
+        function fillJson() {
+			var mailIntroduced = "";
+			var userIntroduced = "";
+			
+			if($('#user').val().includes("@")){
+				mailIntroduced = $('#user').val();
+			}else{
+				userIntroduced = $('#user').val();
+			}
+			
+			
             var json =  {
-                            name: $('#name').val(),
-                            surname: $('#surname').val(),
-                            mail: $('#mail').val(),
-                            user: $('#user').val(),
-                            password: $('#password').val(),
-                            birthDate: $('#birthDate').val(),
-                            description: $('#description').val(),
-                            gender: $("input:radio[name=gender]:checked").val(),
-                            userConsoles: userConsoles,
-                            gameGenres: gameGenres,                   
-                            youtubeChannelID: $('#youtubeChannelID').val(),
-                            twitchChannelID: $('#twitchChannelID').val()                           
+                            mail: mailIntroduced,
+                            user: userIntroduced,
+                            password: $('#password').val()                       
                         };
             
             return  json;
@@ -53,41 +72,47 @@
             
             for (var i = 0; i < data.errors.length; i++) {
             	var error = data.errors[i];
-            	$('#'+ error.name + 'Danger').html(error.error);
+            	if($('#'+ error.name + 'Danger').length){
+            		$('#'+ error.name + 'Danger').html(error.error);
+            	} else{
+            		$('#serverSideDanger').append(error.error + "\n");
+            	}
             }
         }    
 
+  
+        
+        
+        
+        
         function jsonRequest(e) {
 
         	var jsonObject = JSON.stringify(fillJson());
-        	/*
-        	if($('#name').val()=="") $('#nameDanger').html("The field is wrong!");
-        	if($('#surname').val()=="") $('#surnameDanger').html("The field is wrong!");
-        	if($('#mail').val()=="") $('#mailDanger').html("The email need to have the format xx@xx.xx");
-        	if($('#user').val()=="") $('#userDanger').html("The field is wrong!");
-        	if($('#password').val()=="") $('#passwordDanger').html("The field is wrong!");
-        	if($('#birthDate').val()=="") $('#birthDateDanger').html("The field is wrong!");        	
-        	*/
-        	
+  	
             e.preventDefault();
 			
-            $.ajax({
-                url: '/Lab_2/checkLoginErrors',
-                type: 'post',
-                dataType: 'text',
-                data: {data: jsonObject },
-                success: function (data) {
-                	console.log(data);
-                	
-                	var result = JSON.parse(data);
-                	
-                	if (result.errors.length > 0) { manageErrors(result);}
-                	else { alert("Straigth forward to your principal page"); }
-                	
-                },
-                error: function(xhr, status, error) { alert("Error: " + error); }
-            });
-			
+            if(hasErrors() == false){
+            	$.ajax({
+                    url: '/Lab_2/checkLoginErrors',
+                    type: 'post',
+                    dataType: 'text',
+                    data: {data: jsonObject },
+                    success: function (data) {
+                    	console.log(data);
+                    	
+                    	var result = JSON.parse(data);
+                    	
+                    	if (result.errors.length > 0) { 
+                    		manageErrors(result);
+                    		$('#validateDanger').html("Check the form errors!");
+                    	}
+                    	
+                    },
+                    error: function(xhr,status,error) { alert("Error: " + error);} });
+            } else{
+            	$('#validateDanger').html("Check the form errors!");
+            }
+            
             console.log(jsonObject);
         }
         //////////////////////////////////////////////////////////
