@@ -107,6 +107,10 @@ function formSubmitOnTarget(form, target) {
 	formSubmit();
 }
 
+function redirect(targetWindow, url) {
+	targetWindow.location.href = encodeURIComponent(url);
+}
+
 // ASYNC / AWAIT
 /* Aixo t'ho deixo per a tu Marc Alcaraz.
 async function getProcessedData(url) {

@@ -104,57 +104,54 @@ public class RegisterController extends Servlet {
 
 		}
 
-		redirect(request, response, errors);
+		sendResponse(request, response, errors);
 		
 	}
 	
 	private ErrorMessages validateUserInformation(BeanUser user) {
-		String youtubeChannel = "https://www.youtube.com/channel/";
-		String twitchChannel = "https://www.twitch.tv/";
+		//String youtubeChannel = "https://www.youtube.com/channel/";
+		//String twitchChannel = "https://www.twitch.tv/";
 		ErrorMessages error = new ErrorMessages();
 		
-		if ((ValidationUtils.isEmpty(user.getName())) == true
-				|| (ValidationUtils.isBetweenLength(user.getName(), 3, 30)) == false) {
+		if (ValidationUtils.isEmpty(user.getName()) == true) {
 			error.addError("name", "The field is empty.");
+		} else if (ValidationUtils.isBetweenLength(user.getName(), 3, 30) == false) {
+			error.addError("name", "Invalid length (min: 3, max: 30).");
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getSurname())) == true
-				|| (ValidationUtils.isBetweenLength(user.getSurname(), 3, 30)) == false) {
+		if (ValidationUtils.isEmpty(user.getSurname()) == true) {
+			error.addError("surname", "The field is empty.");
+		} else if (ValidationUtils.isBetweenLength(user.getSurname(), 3, 30) == false) {
 			error.addError("surname", "The field is empty.");
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getMail()) == true)
-			|| (ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail()) == false)) {
-
+		if (ValidationUtils.isEmpty(user.getMail()) == true) {
+			error.addError("mail", "The field is empty.");
+		} else if (ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail()) == false) {
 			error.addError("mail", "The email need to have the format xx@xx.xx");
-			
-			/*
-			String[] aux = GeneralUtils.split(user.getMail(), "@");
-			if (aux.length != 2) {
-				error.addError("email", "The email need to have the format xx@xx");
-			}
-			*/
 		}
 		
-		if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
+		if (ValidationUtils.isEmpty(user.getBirthDate()) == true) {
+			error.addError("birthDate", "The field is empty.");
+		} else {
 			
 			String year = GeneralUtils.split(user.getBirthDate(), "/")[2];
-			int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.valueOf(year) -1;
+			int age = Calendar.getInstance().get(Calendar.YEAR) - Integer.valueOf(year) - 1;
 			if (ValidationUtils.isBetweenLength(age, 18, 90) == false) {
 				error.addError("birthDate", "The birthDate is not correct, your age is not between 18 and 90");
 			}
 			
-		} else {
-			error.addError("birthDate", "The field is wrong");
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getUser())) == true
-				|| (ValidationUtils.isBetweenLength(user.getUser(), 4, 30)) == false) {
-			error.addError("user", "Wrong Username or Already Existing");
+		if (ValidationUtils.isEmpty(user.getUser()) == true) {
+			error.addError("user", "The field is empty.");
+		} else if (ValidationUtils.isBetweenLength(user.getUser(), 4, 30) == false) {
+			error.addError("user", "Wrong Username or Already Existing"); // TODO ARREGLAR ERRORES;
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getPassword())) == true
-				|| (ValidationUtils.isBetweenLength(user.getPassword(), 8, 20)) == false) {
+		if (ValidationUtils.isEmpty(user.getPassword()) == true) {
+			error.addError("password", "The field is empty.");
+		} else if (ValidationUtils.isBetweenLength(user.getPassword(), 8, 20) == false) {
 			error.addError("password", "Check that your password is between 8 and 20 characters-length.");
 		}
 		
@@ -162,6 +159,7 @@ public class RegisterController extends Servlet {
 			error.addError("description", "This field doesn't accept more than 255 characters!");
 		}
 
+		/*
 		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == true)) {
 			//&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
 			error.addError("youtubeChannelID", "The field is empty.");
@@ -171,7 +169,7 @@ public class RegisterController extends Servlet {
 			//&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
 			error.addError("twitchChannelID", "The field is empty.");
 		}
-
+		*/
 		return error;
 	}
 	
@@ -208,21 +206,11 @@ public class RegisterController extends Servlet {
 		
 	}
 	
-	private void redirect(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
-																		throws ServletException, IOException {
-		if (errors.haveErrors() == true) {
-			
-			this.setResponseJSONHeader(response);
-			request.setAttribute("errors", errors.getJSON());
-			response.getWriter().print(errors.getJSON());
-			
-		} else {
-			
-			request.setAttribute("errors", errors.getJSON());
-			response.getWriter().print(errors.getJSON());
-			
-		}
-		
+	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
+																				throws ServletException, IOException {
+		this.setResponseJSONHeader(response);
+		request.setAttribute("errors", errors.getJSON());
+		response.getWriter().print(errors.getJSON());
 	}
 
 }
