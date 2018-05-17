@@ -72,7 +72,7 @@ public class LoginController extends Servlet {
 			userKO |= !ValidationUtils.isBetweenLength(user.getUser(), 4, 30);
 		
 			if (userKO == true) {
-				error.addError("user", "Wrong Username, not accomplish the format");
+				error.addError("user", "Wrong Username!");
 			}
 
 		} else if (mailKO == false) {
@@ -85,7 +85,9 @@ public class LoginController extends Servlet {
 		}
 		
 		if (passwordKO == true) {
-			error.addError("password", "Check that your password is between 8 and 20 characters-length.");
+			String errorMessage = "Check that your password is between 8 ";
+			errorMessage += "and 20 characters-length and is correct.";
+			error.addError("password", errorMessage);
 		}
 
 		return error;

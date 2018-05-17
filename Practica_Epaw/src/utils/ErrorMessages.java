@@ -30,7 +30,21 @@ public class ErrorMessages {
 	}
 	
 	public boolean addError(String errorKey, String errorMessage) {
-		return GeneralUtils.addObjectToMap(this.errors, errorKey, errorMessage);
+		boolean add = false;
+		if (GeneralUtils.existObjectInMap(this.errors, errorKey) == true) {
+			String oldMessage = this.errors.get(errorKey);
+			add = this.errors.replace(errorKey, oldMessage, errorMessage);
+		} else {
+			
+			try {
+				this.errors.put(errorKey, errorMessage);
+				add = true;
+			} catch (Exception e) {
+				add = false;
+			}
+			
+		}
+		return add;
 	}
 	
 	public boolean addError(ErrorMessages other) {

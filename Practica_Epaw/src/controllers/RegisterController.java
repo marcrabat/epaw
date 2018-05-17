@@ -122,7 +122,7 @@ public class RegisterController extends Servlet {
 		if (ValidationUtils.isEmpty(user.getSurname()) == true) {
 			error.addError("surname", "The field is empty.");
 		} else if (ValidationUtils.isBetweenLength(user.getSurname(), 3, 30) == false) {
-			error.addError("surname", "The field is empty.");
+			error.addError("surname", "Invalid length (min: 3, max: 30).");
 		}
 		
 		if (ValidationUtils.isEmpty(user.getMail()) == true) {
@@ -146,7 +146,7 @@ public class RegisterController extends Servlet {
 		if (ValidationUtils.isEmpty(user.getUser()) == true) {
 			error.addError("user", "The field is empty.");
 		} else if (ValidationUtils.isBetweenLength(user.getUser(), 4, 30) == false) {
-			error.addError("user", "Wrong Username or Already Existing"); // TODO ARREGLAR ERRORES;
+			error.addError("user", "Invalid length (min: 4, max: 30)."); // TODO ARREGLAR ERRORES;
 		}
 		
 		if (ValidationUtils.isEmpty(user.getPassword()) == true) {
@@ -197,7 +197,7 @@ public class RegisterController extends Servlet {
 			} else {
 				
 				System.out.println("Exist user");
-				errors.addError("userExist", "The user already exist!!!");
+				errors.addError("user", "The user already exist!!!");
 			}
 			
 		}
