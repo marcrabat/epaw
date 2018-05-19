@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -43,16 +44,27 @@ public class LoginController extends Servlet {
 		BeanUser vistaUser = null;
 		boolean loginUser = false;
 		ErrorMessages errors = new ErrorMessages();
-		String jsonData = request.getParameter("data");
 		
-		if (ValidationUtils.isEmpty(jsonData) == false) {
-			vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class);
-		} else {
-			errors.addError("errorData", "Not data recived!");
-		}
-
-		if (vistaUser != null) {
-			errors.addError(loginUser(vistaUser, request));	
+		HttpSession session = this.getSession(request);
+		
+		if (session.getAttribute("Session_ID") == null) {
+		
+			String jsonData = request.getParameter("data");
+			
+			if (ValidationUtils.isEmpty(jsonData) == false) {
+				vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class);
+			} else {
+				errors.addError("errorData", "Not data recived!");
+			}
+	
+			if (vistaUser != null) {
+				errors.addError(loginUser(vistaUser, request));
+			}
+			
+			if (errors.haveErrors() == false) {
+				session.setAttribute("Session_ID", vistaUser.getUser());
+			}
+			
 		}
 
 		sendResponse(request, response, errors);

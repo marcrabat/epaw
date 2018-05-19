@@ -18,8 +18,16 @@
 
         /////////////////////// FUNCTIONS ////////////////////////    
         
-        
+        $(document).ready( function() {
+        	var sessionId = "${sessionScope.Session_ID}";
+        	if (sessionId != "") {
+        		redirectToPersonalPage();
+        	}
+        });
 
+        function redirectToPersonalPage() {
+        	alert("redirect_to_personal_page");
+        }
         
         function clear(){
         	$('#userDanger').html("");
@@ -105,6 +113,8 @@
                     	if (result.errors.length > 0) { 
                     		manageErrors(result);
                     		$('#validateDanger').html("Check the form errors!");
+                    	} else {
+                    		redirectToPersonalPage();
                     	}
                     	
                     },
