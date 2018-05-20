@@ -157,6 +157,7 @@
                 <div class="col">
                     <h2>Login</h2>
                     <hr>
+                    <span class="text-danger" id="serverSideDanger"></span>
                 </div>
             </div>
 
@@ -187,6 +188,7 @@
                 <div class="col">
                     <div class="form-group">
                         <button id="loginButton" class="btn btn-primary">Login</button>
+                        <span class="text-danger" id="validateDanger"></span>
                     </div>
                 </div>                              
             </div>
