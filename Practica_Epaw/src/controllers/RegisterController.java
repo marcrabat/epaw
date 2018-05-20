@@ -90,10 +90,6 @@ public class RegisterController extends Servlet {
 		if (vistaUser != null) {
 			
 			errors.addError(registerUser(vistaUser, request));
-		
-			if (errors.haveErrors() == false) { 
-				errors.addError("result", String.valueOf(insertUser));
-			}
 			
 			System.out.println(errors.getJSON());
 			

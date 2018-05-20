@@ -137,7 +137,8 @@
                     		manageErrors(result);
                     		$('#validateDanger').html("Check the form errors!");
                     	}else { 
-                    		alert("Your registry has been completed successfully"); 
+                    		alert("Your registry has been completed successfully");
+                    		window.location.href = "/Lab_2/main.jsp";
                     	}
                     	
                     },
