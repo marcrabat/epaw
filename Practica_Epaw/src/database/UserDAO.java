@@ -13,25 +13,26 @@ public class UserDAO {
 	//public static final String TABLE_NAME = "registeredusers"; // "User";
 	
 	// ---- COLUMS OF TABLE IN DATABSE -----
-	public static final String USER = "user";
-	public static final String MAIL = "mail";
-	public static final String NAME = "name";
-	public static final String SURNAME = "surname";
-	public static final String BIRTH_DATE = "birthDate";
-	public static final String PASSWORD = "password";
-	public static final String DESCRIPTION = "description";
-	public static final String GENDER = "gender";
-	public static final String YOUTUBE_CHANNEL_ID = "youtubeChannelID";
-	public static final String TWITCH_CHANNEL_ID = "twitchChannelID";
-	public static final String GAME_GENRES = "gameGenres";
-	public static final String USER_CONSOLES = "userConsoles";
+	public static final String COLUMN_USER = "user";
+	public static final String COLUMN_MAIL = "mail";
+	public static final String COLUMN_NAME = "name";
+	public static final String COLUMN_SURNAME = "surname";
+	public static final String COLUMN_BIRTH_DATE = "birthDate";
+	public static final String COLUMN_PASSWORD = "password";
+	public static final String COLUMN_DESCRIPTION = "description";
+	public static final String COLUMN_GENDER = "gender";
+	public static final String COLUMN_YOUTUBE_CHANNEL_ID = "youtubeChannelID";
+	public static final String COLUMN_TWITCH_CHANNEL_ID = "twitchChannelID";
+	public static final String COLUMN_GAME_GENRES = "gameGenres";
+	public static final String COLUMN_USER_CONSOLES = "userConsoles";
 	// ----- END COLUMS OF TABLE IN DATABASE ----
 	
 	private String tableName;
 	private BD bd;
-	private String[] fields = { USER, MAIL, NAME, SURNAME, BIRTH_DATE, PASSWORD,
-								DESCRIPTION, GENDER, YOUTUBE_CHANNEL_ID, TWITCH_CHANNEL_ID,
-								GAME_GENRES, USER_CONSOLES };
+	private String[] fields = { COLUMN_USER, COLUMN_MAIL, COLUMN_NAME, COLUMN_SURNAME,
+								COLUMN_BIRTH_DATE, COLUMN_PASSWORD, COLUMN_DESCRIPTION, COLUMN_GENDER, 
+								COLUMN_YOUTUBE_CHANNEL_ID, COLUMN_TWITCH_CHANNEL_ID,
+								COLUMN_GAME_GENRES, COLUMN_USER_CONSOLES };
 	
 	//private Statement statement;
 
@@ -69,8 +70,8 @@ public class UserDAO {
 		try {
 			if (this.bd != null) {
 				String sql = "SELECT COUNT(*) AS exist FROM " + this.tableName;
-				sql += " WHERE " + USER + " = '" + user + "'";
-				sql += " OR " + MAIL + " = '" + mail + "';";
+				sql += " WHERE " + COLUMN_USER + " = '" + user + "'";
+				sql += " OR " + COLUMN_MAIL + " = '" + mail + "';";
 				
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
@@ -153,58 +154,59 @@ public class UserDAO {
 			String sql = "UPDATE " + this.tableName + " SET ";
 			
 			if (ValidationUtils.isEmpty(user.getName()) == false) {
-				sql += NAME + " = '" + user.getName() + "', ";
+				sql += COLUMN_NAME + " = '" + user.getName() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getSurname()) == false) {
-				sql += SURNAME + " = '" + user.getSurname() + "', ";
+				sql += COLUMN_SURNAME + " = '" + user.getSurname() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
-				sql += BIRTH_DATE + " = '" + user.getBirthDate() + "', ";
+				sql += COLUMN_BIRTH_DATE + " = '" + user.getBirthDate() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getPassword()) == false) {
-				sql += PASSWORD + " = '" + user.getPassword() + "', ";
+				sql += COLUMN_PASSWORD + " = '" + user.getPassword() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getDescription()) == false) {
-				sql += DESCRIPTION + " = '" + user.getDescription() + "', ";
+				sql += COLUMN_DESCRIPTION + " = '" + user.getDescription() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getGender()) == false) {
-				sql += GENDER + " = '" + user.getGender() + "', ";
+				sql += COLUMN_GENDER + " = '" + user.getGender() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false) {
-				sql += YOUTUBE_CHANNEL_ID + " = '" + user.getYoutubeChannelID() + "', ";
+				sql += COLUMN_YOUTUBE_CHANNEL_ID + " = '" + user.getYoutubeChannelID() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getTwitchChannelID()) == false) {
-				sql += TWITCH_CHANNEL_ID + " = '" + user.getTwitchChannelID() + "', ";
+				sql += COLUMN_TWITCH_CHANNEL_ID + " = '" + user.getTwitchChannelID() + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getGameGenres()) == false) {
-				sql += GAME_GENRES + " = '" + GeneralUtils.concatListOfString(user.getGameGenres(), ",") + "', ";
+				sql += COLUMN_GAME_GENRES + " = '" + GeneralUtils.concatListOfString(user.getGameGenres(), ",") + "', ";
 				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getUserConsoles()) == false) {
-				sql += USER_CONSOLES + " = '" + GeneralUtils.concatListOfString(user.getUserConsoles(), ",") + "', ";
+				sql += COLUMN_USER_CONSOLES + " = '" + GeneralUtils.concatListOfString(user.getUserConsoles(), ",") + "', ";
 				allValuesNull = false;
 			}
 			
 			sql = sql.substring(0, (sql.length() - ", ".length()));
 			
-			sql += " WHERE " + USER + " = '" + user.getUser() + "' AND " + MAIL + " = '" + user.getMail() + "';";
+			sql += " WHERE " + COLUMN_USER + " = '" + user.getUser() + "'";
+			sql += " AND " + COLUMN_MAIL + " = '" + user.getMail() + "';";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL UPDATE: " + sql);
 			
@@ -241,7 +243,7 @@ public class UserDAO {
 			} else {
 				sql += "'" + value + "' ";
 			}
-			sql += " WHERE " + USER + " = '" + user + "' AND " + MAIL + " = '" + mail + "';";
+			sql += " WHERE " + COLUMN_USER + " = '" + user + "' AND " + COLUMN_MAIL + " = '" + mail + "';";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL UPDATE ONE FIELD: " + sql);
 			
@@ -258,7 +260,7 @@ public class UserDAO {
 			if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
 				String sql = "SELECT COUNT(*) AS login FROM " + this.tableName;
 				sql += " WHERE " + fieldName + " = '" + user + "'";
-				sql += " AND " + PASSWORD + " = '" + password + "';";
+				sql += " AND " + COLUMN_PASSWORD + " = '" + password + "';";
 				
 				System.out.println("------------ UserDAO.java ------------ SQL Login: " + sql);
 				

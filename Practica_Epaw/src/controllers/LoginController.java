@@ -119,9 +119,9 @@ public class LoginController extends Servlet {
 				boolean loginUser = false;
 				
 				if (ValidationUtils.isEmpty(user.getUser()) == false) {
-					loginUser = userDAO.loginUser(UserDAO.USER, user.getUser(), user.getPassword());
+					loginUser = userDAO.loginUser(UserDAO.COLUMN_USER, user.getUser(), user.getPassword());
 				} else {
-					loginUser = userDAO.loginUser(UserDAO.MAIL, user.getMail(), user.getPassword());
+					loginUser = userDAO.loginUser(UserDAO.COLUMN_MAIL, user.getMail(), user.getPassword());
 				}
 				
 				if (loginUser == false) {
