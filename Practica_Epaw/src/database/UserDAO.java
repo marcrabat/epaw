@@ -8,6 +8,7 @@ import models.BeanUser;
 import utils.BD;
 import utils.GeneralUtils;
 import utils.ValidationUtils;
+import database.RelationshipDAO;
 
 public class UserDAO {
 	//public static final String TABLE_NAME = "registeredusers"; // "User";
@@ -37,7 +38,7 @@ public class UserDAO {
 	//private Statement statement;
 
 	public UserDAO() {
-		this.tableName = "registeredusers"; //"User";
+		this.tableName = "Users";
 		try {
 			this.bd = new BD(BD.URL, BD.USER, BD.PASSWORD);
 			
@@ -138,6 +139,7 @@ public class UserDAO {
 	public boolean deleteUser(String fieldName, String toDelete) {
 		boolean delete = false;
 		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
+
 			String sql = "DELETE FROM " + this.tableName + " WHERE " + fieldName + " LIKE '" + toDelete + "';";
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
 

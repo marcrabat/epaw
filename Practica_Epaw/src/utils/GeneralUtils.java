@@ -204,7 +204,24 @@ public class GeneralUtils {
 		return concat;
 	}
 	
-	public static <T> boolean fillFromResultSet(ResultSet rs, T obj){
+	public static <T> List<T> fillFromListOfResultSet(List<ResultSet> listOfResultSet, Class<T> genericClass) {
+		List<T> listFilled = new ArrayList<T>();
+		for (ResultSet resultSet : listOfResultSet) {
+			try {
+				T obj = genericClass.newInstance();
+				fillFromResultSet(resultSet, obj);
+				listFilled.add(obj);
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		return listFilled;
+	}
+	
+	public static <T> boolean fillFromResultSet(ResultSet rs, T obj) {
+		boolean filled = true;
 		try{
 			Class c = Class.forName(obj.getClass().getName());
 			Field[] fields = c.getDeclaredFields();
@@ -250,9 +267,9 @@ public class GeneralUtils {
 			}
 			//Method m = c.getMethod(method, null);
 		}catch(Exception e){
-			return false;
+			filled = false;
 		}
-		return true;
+		return filled;
 	}
 
 }

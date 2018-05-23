@@ -19,11 +19,19 @@ CREATE SCHEMA IF NOT EXISTS `epawTwitter` DEFAULT CHARACTER SET utf8 COLLATE utf
 USE `epawTwitter` ;
 
 -- -----------------------------------------------------
--- Table `epawTwitter`.`registeredusers`
+-- Drop Tables
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `epawTwitter`.`registeredusers` ;
 
-CREATE TABLE IF NOT EXISTS `epawTwitter`.`registeredusers` (
+DROP TABLE IF EXISTS `epawTwitter`.`Users`;
+DROP TABLE IF EXISTS `epawTwitter`.`Tweets`;
+DROP TABLE IF EXISTS `epawTwitter`.`Feedback`;
+DROP TABLE IF EXISTS `epawTwitter`.`Relationship`;
+
+-- -----------------------------------------------------
+-- Table `epawTwitter`.`Users`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `epawTwitter`.`Users` (
   `user` VARCHAR(255) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `surname` VARCHAR(45) NOT NULL,
@@ -36,9 +44,51 @@ CREATE TABLE IF NOT EXISTS `epawTwitter`.`registeredusers` (
   `gameGenres` VARCHAR(255) NULL,
   `userConsoles` VARCHAR(255) NULL,
   `mail` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`user`, `mail`))
+  `isAdministrator` BIT DEFAULT 0 NOT NULL,
+  PRIMARY KEY (`user`, `mail`)
+)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `epawTwitter`.`Tweets`
+-- -----------------------------------------------------
+  
+CREATE TABLE IF NOT EXISTS `epawTwitter`.`Tweets` (
+  `tweetID` INTEGER NOT NULL AUTO_INCREMENT,
+  `author` VARCHAR(255) NOT NULL,
+  `likes` INTEGER DEFAULT 0,
+  `message` VARCHAR(255) NOT NULL,
+  `publishDate` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`tweetID`),
+  CONSTRAINT FK_Tweets_author FOREIGN KEY (`author`) REFERENCES Users(`user`)
+)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `epawTwitter`.`Feedback`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `epawTwitter`.`Feedback` (
+  `tweet1` INTEGER NOT NULL,
+  `tweet2` INTEGER NOT NULL,
+  PRIMARY KEY (`tweet1`, `tweet2`),
+  CONSTRAINT FK_Feedback_tweet1 FOREIGN KEY (`tweet1`) REFERENCES Tweets(`tweetID`),
+  CONSTRAINT FK_Feedback_tweet2 FOREIGN KEY (`tweet2`) REFERENCES Tweets(`tweetID`)
+)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `epawTwitter`.`Relationship`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `epawTwitter`.`Relationship` (
+  `userA` VARCHAR(255) NOT NULL,
+  `userB` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`userA`, `userB`),
+  CONSTRAINT FK_Relationship_userA FOREIGN KEY (`userA`) REFERENCES Users(`user`),
+  CONSTRAINT FK_Relationship_userB FOREIGN KEY (`userB`) REFERENCES Users(`user`)
+) 
+ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
