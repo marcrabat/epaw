@@ -53,10 +53,13 @@ public class UserDAO {
 	}
 	
 	public BeanUser returnUser(String fieldName, String value) {
-		BeanUser user = null;
+		BeanUser user = new BeanUser();
 		if (this.existUserSelectingField(fieldName, value) == true) {
-			String sql = "SELECT * FROM " + this.tableName;
+			String sql = "SELECT " + GeneralUtils.concatArrayOfString(this.fields, ",") + " FROM " + this.tableName;
 			sql += " WHERE " + fieldName + " = '" + value + "';";
+			
+			System.out.println("------------ UserDAO.java ------------ SQL SELECT USER: " + sql);
+			
 			ResultSet rs = this.bd.getResultSet(sql);
 			if (rs != null) {
 				GeneralUtils.fillFromResultSet(rs, user);
@@ -77,10 +80,12 @@ public class UserDAO {
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
 				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
-				int result = (rs != null) ? rs.getInt("exist") : 1;
-				exist = (result >= 1) ? true : false;
+				if(!rs.next()) {
+					System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
+					int result = (rs != null) ? rs.getInt("exist") : 1;
+					exist = (result >= 1) ? true : false;
+				}
+				rs.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

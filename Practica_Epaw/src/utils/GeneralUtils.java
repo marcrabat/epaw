@@ -225,46 +225,54 @@ public class GeneralUtils {
 		try{
 			Class c = Class.forName(obj.getClass().getName());
 			Field[] fields = c.getDeclaredFields();
-			for(Field field : fields){
-				
-				String name = field.getName();
-				field.setAccessible(true);
-				
-				if (rs.getObject(name) != null) {
-					if(field.getType().isAssignableFrom(Boolean.TYPE)){
-						
-						boolean value = rs.getBoolean(name);
-			            field.set(obj, value);
-			            
-					} else if(field.getType().isAssignableFrom(String.class)){
-						
-						String value = rs.getString(name);
-			            field.set(obj, value);
-			            
-					} else if (field.getType().isAssignableFrom(Integer.TYPE)){
-						
-						Integer value = rs.getInt(name);
-			            field.set(obj, value);
-			            
-					} else if(field.getType().isAssignableFrom(Double.TYPE)){
-						
-						double value = rs.getDouble(name);
-			            field.set(obj, value);
-			            
-					} else if(field.getType().isAssignableFrom(Float.TYPE)){
-						
-						float value = rs.getFloat(name);
-			            field.set(obj, value);
-			            
-					} else if(field.getType().isAssignableFrom(Date.class)){
-						
-						Date value = rs.getDate(name);
-			            field.set(obj, value);
-	
+			
+			while(rs.next()) {
+			
+				for(Field field : fields){
+					
+					String name = field.getName();
+					field.setAccessible(true);
+					
+					if (field.getName().equals("serialVersionUID") == false) {
+					
+						if (rs.getObject(name) != null) {
+							if(field.getType().isAssignableFrom(Boolean.TYPE)){
+								
+								boolean value = rs.getBoolean(name);
+					            field.set(obj, value);
+					            
+							} else if(field.getType().isAssignableFrom(String.class)){
+								
+								String value = rs.getString(name);
+					            field.set(obj, value);
+					            
+							} else if (field.getType().isAssignableFrom(Integer.TYPE)){
+								
+								Integer value = rs.getInt(name);
+					            field.set(obj, value);
+					            
+							} else if(field.getType().isAssignableFrom(Double.TYPE)){
+								
+								double value = rs.getDouble(name);
+					            field.set(obj, value);
+					            
+							} else if(field.getType().isAssignableFrom(Float.TYPE)){
+								
+								float value = rs.getFloat(name);
+					            field.set(obj, value);
+					            
+							} else if(field.getType().isAssignableFrom(Date.class)){
+								
+								Date value = rs.getDate(name);
+					            field.set(obj, value);
+			
+							}
+						}
 					}
+					
 				}
-				
 			}
+			
 			//Method m = c.getMethod(method, null);
 		}catch(Exception e){
 			filled = false;

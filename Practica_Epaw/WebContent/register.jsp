@@ -283,7 +283,7 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="gender">Consoles you have</label>
+                        <label for="consoles">Consoles you have</label>
                         <div class="checkbox">
                             <label><input type="checkbox" name="consoles" value="PS1">   PS1</label>
                         </div>

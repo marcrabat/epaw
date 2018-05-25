@@ -61,10 +61,6 @@ public class LoginController extends Servlet {
 				errors.addError(loginUser(vistaUser, request));
 			}
 			
-			if (errors.haveErrors() == false) {
-				session.setAttribute("Session_ID", vistaUser.getUser());
-			}
-			
 		}
 
 		sendResponse(request, response, errors);
@@ -126,6 +122,11 @@ public class LoginController extends Servlet {
 				
 				if (loginUser == false) {
 					errors.addError("userLogin", "User/E-mail Address and/or password are incorrect!!");
+				} else {
+					BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, user.getUser());
+					HttpSession session = request.getSession();
+					session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
+					session.setAttribute("Session_ID", user.getUser());
 				}
 				
 			} else {
@@ -143,7 +144,6 @@ public class LoginController extends Servlet {
 		this.setResponseJSONHeader(response);
 		request.setAttribute("errors", errors.getJSON());
 		response.getWriter().print(errors.getJSON());
-		
 	}
 
 }
