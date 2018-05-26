@@ -46,10 +46,12 @@ public class RelationshipDAO {
 				
 				System.out.println("------------ RelationshipDAO.java ------------ SQL EXIST: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				int result = (rs != null) ? rs.getInt("exist") : 1;
-				exist = (result >= 1) ? true : false;
+				this.bd.executeQuery(sql);
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("exist");
+					exist = (result >= 1) ? true : false;
+				}
+				this.bd.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -109,14 +111,19 @@ public class RelationshipDAO {
 			
 			System.out.println("------------ RelationshipDAO.java ------------ SQL FOLLOWERS: " + sql);
 
-			ResultSet rs = this.bd.getResultSet(sql);
+			
+			this.bd.executeQuery(sql);
+			ResultSet rs = this.bd.getResultSet();
 			try {
 				while(rs.next()) {
-					followers.add(rs.getString(COLUMN_USERB));
+					String follower = rs.getString(COLUMN_USERB);
+					followers.add(follower);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			this.bd.close();
+
 		}
 		return followers;
 	}
@@ -129,14 +136,17 @@ public class RelationshipDAO {
 			
 			System.out.println("------------ RelationshipDAO.java ------------ SQL FOLLOWING: " + sql);
 
-			ResultSet rs = this.bd.getResultSet(sql);
+			this.bd.executeQuery(sql);
+			ResultSet rs = this.bd.getResultSet();
 			try {
 				while(rs.next()) {
-					following.add(rs.getString(COLUMN_USERB));
+					String userId = rs.getString(COLUMN_USERB);
+					following.add(userId);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			this.bd.close();
 		}
 		return following;
 	}

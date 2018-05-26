@@ -19,6 +19,10 @@ function loadScript(url, callback) {
     head.appendChild(script);
 }
 
+function getElement(id) {
+	return document.getElementById(id);
+}
+
 function getValue(id) {
 	var value = null;
 	if ((document.getElementById(id) != null) && (document.getElementById(id) != undefined)) {

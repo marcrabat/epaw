@@ -46,10 +46,12 @@ public class FeedbackDAO {
 				
 				System.out.println("------------ FeedbackDAO.java ------------ SQL EXIST: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				int result = (rs != null) ? rs.getInt("exist") : 1;
-				exist = (result >= 1) ? true : false;
+				this.bd.executeQuery(sql);
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("exist");
+					exist = (result >= 1) ? true : false;
+				}
+				this.bd.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,7 +113,8 @@ public class FeedbackDAO {
 			
 			System.out.println("------------ FeedbackDAO.java ------------ SQL ASSOCIATED: " + sql);
 
-			ResultSet rs = this.bd.getResultSet(sql);
+			this.bd.executeQuery(sql);
+			ResultSet rs = this.bd.getResultSet();
 			try {
 				while(rs.next()) {
 					int associatedTweet = rs.getInt(COLUMN_TWEET_2);
@@ -120,6 +123,7 @@ public class FeedbackDAO {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			this.bd.close();
 		}
 		return associated;
 	}

@@ -63,18 +63,18 @@ public class BD {
 	public void close() {
 		try {
 			
-			if (this.connection != null) {
-				this.connection.close();
+			if (this.resultSet != null) {
+				this.resultSet.close();
 			}
 			
 			if (this.statement != null) {
 				this.statement.close();
 			}
 			
-			if (this.resultSet != null) {
-				this.resultSet.close();
+			if (this.connection != null) {
+				this.connection.close();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

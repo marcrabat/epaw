@@ -27,14 +27,43 @@
 	    border-style: outset;
     }
     
+    .displayNone {
+    	display: none;
+    }
+    
 </style>
 <script type="text/javascript">
+	
+	/** Funcions que estan en utils, pero no he sapigut fer el import del javascript **/
+	
+	function getElement(id) {
+		return document.getElementById(id);
+	}
+	
+	function executeAjax(parametros, url, method, success, error) {
+		$.ajax({
+			data:  {data : parametros },
+			url:   url,
+			type:  method,
+			success:  function(response) { success(response); },
+			error: function(e) { error(e); }
+		});
+	}
+	
+	/* ****************** FIN *********************** */
+
 	
 	$(document).ready(function() {
 		
 		clear();
+		
+		changeVisibility("gamerInfo");
+		changeVisibility("socialNetwork");
+		changeVisibility("profilePassword");
+
+		disableInputs();
 		//var userJSON = '{"userConsoles": []}';
-		var userJSON = "${sessionScope.userInfo}";
+		var userJSON = '${sessionScope.userInfo}';
 		if (userJSON != "") {
 			var user = JSON.parse(userJSON);
 			console.log(user);
@@ -43,9 +72,22 @@
 		
 	});
 	
+	function changeVisibility(id) {
+		var element = $("#" + id);
+		if (element.hasClass("displayNone") == true) {
+			element.removeClass("displayNone");
+		} else {
+			element.addClass("displayNone");
+		}
+	}
+	
 	function fillProfileForm(user) {
 		
 		if (user != null) {
+			
+			getElement("description").value = user.description;
+			getElement("youtubeChannelID").value = user.youtubeChannelID;
+			getElement("twitchChannelID").value = user.twitchChannelID;
 			
 			var consolesCheckbox = $("input:checkbox[name=consoles]");
 			
@@ -53,8 +95,22 @@
 			
 				for (var j = 0; j < consolesCheckbox.size(); j++) {
 					
-					if (userConsoles[i] == consolesCheckbox[j].value) {
+					if (user.userConsoles[i] == consolesCheckbox[j].value) {
 						consolesCheckbox[j].cheked = true;
+					}
+					
+				}
+				
+			}
+			
+			var gameGenresCheckbox = $("input:checkbox[name=genres]");
+			
+			for (var i = 0; i < user.gameGenres.length; i++) {
+			
+				for (var j = 0; j < gameGenresCheckbox.size(); j++) {
+					
+					if (user.gameGenres[i] == gameGenresCheckbox[j].value) {
+						gameGenresCheckbox[j].cheked = true;
 					}
 					
 				}
@@ -82,6 +138,59 @@
 		*/
 	}
 	
+	function enableInputs() {
+		$("#description").prop("disabled", false);
+		
+        $("input:checkbox[name=consoles]").each(function(){
+            $(this).prop("disabled", false);
+        });
+        
+        $("input:checkbox[name=genres]").each(function(){
+        	$(this).prop("disabled", false);
+        });
+        
+        $("input:[type=text]").each(function(){
+        	$(this).prop("disabled", false);
+        });
+        
+        $("#password").prop("disabled", false);
+        
+        $("#newPassword").prop("disabled", false);
+	}
+	
+	function disableInputs() {
+		
+		$("#description").prop("disabled", true);
+		
+        $("input:checkbox[name=consoles]").each(function(){
+            $(this).prop("disabled", true);
+        });
+        
+        $("input:checkbox[name=genres]").each(function(){
+        	$(this).prop("disabled", true);
+        });
+        
+        $("input:[type=text]").each(function(){
+        	$(this).prop("disabled", true);
+        });
+        
+        $("#password").prop("disabled", true);
+        
+        $("#newPassword").prop("disabled", true);
+	}
+	
+	function changeEditOrView() {
+		if (getElement("editOrView").innerHTML == "View") {
+			disableInputs();
+			getElement("profileButtons").style = "display: none;";
+			getElement("editOrView").innerHTML = "Edit";
+		} else {
+			enableInputs();
+			getElement("profileButtons").style = "display: block;";
+			getElement("editOrView").innerHTML = "View";
+			
+		}
+	}
 	
 	function fillJson() {
 			var userConsoles = new Array();
@@ -144,6 +253,24 @@
         	
         	return hasError;
         }
+        
+        function editProfile() {
+        	
+        	var jsonObject = JSON.stringify(fillJson());
+        	
+        	executeAjax(jsonObject, "/Lab_2/checkProfileErrors", "POST", function(){ succesEditProfile(response); }, 
+        										function(){ errorEditProfile(e); });
+        	
+        }
+        
+        function succesEditProfile(response) {
+        	alert("the edit profile is good!");
+        }
+        
+        function errorEditProfile(e) {
+        	alert("Error.....");
+        }
+        
 </script>
 <div id="profilePage" style="witdh: 80%; margin-left:2%; margin-right:2%;">
  
@@ -159,12 +286,15 @@
  	<div id="profileMenu" style="width:="30%; float: left;">
 	 	<button id="cancel" class="btn btn-primary">Delete account</button>
 	 	<button id="cancel" class="btn btn-primary">Delete all tweets</button>
-	 	<button id="cancel" class="btn btn-primary">Edit profile</button>
 	 	<button id="cancel" class="btn btn-primary">I don't know que mes posar!</button>
  	</div>
  	
  	<div id="profileContent" class="content" style="width:="70%; float: right;">
  		<div id="profileForm">
+
+			<div style="position:relative; float:rigth;">
+				<span id="editOrView" onClick="changeEditOrView();"> Edit </span>
+			</div>
 
             <div class="row">    
                 <div class="col">
@@ -176,7 +306,7 @@
                 </div>
             </div>
             
-            <span href="#" onClick="changeVisibilityOfGamerInfo()"> Gamer Info </span>
+            <span href="#" onClick="changeVisibility('gamerInfo');"> Gamer Info </span>
             <div id="gamerInfo">
 	            <div class="row">    
 	                <div class="col">
@@ -259,8 +389,10 @@
 	                </div>
 	            </div>
             </div>
+            
+            <br/>
 			
-			<span href="#" onClick="changeVisibilityOfSocialNetwork()"> Youtube / TWitch Channel ID </span>
+			<span href="#" onClick="changeVisibility('socialNetwork')"> Youtube / TWitch Channel ID </span>
 			<div id="socialNetwork">
 	            <div class="row">    
 	                <div class="col">
@@ -283,7 +415,9 @@
 	            </div>
 	        </div>
 	        
-	        <span href="#" onClick="changeVisibilityOfPassword()"> Do you Want to change the Password? </span>
+	        <br/>
+	        
+	        <span href="#" onClick="changeVisibility('profilePassword')"> Do you Want to change the Password? </span>
 	        <div id="profilePassword">
 		        <div class="row">    
 	                <div class="col">
@@ -300,22 +434,16 @@
 	                
 	            </div>
 	       </div>
+	       
+	       <br/>
 
             <!-- Sumbit Button -->
-            <div id="profileButtons" style="display: none;">
+            <div id="profileButtons" style="display: none">
 	            <div class="row">
 	                <div class="col">
 	                    <div class="form-group">
-	                        <button id="edit" class="btn btn-primary">Edit Profile</button>
+	                        <button id="edit" class="btn btn-primary" onClick="editProfile();">Edit Profile</button>
 	                        <span class="text-danger" id="editDanger"></span>
-	                    </div>
-	                </div>                              
-	            </div>
-	            
-	            <div class="row" style="display: none;">
-	                <div class="col">
-	                    <div class="form-group">
-	                        <button id="cancel" class="btn btn-primary">Cancel</button>
 	                    </div>
 	                </div>                              
 	            </div>

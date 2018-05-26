@@ -67,41 +67,7 @@ public class LoginController extends Servlet {
 		
 	}
 	
-	private ErrorMessages validateUserInformation(BeanUser user) {
-		ErrorMessages error = new ErrorMessages();
-		
-		boolean userKO = ValidationUtils.isNull(user.getUser());
-		boolean mailKO = ValidationUtils.isNull(user.getMail());
-		boolean passwordKO = ValidationUtils.isEmpty(user.getPassword());
-		passwordKO |= !ValidationUtils.isBetweenLength(user.getPassword(), 8, 20);
-		
-		if (userKO == false) {
-			userKO = ValidationUtils.isEmpty(user.getUser());
-			userKO |= !ValidationUtils.isBetweenLength(user.getUser(), 4, 30);
-		
-			if (userKO == true) {
-				error.addError("user", "Wrong Username!");
-			}
-
-		} else if (mailKO == false) {
-			mailKO = ValidationUtils.isEmpty(user.getMail());
-			mailKO |= !ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail());
-		
-			if (mailKO == true) {
-				error.addError("user", "The email need to have the format xx@xx.xx");
-			}
-		}
-		
-		if (passwordKO == true) {
-			String errorMessage = "Check that your password is between 8 ";
-			errorMessage += "and 20 characters-length and is correct.";
-			error.addError("password", errorMessage);
-		}
-
-		return error;
-	}
-	
-	private ErrorMessages loginUser(BeanUser user, HttpServletRequest request) {
+private ErrorMessages loginUser(BeanUser user, HttpServletRequest request) {
 		
 		UserDAO userDAO = new UserDAO();
 		ErrorMessages errors = this.validateUserInformation(user);
@@ -137,6 +103,40 @@ public class LoginController extends Servlet {
 		
 		return errors;
 		
+	}
+	
+	private ErrorMessages validateUserInformation(BeanUser user) {
+		ErrorMessages error = new ErrorMessages();
+		
+		boolean userKO = ValidationUtils.isNull(user.getUser());
+		boolean mailKO = ValidationUtils.isNull(user.getMail());
+		boolean passwordKO = ValidationUtils.isEmpty(user.getPassword());
+		passwordKO |= !ValidationUtils.isBetweenLength(user.getPassword(), 8, 20);
+		
+		if (userKO == false) {
+			userKO = ValidationUtils.isEmpty(user.getUser());
+			userKO |= !ValidationUtils.isBetweenLength(user.getUser(), 4, 30);
+		
+			if (userKO == true) {
+				error.addError("user", "Wrong Username!");
+			}
+
+		} else if (mailKO == false) {
+			mailKO = ValidationUtils.isEmpty(user.getMail());
+			mailKO |= !ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail());
+		
+			if (mailKO == true) {
+				error.addError("user", "The email need to have the format xx@xx.xx");
+			}
+		}
+		
+		if (passwordKO == true) {
+			String errorMessage = "Check that your password is between 8 ";
+			errorMessage += "and 20 characters-length and is correct.";
+			error.addError("password", errorMessage);
+		}
+
+		return error;
 	}
 	
 	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)

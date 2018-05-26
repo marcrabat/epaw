@@ -81,8 +81,10 @@ public class UserDAO {
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
 				this.bd.executeQuery(sql);
-				int result = this.bd.getResultSet().getInt("exist");
-				exist = (result >= 1) ? true : false;
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("exist");
+					exist = (result >= 1) ? true : false;
+				}
 				this.bd.close();
 
 			}
@@ -103,8 +105,10 @@ public class UserDAO {
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
 				this.bd.executeQuery(sql);
-				int result = this.bd.getResultSet().getInt("exist");
-				exist = (result >= 1) ? true : false;
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("exist");
+					exist = (result >= 1) ? true : false;
+				}
 				this.bd.close();
 
 			}
@@ -271,8 +275,10 @@ public class UserDAO {
 				System.out.println("------------ UserDAO.java ------------ SQL Login: " + sql);
 				
 				this.bd.executeQuery(sql);
-				int result = this.bd.getResultSet().getInt("login");
-				login = (result >= 1) ? true : false;
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("login");
+					login = (result >= 1) ? true : false;
+				}
 				this.bd.close();
 
 			}

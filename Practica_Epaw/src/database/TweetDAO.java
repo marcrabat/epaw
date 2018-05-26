@@ -51,11 +51,12 @@ public class TweetDAO {
 		if (this.existTweet(tweetID) == true) {
 			String sql = "SELECT * FROM " + this.tableName;
 			sql += " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + ";";
-			ResultSet rs = this.bd.getResultSet(sql);
-			if (rs != null) {
-				GeneralUtils.fillFromResultSet(rs, tweet);
-				System.out.println(tweet.toString());
-			}
+			
+			this.bd.executeQuery(sql);
+			ResultSet rs = this.bd.getResultSet();
+			GeneralUtils.fillFromResultSet(rs, tweet);
+			
+			this.bd.close();
 		}
 		return tweet;
 	}
@@ -69,10 +70,12 @@ public class TweetDAO {
 				
 				System.out.println("------------ TweetDAO.java ------------ SQL EXIST: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				int result = (rs != null) ? rs.getInt("exist") : 1;
-				exist = (result >= 1) ? true : false;
+				this.bd.executeQuery(sql);
+				while(this.bd.getResultSet().next()) {
+					int result = this.bd.getResultSet().getInt("exist");
+					exist = (result >= 1) ? true : false;
+				}
+				this.bd.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
