@@ -243,7 +243,7 @@ public class GeneralUtils {
 					            
 							} else if(field.getType().isAssignableFrom(String.class)){
 								
-								String value = rs.getString(name);
+								String value = rs.getString(name).trim();
 					            field.set(obj, value);
 					            
 							} else if (field.getType().isAssignableFrom(Integer.TYPE)){
@@ -266,6 +266,10 @@ public class GeneralUtils {
 								Date value = rs.getDate(name);
 					            field.set(obj, value);
 			
+							} else if (field.getType().isAssignableFrom(List.class)) {
+								String value = rs.getString(name).trim();
+								List<String> list = splitList(value, ",");
+					            field.set(obj, list);
 							}
 						}
 					}

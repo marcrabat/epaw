@@ -93,10 +93,15 @@
 			
 			for (var i = 0; i < user.userConsoles.length; i++) {
 			
+				var userValue = user.userConsoles[i].trim(); 
+				
 				for (var j = 0; j < consolesCheckbox.size(); j++) {
 					
-					if (user.userConsoles[i] == consolesCheckbox[j].value) {
-						consolesCheckbox[j].cheked = true;
+					var checkboxValue = consolesCheckbox[j].value.trim();
+
+					if (userValue == checkboxValue) {
+						consolesCheckbox[j].checked = true;
+						break;
 					}
 					
 				}
@@ -107,10 +112,15 @@
 			
 			for (var i = 0; i < user.gameGenres.length; i++) {
 			
+				var userValue = user.gameGenres[i].trim(); 
+				
 				for (var j = 0; j < gameGenresCheckbox.size(); j++) {
 					
-					if (user.gameGenres[i] == gameGenresCheckbox[j].value) {
-						gameGenresCheckbox[j].cheked = true;
+					var checkboxValue = gameGenresCheckbox[j].value.trim();
+					
+					if (userValue == checkboxValue) {
+						gameGenresCheckbox[j].checked = true;
+						break;
 					}
 					
 				}
@@ -118,24 +128,7 @@
 			}
 			
 		}
-		
-		/*
-		var userConsoles = new Array();
-	    $("input:checkbox[name=consoles]:checked").each(function(){
-	        if ($(this).val() != "") { userConsoles.push($(this).val()); }
-	    });
-		
-		var gameGenres = new Array();
-		$("input:checkbox[name=genres]:checked").each(function(){
-			if ($(this).val() != "") { gameGenres.push($(this).val()); }
-	    });
-		
-		var newPassword = "";
-		if ($("#newPassword").checked == true) {
-			newPassword = getValue("password");
-		}
-
-		*/
+	
 	}
 	
 	function enableInputs() {
@@ -210,7 +203,7 @@
 			
             var json =  {
                             password: newPassword,
-                            description: $('#description').val(),
+                            description: $('#description').val().trim(),
                             userConsoles: userConsoles,
                             gameGenres: gameGenres,                   
                             youtubeChannelID: $('#youtubeChannelID').val(),
@@ -265,8 +258,30 @@
         }
         
         function succesEditProfile(response) {
-        	alert("the edit profile is good!");
-        	changeEditOrView();
+        	
+        	console.log(response);
+        	
+        	var result = response;
+        	
+        	if (result.errors.length > 0) { 
+        		manageErrors(result);
+        		$('#editDanger').html("Check the form errors!");
+        	} else {
+        		alert("the edit profile is good!");
+            	changeEditOrView();
+            	
+            	/*
+            	var userJSON = '${sessionScope.userInfo}';
+        		if (userJSON != "") {
+        			var user = JSON.parse(userJSON);
+        			console.log(user);
+        			fillProfileForm(user);
+        		}
+        		*/
+            	
+        	}
+        	
+        	
         }
         
         function errorEditProfile(e) {
