@@ -17,6 +17,22 @@
 
         /////////////////////// FUNCTIONS ////////////////////////    
         
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
+
         function fillJson() {
 			var userConsoles = new Array();
             $("input:checkbox[name=consoles]:checked").each(function(){
@@ -28,6 +44,7 @@
 				if ($(this).val() != "") { gameGenres.push($(this).val()); }
             });
 			
+            var description = $('#description').val();
             var json =  {
                             name: $('#name').val(),
                             surname: $('#surname').val(),
@@ -35,7 +52,7 @@
                             user: $('#user').val(),
                             password: $('#password').val(),
                             birthDate: $('#birthDate').val(),
-                            description: $('#description').val(),
+                            description: escapeHtml(description),
                             gender: $("input:radio[name=gender]:checked").val(),
                             userConsoles: userConsoles,
                             gameGenres: gameGenres,                   
