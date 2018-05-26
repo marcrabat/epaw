@@ -42,7 +42,7 @@
 	
 	function executeAjax(parametros, url, method, success, error) {
 		$.ajax({
-			data:  {data : parametros },
+			data:  parametros,
 			url:   url,
 			type:  method,
 			success:  function(response) { success(response); },
@@ -131,7 +131,7 @@
 	    });
 		
 		var newPassword = "";
-		if ($("#newPassword").checked() == true) {
+		if ($("#newPassword").checked == true) {
 			newPassword = getValue("password");
 		}
 
@@ -204,7 +204,7 @@
             });
 			
 			var newPassword = "";
-			if ($("#newPassword").checked() == true) {
+			if ($("#newPassword").checked == true) {
 				newPassword = getValue("password");
 			}
 			
@@ -257,14 +257,16 @@
         function editProfile() {
         	
         	var jsonObject = JSON.stringify(fillJson());
+        	var parametros = { data: jsonObject, mode: "editProfile" };
         	
-        	executeAjax(jsonObject, "/Lab_2/checkProfileErrors", "POST", function(){ succesEditProfile(response); }, 
-        										function(){ errorEditProfile(e); });
+        	executeAjax(parametros, "/Lab_2/checkProfileErrors", "POST", 
+        					function(response){ succesEditProfile(response); }, function(e){ errorEditProfile(e); });
         	
         }
         
         function succesEditProfile(response) {
         	alert("the edit profile is good!");
+        	changeEditOrView();
         }
         
         function errorEditProfile(e) {
