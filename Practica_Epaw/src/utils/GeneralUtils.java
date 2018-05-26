@@ -226,7 +226,7 @@ public class GeneralUtils {
 			Class c = Class.forName(obj.getClass().getName());
 			Field[] fields = c.getDeclaredFields();
 			
-			while(rs.next()) {
+			//while(rs.next()) {
 			
 				for(Field field : fields){
 					
@@ -271,10 +271,11 @@ public class GeneralUtils {
 					}
 					
 				}
-			}
+			//}
 			
 			//Method m = c.getMethod(method, null);
 		}catch(Exception e){
+			e.printStackTrace();
 			filled = false;
 		}
 		return filled;

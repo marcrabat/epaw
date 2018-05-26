@@ -11,7 +11,7 @@ import utils.ValidationUtils;
 import database.RelationshipDAO;
 
 public class UserDAO {
-	//public static final String TABLE_NAME = "registeredusers"; // "User";
+	//public static final String TABLE_NAME = "registeredusers"; // "Users";
 	
 	// ---- COLUMS OF TABLE IN DATABSE -----
 	public static final String COLUMN_USER = "user";
@@ -54,16 +54,17 @@ public class UserDAO {
 	
 	public BeanUser returnUser(String fieldName, String value) {
 		BeanUser user = new BeanUser();
-		if (this.existUserSelectingField(fieldName, value) == true) {
-			String sql = "SELECT " + GeneralUtils.concatArrayOfString(this.fields, ",") + " FROM " + this.tableName;
-			sql += " WHERE " + fieldName + " = '" + value + "';";
-			
-			System.out.println("------------ UserDAO.java ------------ SQL SELECT USER: " + sql);
-			
-			ResultSet rs = this.bd.getResultSet(sql);
-			if (rs != null) {
+		if (this.bd != null) {
+			if (this.existUserSelectingField(fieldName, value) == true) {
+				String sql = "SELECT " + GeneralUtils.concatArrayOfString(this.fields, ",") + " FROM " + this.tableName;
+				sql += " WHERE " + fieldName + " = '" + value + "';";
+				
+				System.out.println("------------ UserDAO.java ------------ SQL SELECT USER: " + sql);
+				
+				this.bd.executeQuery(sql);
+				ResultSet rs = this.bd.getResultSet();
 				GeneralUtils.fillFromResultSet(rs, user);
-				System.out.println(user.toString());
+				this.bd.close();
 			}
 		}
 		return user;
@@ -79,17 +80,15 @@ public class UserDAO {
 				
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				if(!rs.next()) {
-					System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
-					int result = (rs != null) ? rs.getInt("exist") : 1;
-					exist = (result >= 1) ? true : false;
-				}
-				rs.close();
+				this.bd.executeQuery(sql);
+				int result = this.bd.getResultSet().getInt("exist");
+				exist = (result >= 1) ? true : false;
+				this.bd.close();
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			exist = true;
+			exist = false;
 		}
 		return exist;
 	}
@@ -103,15 +102,15 @@ public class UserDAO {
 				
 				System.out.println("------------ UserDAO.java ------------ SQL EXIST: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
-				int result = (rs != null) ? rs.getInt("exist") : 1;
+				this.bd.executeQuery(sql);
+				int result = this.bd.getResultSet().getInt("exist");
 				exist = (result >= 1) ? true : false;
+				this.bd.close();
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			exist = true;
+			exist = false;
 		}
 		return exist;
 	}
@@ -271,11 +270,11 @@ public class UserDAO {
 				
 				System.out.println("------------ UserDAO.java ------------ SQL Login: " + sql);
 				
-				ResultSet rs = this.bd.getResultSet(sql);
-				rs.next();
-				System.out.println(String.valueOf(this.bd.getValue(rs, "exist", Integer.class, "getInt")));
-				int result = (rs != null) ? rs.getInt("login") : 1;
+				this.bd.executeQuery(sql);
+				int result = this.bd.getResultSet().getInt("login");
 				login = (result >= 1) ? true : false;
+				this.bd.close();
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
