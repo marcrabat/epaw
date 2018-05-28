@@ -20,11 +20,11 @@
    
     <script type="text/javascript">
         function goToRegister() {
-            window.location.href = "/Lab_2/register.jsp";
+            window.location.href = "/Lab_3/register";
         }
 
         function goToLogin() {
-            window.location.href = "/Lab_2/login.jsp";
+            window.location.href = "/Lab_3/login";
         }
 
     </script>

@@ -85,9 +85,15 @@
 		
 		if (user != null) {
 			
+			var youtubeChannel = "https://www.youtube.com/channel/";
+			var twitchChannel = "https://www.twitch.tv/";
+			
+			var youtubeChannelID = user.youtubeChannelID.substring(youtubeChannel.length, user.youtubeChannelID.length);
+			var twitchChannelID = user.twitchChannelID.substring(twitchChannel.length, user.twitchChannelID.length);
+			
 			getElement("description").value = user.description;
-			getElement("youtubeChannelID").value = user.youtubeChannelID;
-			getElement("twitchChannelID").value = user.twitchChannelID;
+			getElement("youtubeChannelID").value = youtubeChannelID;
+			getElement("twitchChannelID").value = twitchChannelID;
 			
 			var consolesCheckbox = $("input:checkbox[name=consoles]");
 			
@@ -201,13 +207,23 @@
 				newPassword = getValue("password");
 			}
 			
+			var youtubeChannelID = "";
+            if ($("#youtubeChannelID").val() != "") {
+            	youtubeChannelID = "https://www.youtube.com/channel/" + $('#youtubeChannelID').val();
+            }
+            
+            var twitchChannelID = "";
+            if ($("#twitchChannelID").val() != "") {
+            	twitchChannelID = "https://www.twitch.tv/" + $('#twitchChannelID').val();
+            }
+			
             var json =  {
                             password: newPassword,
                             description: $('#description').val().trim(),
                             userConsoles: userConsoles,
                             gameGenres: gameGenres,                   
-                            youtubeChannelID: $('#youtubeChannelID').val(),
-                            twitchChannelID: $('#twitchChannelID').val()                           
+                            youtubeChannelID: youtubeChannelID,
+                            twitchChannelID: twitchChannelID                          
                         };
             
             return  json;
@@ -234,26 +250,18 @@
         	$('#editDanger').html("");
         };
         
-        function hasErrors(){
-        	
-        	clear();
-        	var hasError = false;
-      	
-        	if($('#password').val()!=$('#password_conf').val()) {
-        		hasError = true;
-        		$('#passwordDanger').html("Password is not equal");
-        	}
-        	
-        	return hasError;
-        }
-        
         function editProfile() {
         	
-        	var jsonObject = JSON.stringify(fillJson());
-        	var parametros = { data: jsonObject, mode: "editProfile" };
+        	if (confirm("Are you sure?")) {
         	
-        	executeAjax(parametros, "/Lab_2/checkProfileErrors", "POST", 
-        					function(response){ succesEditProfile(response); }, function(e){ errorEditProfile(e); });
+	        	var jsonObject = JSON.stringify(fillJson());
+	        	var parametros = { data: jsonObject, mode: "editProfile" };
+	        	
+	        	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+	        					function(response){ succesEditProfile(response); }, 
+	        					function(e){ errorEditProfile(e); });
+	        	
+        	}
         	
         }
         
@@ -269,16 +277,6 @@
         	} else {
         		alert("the edit profile is good!");
             	changeEditOrView();
-            	
-            	/*
-            	var userJSON = '${sessionScope.userInfo}';
-        		if (userJSON != "") {
-        			var user = JSON.parse(userJSON);
-        			console.log(user);
-        			fillProfileForm(user);
-        		}
-        		*/
-            	
         	}
         	
         	

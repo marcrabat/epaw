@@ -31,7 +31,11 @@ import utils.Servlet;
 @WebServlet("/checkLoginErrors")
 public class LoginController extends Servlet {
 	
-	public LoginController() {}
+	private UserDAO userDAO;
+	
+	public LoginController() {
+		this.userDAO = new UserDAO();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -67,32 +71,28 @@ public class LoginController extends Servlet {
 		
 	}
 	
-private ErrorMessages loginUser(BeanUser user, HttpServletRequest request) {
-		
-		UserDAO userDAO = new UserDAO();
+	private ErrorMessages loginUser(BeanUser user, HttpServletRequest request) {
+
 		ErrorMessages errors = this.validateUserInformation(user);
 		
 		if (errors.haveErrors() == false) {
 			
-			boolean existUser = userDAO.existUser(user.getUser(), user.getMail());
+			boolean existUser = this.userDAO.existUser(user.getUser(), user.getMail());
 
 			if (existUser == true) {
 				
 				boolean loginUser = false;
 				
 				if (ValidationUtils.isEmpty(user.getUser()) == false) {
-					loginUser = userDAO.loginUser(UserDAO.COLUMN_USER, user.getUser(), user.getPassword());
+					loginUser = this.userDAO.loginUser(this.userDAO.COLUMN_USER, user.getUser(), user.getPassword());
 				} else {
-					loginUser = userDAO.loginUser(UserDAO.COLUMN_MAIL, user.getMail(), user.getPassword());
+					loginUser = this.userDAO.loginUser(UserDAO.COLUMN_MAIL, user.getMail(), user.getPassword());
 				}
 				
 				if (loginUser == false) {
 					errors.addError("userLogin", "User/E-mail Address and/or password are incorrect!!");
 				} else {
-					BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, user.getUser());
-					HttpSession session = request.getSession();
-					session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
-					session.setAttribute("Session_ID", user.getUser());
+					fillSessionUserInformation(user, request);
 				}
 				
 			} else {
@@ -105,33 +105,49 @@ private ErrorMessages loginUser(BeanUser user, HttpServletRequest request) {
 		
 	}
 	
-private ErrorMessages validateUserInformation(BeanUser user) {
-	ErrorMessages error = new ErrorMessages();
-	
-	boolean userKO = ValidationUtils.isNull(user.getUser());
-	boolean mailKO = ValidationUtils.isNull(user.getMail());
-	boolean passwordKO = ValidationUtils.isEmpty(user.getPassword());
-	passwordKO |= !ValidationUtils.isBetweenLength(user.getPassword(), 8, 20);
-	
-	if (userKO == false || mailKO == false) {
-		userKO = ValidationUtils.isEmpty(user.getUser());
-		mailKO = ValidationUtils.isEmpty(user.getMail());
-		userKO |= !ValidationUtils.isBetweenLength(user.getUser(), 4, 30);
-		mailKO |= !ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail());
+	private ErrorMessages validateUserInformation(BeanUser user) {
+		ErrorMessages error = new ErrorMessages();
 		
-		if (userKO == true && mailKO == true) {
-			error.addError("user", "Wrong Username!");
+		boolean userKO = ValidationUtils.isNull(user.getUser());
+		boolean mailKO = ValidationUtils.isNull(user.getMail());
+		boolean passwordKO = ValidationUtils.isEmpty(user.getPassword());
+		passwordKO |= !ValidationUtils.isBetweenLength(user.getPassword(), 8, 20);
+		
+		if (userKO == false || mailKO == false) {
+			userKO = ValidationUtils.isEmpty(user.getUser());
+			mailKO = ValidationUtils.isEmpty(user.getMail());
+			userKO |= !ValidationUtils.isBetweenLength(user.getUser(), 4, 30);
+			mailKO |= !ValidationUtils.isPatternMatches(ValidationUtils.REGEX_EMAIL, user.getMail());
+			
+			if (userKO == true && mailKO == true) {
+				error.addError("user", "Wrong Username!");
+			}
+		}
+		
+		if (passwordKO == true) {
+			String errorMessage = "Check that your password is between 8 ";
+			errorMessage += "and 20 characters-length and is correct.";
+			error.addError("password", errorMessage);
+		}
+	
+		return error;
+	}
+	
+	private void fillSessionUserInformation(BeanUser user, HttpServletRequest request) {
+		BeanUser userBD = null;
+		
+		if (ValidationUtils.isEmpty(user.getUser()) == true) {
+			userBD = this.userDAO.returnUser(this.userDAO.COLUMN_MAIL, user.getMail());
+		} else {
+			userBD = this.userDAO.returnUser(UserDAO.COLUMN_USER, user.getUser());
+		}
+		
+		if (userBD != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
+			session.setAttribute("Session_ID", user.getUser());
 		}
 	}
-	
-	if (passwordKO == true) {
-		String errorMessage = "Check that your password is between 8 ";
-		errorMessage += "and 20 characters-length and is correct.";
-		error.addError("password", errorMessage);
-	}
-
-	return error;
-}
 
 	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
 																		throws ServletException, IOException {

@@ -26,7 +26,7 @@
         });
 
         function redirectToPersonalPage() {
-        	alert("redirect_to_personal_page");
+        	window.location.href = "/Lab_3/profile"
         }
         
         function clear(){
@@ -101,7 +101,7 @@
 			
             if(hasErrors() == false){
             	$.ajax({
-                    url: '/Lab_2/checkLoginErrors',
+                    url: '/Lab_3/checkLoginErrors',
                     type: 'post',
                     dataType: 'text',
                     data: {data: jsonObject },
@@ -139,7 +139,7 @@
         });
         
         function goToRegister() {
-        	window.location.href = "/Lab_2/register.jsp";
+        	window.location.href = "/Lab_3/register";
         }
 
     </script>

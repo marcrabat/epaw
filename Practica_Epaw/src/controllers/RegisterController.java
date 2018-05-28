@@ -49,44 +49,6 @@ public class RegisterController extends Servlet {
 			vistaUser = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
 		}
 
-		//TEST INSERT USER
-		/*
-		BeanUser vistaUser = new BeanUser();
-		//TODO Do the same with view data
-		vistaUser.setUser("UserMarc");
-		vistaUser.setName("Marc");
-		vistaUser.setPassword("emdicmarc");
-		vistaUser.setDescription("aixo es una prova");
-		List<String> genres = new LinkedList<String>();
-		genres.add("genre1");
-		vistaUser.setGameGenres(genres);
-		vistaUser.setGender("Male");
-		vistaUser.setMail("marc@mail.com");
-		vistaUser.setSurname("Test");
-		vistaUser.setTwitchChannelID("https://www.twitch.tv/twitchchan");
-		vistaUser.setYoutubeChannelID("https://www.youtube.com/channel/youtubechan");
-		List<String> consoles = new LinkedList<String>();
-		consoles.add("console1");
-		vistaUser.setUserConsoles(consoles);
-		vistaUser.setBirthDate(1996, 12, 4); //Ull que esta deprecated
-		//userDAO.insertUser(vistaUser);
-		//Many ways of delete, for consistence, preferabily user and mail
-		userDAO.deleteUser("user", "UserMarc");
-		//userDAO.deleteUser("mail", "marc@mail.com");
-		*/
-		//System.out.println(JSONUtils.getJSON(vistaUser));
-		
-		// Fill the bean with the request parmeters
-		/*
-		try {
-			BeanUtils.populate(vistaUser, request.getParameterMap());
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		*/
-
 		if (vistaUser != null) {
 			
 			errors.addError(registerUser(vistaUser, request));
@@ -105,8 +67,8 @@ public class RegisterController extends Servlet {
 	}
 	
 	private ErrorMessages validateUserInformation(BeanUser user) {
-		//String youtubeChannel = "https://www.youtube.com/channel/";
-		//String twitchChannel = "https://www.twitch.tv/";
+		String youtubeChannel = "https://www.youtube.com/channel/";
+		String twitchChannel = "https://www.twitch.tv/";
 		ErrorMessages error = new ErrorMessages();
 		
 		if (ValidationUtils.isEmpty(user.getName()) == true) {
@@ -155,17 +117,16 @@ public class RegisterController extends Servlet {
 			error.addError("description", "This field doesn't accept more than 255 characters!");
 		}
 
-		/*
-		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == true)) {
-			//&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
+		if ((ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false)
+			&& (ValidationUtils.equals(user.getYoutubeChannelID().substring(0, youtubeChannel.length()), youtubeChannel) == false)) {
 			error.addError("youtubeChannelID", "The field is empty.");
 		}
 		
-		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == true)) {
-			//&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
+		if ((ValidationUtils.isEmpty(user.getTwitchChannelID()) == false)
+			&& (ValidationUtils.equals(user.getTwitchChannelID().substring(0, twitchChannel.length()), twitchChannel) == false)) {
 			error.addError("twitchChannelID", "The field is empty.");
 		}
-		*/
+
 		return error;
 	}
 	

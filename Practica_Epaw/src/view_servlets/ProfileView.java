@@ -42,13 +42,16 @@ public class ProfileView extends Servlet {
 							throws ServletException, IOException {
 
 		
+		String contextPath = request.getContextPath();
 		HttpSession session = this.getSession(request);
 		
 		RequestDispatcher dispatcher;
 		
 		if (session.getAttribute("Session_ID") == null) {
 			dispatcher = request.getRequestDispatcher("/main.jsp");
+			//response.sendRedirect(contextPath + "/main");
 		} else {
+			//response.sendRedirect(contextPath + "/profile");
 			dispatcher = request.getRequestDispatcher("/profile.jsp");
 		}
 		

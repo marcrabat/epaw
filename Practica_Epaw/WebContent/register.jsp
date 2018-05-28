@@ -45,6 +45,17 @@
             });
 			
             var description = $('#description').val();
+            
+            var youtubeChannelID = "";
+            if ($("#youtubeChannelID").val() != "") {
+            	youtubeChannelID = "https://www.youtube.com/channel/" + $('#youtubeChannelID').val();
+            }
+            
+            var twitchChannelID = "";
+            if ($("#twitchChannelID").val() != "") {
+            	twitchChannelID = "https://www.twitch.tv/" + $('#twitchChannelID').val();
+            }
+            
             var json =  {
                             name: $('#name').val(),
                             surname: $('#surname').val(),
@@ -56,8 +67,8 @@
                             gender: $("input:radio[name=gender]:checked").val(),
                             userConsoles: userConsoles,
                             gameGenres: gameGenres,                   
-                            youtubeChannelID: $('#youtubeChannelID').val(),
-                            twitchChannelID: $('#twitchChannelID').val()                           
+                            youtubeChannelID: youtubeChannelID,
+                            twitchChannelID: twitchChannelID                           
                         };
             
             return  json;
@@ -141,7 +152,7 @@
 			
             if(hasErrors() == false){
             	$.ajax({
-                    url: '/Lab_2/checkErrors',
+                    url: '/Lab_3/checkErrors',
                     type: 'post',
                     dataType: 'text',
                     data: {data: jsonObject },
@@ -155,7 +166,7 @@
                     		$('#validateDanger').html("Check the form errors!");
                     	}else { 
                     		alert("Your registry has been completed successfully");
-                    		window.location.href = "/Lab_2/main.jsp";
+                    		window.location.href = "/Lab_3/main.jsp";
                     	}
                     	
                     },
