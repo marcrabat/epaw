@@ -1,4 +1,4 @@
-package controllers;
+ package controllers;
 
 import java.io.IOException;
 
@@ -145,7 +145,7 @@ public class LoginController extends Servlet {
 		if (userBD != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
-			session.setAttribute("Session_ID", user.getUser());
+			session.setAttribute("Session_ID", userBD.getUser());
 		}
 	}
 

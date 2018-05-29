@@ -68,6 +68,7 @@
 			var user = JSON.parse(userJSON);
 			console.log(user);
 			fillProfileForm(user);
+			createAdminButtons(user);
 		}
 		
 	});
@@ -136,6 +137,13 @@
 		}
 	
 	}
+	 
+	function createAdminButtons(user) {
+		if (user.isAdmin == true) {
+			var profileMenu = getElement("profileMenu");
+			
+		}
+	};
 	
 	function enableInputs() {
 		$("#description").prop("disabled", false);
@@ -299,9 +307,10 @@
     </div>
  
  	<div id="profileMenu" style="width:="30%; float: left;">
-	 	<button id="cancel" class="btn btn-primary">Delete account</button>
-	 	<button id="cancel" class="btn btn-primary">Delete all tweets</button>
-	 	<button id="cancel" class="btn btn-primary">I don't know que mes posar!</button>
+	 	<button id="buttonDeleteAccount" class="btn btn-primary">Delete account</button>
+	 	<button id="buttonDeleteAllTweets" class="btn btn-primary">Delete all tweets</button>
+	 	<button id="buttonDeleteAccount" class="btn btn-primary">View followers</button>
+	 	<button id="buttonDeleteAccount" class="btn btn-primary">View followings</button>
  	</div>
  	
  	<div id="profileContent" class="content" style="width:="70%; float: right;">

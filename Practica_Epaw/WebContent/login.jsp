@@ -26,7 +26,7 @@
         });
 
         function redirectToPersonalPage() {
-        	window.location.href = "/Lab_3/profile"
+        	window.location.href = "/Lab_3/feed"
         }
         
         function clear(){
