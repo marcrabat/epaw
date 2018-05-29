@@ -40,6 +40,14 @@
 		return document.getElementById(id);
 	}
 	
+	function createElement(type, id) {
+		var newElement = document.createElement(type);
+		if (id != "") {
+			newElement.id = id;
+		}
+		return newElement;
+	}
+	
 	function executeAjax(parametros, url, method, success, error) {
 		$.ajax({
 			data:  parametros,
@@ -141,7 +149,16 @@
 	function createAdminButtons(user) {
 		if (user.isAdmin == true) {
 			var profileMenu = getElement("profileMenu");
+			var buttonDeleteUserAccount = createElement("button", "buttonDeleteUserAccount");
+			buttonDeleteUserAccount.innerText = "Delete user account";
+			buttonDeleteUserAccount.className = "btn btn-primary";
+			profileMenu.appendChild(buttonDeleteUserAccount);
 			
+			/*
+			var buttonDeleteUserAccount = createElement("button", "buttonDeleteUserAccount");
+			buttonDeleteUserAccount.innerText = "Delete user account";
+			profileMenu.appendChild(buttonDeleteUserAccount);
+			*/
 		}
 	};
 	
@@ -200,99 +217,99 @@
 	}
 	
 	function fillJson() {
-			var userConsoles = new Array();
-            $("input:checkbox[name=consoles]:checked").each(function(){
-                if ($(this).val() != "") { userConsoles.push($(this).val()); }
-            });
-			
-			var gameGenres = new Array();
-			$("input:checkbox[name=genres]:checked").each(function(){
-				if ($(this).val() != "") { gameGenres.push($(this).val()); }
-            });
-			
-			var newPassword = "";
-			if ($("#newPassword").checked == true) {
-				newPassword = getValue("password");
-			}
-			
-			var youtubeChannelID = "";
-            if ($("#youtubeChannelID").val() != "") {
-            	youtubeChannelID = "https://www.youtube.com/channel/" + $('#youtubeChannelID').val();
-            }
-            
-            var twitchChannelID = "";
-            if ($("#twitchChannelID").val() != "") {
-            	twitchChannelID = "https://www.twitch.tv/" + $('#twitchChannelID').val();
-            }
-			
-            var json =  {
-                            password: newPassword,
-                            description: $('#description').val().trim(),
-                            userConsoles: userConsoles,
-                            gameGenres: gameGenres,                   
-                            youtubeChannelID: youtubeChannelID,
-                            twitchChannelID: twitchChannelID                          
-                        };
-            
-            return  json;
+		var userConsoles = new Array();
+		         $("input:checkbox[name=consoles]:checked").each(function(){
+		             if ($(this).val() != "") { userConsoles.push($(this).val()); }
+		         });
+		
+		var gameGenres = new Array();
+		$("input:checkbox[name=genres]:checked").each(function(){
+			if ($(this).val() != "") { gameGenres.push($(this).val()); }
+		         });
+		
+		var newPassword = "";
+		if ($("#newPassword").checked == true) {
+			newPassword = getValue("password");
+		}
+		
+		var youtubeChannelID = "";
+        if ($("#youtubeChannelID").val() != "") {
+        	youtubeChannelID = "https://www.youtube.com/channel/" + $('#youtubeChannelID').val();
         }
+        
+        var twitchChannelID = "";
+        if ($("#twitchChannelID").val() != "") {
+        	twitchChannelID = "https://www.twitch.tv/" + $('#twitchChannelID').val();
+        }
+
+        var json =  {
+                        password: newPassword,
+                        description: $('#description').val().trim(),
+                        userConsoles: userConsoles,
+                        gameGenres: gameGenres,                   
+                        youtubeChannelID: youtubeChannelID,
+                        twitchChannelID: twitchChannelID                          
+                    };
+        
+        return  json;
+    }
  
-        function manageErrors(data) {
-
-            if(typeof data.errors == "undefined") return;        
-            
-            for (var i = 0; i < data.errors.length; i++) {
-            	var error = data.errors[i];
-            	if($('#'+ error.name + 'Danger').length){
-            		$('#'+ error.name + 'Danger').html(error.error);
-            	} else{
-            		$('#serverSideDanger').append(error.error + "\n");
-            	}
-            }
-        }    
-
-        function clear(){
-        	$('#descriptionDanger').html("");
-        	$('#passwordDanger').html("");
-        	$('#serverSideDanger').html("");
-        	$('#editDanger').html("");
-        };
-        
-        function editProfile() {
-        	
-        	if (confirm("Are you sure?")) {
-        	
-	        	var jsonObject = JSON.stringify(fillJson());
-	        	var parametros = { data: jsonObject, mode: "editProfile" };
-	        	
-	        	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
-	        					function(response){ succesEditProfile(response); }, 
-	        					function(e){ errorEditProfile(e); });
-	        	
-        	}
-        	
-        }
-        
-        function succesEditProfile(response) {
-        	
-        	console.log(response);
-        	
-        	var result = response;
-        	
-        	if (result.errors.length > 0) { 
-        		manageErrors(result);
-        		$('#editDanger').html("Check the form errors!");
-        	} else {
-        		alert("the edit profile is good!");
-            	changeEditOrView();
-        	}
-        	
-        	
-        }
-        
-        function errorEditProfile(e) {
-        	alert("Error.....");
-        }
+	function manageErrors(data) {
+	
+	    if(typeof data.errors == "undefined") return;        
+	    
+	    for (var i = 0; i < data.errors.length; i++) {
+	    	var error = data.errors[i];
+	    	if($('#'+ error.name + 'Danger').length){
+	    		$('#'+ error.name + 'Danger').html(error.error);
+	    	} else{
+	    		$('#serverSideDanger').append(error.error + "\n");
+	    	}
+	    }
+	}    
+	
+	function clear(){
+		$('#descriptionDanger').html("");
+		$('#passwordDanger').html("");
+		$('#serverSideDanger').html("");
+		$('#editDanger').html("");
+	};
+	
+	function editProfile() {
+		
+		if (confirm("Are you sure?")) {
+		
+	 	var jsonObject = JSON.stringify(fillJson());
+	 	var parametros = { data: jsonObject, mode: "editProfile" };
+	 	
+	 	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+	 					function(response){ succesEditProfile(response); }, 
+	 					function(e){ errorEditProfile(e); });
+	 	
+		}
+		
+	}
+	
+	function succesEditProfile(response) {
+		
+		console.log(response);
+		
+		var result = response;
+		
+		if (result.errors.length > 0) { 
+			manageErrors(result);
+			$('#editDanger').html("Check the form errors!");
+		} else {
+			alert("the edit profile is good!");
+	    	changeEditOrView();
+		}
+		
+		
+	}
+	
+	function errorEditProfile(e) {
+		alert("Error.....");
+	}
         
 </script>
 <div id="profilePage" style="witdh: 80%; margin-left:2%; margin-right:2%;">
