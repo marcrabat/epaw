@@ -26,6 +26,7 @@ public class UserDAO {
 	public static final String COLUMN_TWITCH_CHANNEL_ID = "twitchChannelID";
 	public static final String COLUMN_GAME_GENRES = "gameGenres";
 	public static final String COLUMN_USER_CONSOLES = "userConsoles";
+	public static final String COLUMN_IS_ADMIN = "isAdmin";
 	// ----- END COLUMS OF TABLE IN DATABASE ----
 	
 	private String tableName;
@@ -33,7 +34,7 @@ public class UserDAO {
 	private String[] fields = { COLUMN_USER, COLUMN_MAIL, COLUMN_NAME, COLUMN_SURNAME,
 								COLUMN_BIRTH_DATE, COLUMN_PASSWORD, COLUMN_DESCRIPTION, COLUMN_GENDER, 
 								COLUMN_YOUTUBE_CHANNEL_ID, COLUMN_TWITCH_CHANNEL_ID,
-								COLUMN_GAME_GENRES, COLUMN_USER_CONSOLES };
+								COLUMN_GAME_GENRES, COLUMN_USER_CONSOLES, COLUMN_IS_ADMIN };
 	
 	//private Statement statement;
 

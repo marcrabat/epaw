@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import database.TweetDAO;
 import database.UserDAO;
 import models.BeanUser;
 import utils.BD;
@@ -57,10 +58,10 @@ public class ProfileController extends Servlet {
 					errors.addError(this.editProfile(request));
 				break;
 				case "deleteAccount":
-					//errors.addError(this.deleteAccount(request));
+					errors.addError(this.deleteAccount(request));
 					break;
 				case "deleteAllTweets":
-					//errors.addError(this.deleteAllTweets(request));
+					errors.addError(this.deleteAllTweets(request));
 					break;
 			
 			}
@@ -84,17 +85,13 @@ public class ProfileController extends Servlet {
 			
 			errors.addError(editUser(vistaUser, request));
 			
-			System.out.println(errors.getJSON());
-			
-			//Put the bean into the request as an attribute
-			//request.setAttribute("user", vistaUser);
-			//request.setAttribute("resultEdit", editUser);
+			System.out.println("Errores al editar: " + errors.getJSON());
 
 		}
 		return errors;
 	}
 	
-private ErrorMessages editUser(BeanUser editInformation, HttpServletRequest request) {
+	private ErrorMessages editUser(BeanUser editInformation, HttpServletRequest request) {
 		
 		UserDAO userDAO = new UserDAO();
 		ErrorMessages errors = this.validateEditInformation(editInformation);
@@ -154,6 +151,73 @@ private ErrorMessages editUser(BeanUser editInformation, HttpServletRequest requ
 		}
 
 		return error;
+	}
+	
+	private ErrorMessages deleteAccount(HttpServletRequest request) {
+		ErrorMessages errors = new ErrorMessages();
+		UserDAO userDAO = new UserDAO();
+		BeanUser userToDelete = null;
+		String jsonData = request.getParameter("data");
+		
+		if (ValidationUtils.isEmpty(jsonData) == false) {
+			userToDelete = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
+		}
+		
+		boolean userDeleted = false;
+		
+		if (userToDelete != null) {
+			
+			if (ValidationUtils.isEmpty(userToDelete.getMail()) == false) {
+				userDeleted = userDAO.deleteUser(UserDAO.COLUMN_MAIL, userToDelete.getMail());
+			} else if (ValidationUtils.isEmpty(userToDelete.getUser()) == false) {
+				userDeleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete.getUser());
+			}
+			
+			if (userDeleted == false) {
+				errors.addError("delete", "Account can not be deleted, sorry");
+			} else {
+				HttpSession session = this.getSession(request);
+				session.invalidate();
+			}
+
+		}
+		
+		return errors;
+	}
+	
+	private ErrorMessages deleteAllTweets(HttpServletRequest request) {
+		ErrorMessages errors = new ErrorMessages();
+		TweetDAO tweetDAO = new TweetDAO();
+		BeanUser tweetsAuthor = null;
+		String jsonData = request.getParameter("data");
+		
+		if (ValidationUtils.isEmpty(jsonData) == false) {
+			tweetsAuthor = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
+		}
+		
+		boolean tweetsDeleted = false;
+		
+		if (tweetsAuthor != null) {
+			
+			String author = tweetsAuthor.getUser();
+			
+			int numberOfTweets = tweetDAO.countAuthorTweets(author);
+			
+			if (numberOfTweets > 0) {
+			
+				tweetsDeleted = tweetDAO.deleteAllTweets(author);
+				
+				if (tweetsDeleted == false) {
+					errors.addError("delete", "Tweets can not be deleted, sorry");
+				}
+				
+			} else {
+				errors.addError("delete", "You not have tweets to delete");
+			}
+
+		}
+		
+		return errors;
 	}
 	
 	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)

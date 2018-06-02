@@ -31,10 +31,12 @@ public class BeanUser implements Serializable {
 	private List<String> gameGenres; 
 	private String youtubeChannelID = "";
 	private String twitchChannelID = "";
+	private boolean isAdmin;
 
 	public BeanUser() {
 		userConsoles = new LinkedList<String>();
 		gameGenres = new LinkedList<String>();
+		this.isAdmin = false;
 	}
 
 	/* Getters */
@@ -85,6 +87,10 @@ public class BeanUser implements Serializable {
 
 	public String getTwitchChannelID() {
 		return twitchChannelID;
+	}
+	
+	public boolean getIsAdmin() {
+		return this.isAdmin;
 	}
 
 	/* Setters */
@@ -161,6 +167,10 @@ public class BeanUser implements Serializable {
 	public void setTwitchChannelID(String twitchChannelID) {
 		System.out.println("Filling twitchChannelID field");
 		this.twitchChannelID = twitchChannelID;
+	}
+	
+	public void setIsAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	public String toString() {

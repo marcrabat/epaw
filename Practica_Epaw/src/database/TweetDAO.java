@@ -109,7 +109,7 @@ public class TweetDAO {
 		boolean delete = false;
 		if (this.bd != null) {
 
-			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + "';";
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + ";";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL DELETE: " + sql);
 
@@ -119,7 +119,21 @@ public class TweetDAO {
 		return delete;
 	}
 	
-	public boolean updateUserAllInfo(BeanTweet tweet) {
+	public boolean deleteAllTweets(String author) {
+		boolean delete = false;
+		if (this.bd != null) {
+
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_AUTHOR + " = '" + author + "';";
+			
+			System.out.println("------------ TweetDAO.java ------------ SQL DELETE ALL TWEETS: " + sql);
+
+			int result = this.bd.executeSQL(sql);
+			delete = (result == 1) ? true : false;
+		}
+		return delete;
+	}
+	
+	public boolean updateTweetAllInfo(BeanTweet tweet) {
 		boolean update = false;
 		if (this.bd != null) {
 			boolean allValuesNull = true;
@@ -184,5 +198,29 @@ public class TweetDAO {
 		}
 		return update;
 	}
+	
+	public int countAuthorTweets(String author) {
+		int numberOfTweets = 0;
+		try {
+			if (this.bd != null) {
+				String sql = "SELECT COUNT(*) AS numberOfTweets FROM " + this.tableName;
+				sql += " WHERE " + COLUMN_AUTHOR + " = '" + author + "';";
+				
+				System.out.println("------------ TweetDAO.java ------------ SQL EXIST: " + sql);
+				
+				this.bd.executeQuery(sql);
+				while(this.bd.getResultSet().next()) {
+					numberOfTweets = this.bd.getResultSet().getInt("numberOfTweets");
+				}
+				this.bd.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			numberOfTweets = 0;
+		}
+		return numberOfTweets;
+	}
+	
+	
 	
 }

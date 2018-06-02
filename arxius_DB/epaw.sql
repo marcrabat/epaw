@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `epawTwitter`.`Users` (
   `gameGenres` VARCHAR(255) NULL,
   `userConsoles` VARCHAR(255) NULL,
   `mail` VARCHAR(80) NOT NULL,
-  `isAdministrator` BIT DEFAULT 0 NOT NULL,
+  `isAdmin` BIT DEFAULT 0 NOT NULL,
   PRIMARY KEY (`user`, `mail`)
 )
 ENGINE = InnoDB;

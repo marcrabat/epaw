@@ -33,7 +33,9 @@
     
 </style>
 <script type="text/javascript">
-	
+
+	var sessionUser = null;
+
 	/** Funcions que estan en utils, pero no he sapigut fer el import del javascript **/
 	
 	function getElement(id) {
@@ -63,20 +65,27 @@
 	
 	$(document).ready(function() {
 		
-		clear();
+		var sessionId = "${sessionScope.Session_ID}";
+		if (sessionId == "") {
+			window.location.href = "/Lab_3/main";
+		} else {
 		
-		changeVisibility("gamerInfo");
-		changeVisibility("socialNetwork");
-		changeVisibility("profilePassword");
+			clear();
+			
+			changeVisibility("gamerInfo");
+			changeVisibility("socialNetwork");
+			changeVisibility("profilePassword");
+	
+			disableInputs();
+			//var userJSON = '{"userConsoles": []}';
+			var userJSON = '${sessionScope.userInfo}';
+			if (userJSON != "") {
+				sessionUser = JSON.parse(userJSON);
+				console.log(sessionUser);
+				fillProfileForm(sessionUser);
+				createAdminButtons(sessionUser);
+			}
 
-		disableInputs();
-		//var userJSON = '{"userConsoles": []}';
-		var userJSON = '${sessionScope.userInfo}';
-		if (userJSON != "") {
-			var user = JSON.parse(userJSON);
-			console.log(user);
-			fillProfileForm(user);
-			createAdminButtons(user);
 		}
 		
 	});
@@ -279,12 +288,12 @@
 		
 		if (confirm("Are you sure?")) {
 		
-	 	var jsonObject = JSON.stringify(fillJson());
-	 	var parametros = { data: jsonObject, mode: "editProfile" };
-	 	
-	 	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
-	 					function(response){ succesEditProfile(response); }, 
-	 					function(e){ errorEditProfile(e); });
+		 	var jsonObject = JSON.stringify(fillJson());
+		 	var parametros = { data: jsonObject, mode: "editProfile" };
+		 	
+		 	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+		 					function(response){ succesEditProfile(response); }, 
+		 					function(e){ errorEditProfile(e); });
 	 	
 		}
 		
@@ -310,6 +319,89 @@
 	function errorEditProfile(e) {
 		alert("Error.....");
 	}
+	
+	function deleteSessionAccount() {
+		
+		if (sessionUser != null) {
+		
+			if (confirm("Are you sure?")) {
+	
+			 	var jsonObject = JSON.stringify(sessionUser);
+			 	var parametros = { data: jsonObject, mode: "deleteAccount" };
+			 	
+			 	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+			 					function(response){ succesDeleteSessionAccount(response); }, 
+			 					function(e){ errorDeleteSessionAccount(e); });
+		 	
+			}
+			
+		}
+		
+	}
+	
+	function succesDeleteSessionAccount(response) {
+		
+		console.log(response);
+		
+		var result = response;
+		
+		if (result.errors.length > 0) { 
+			manageErrors(result);
+		} else {
+			alert("Your account deleted succesfully !!");
+	    	window.location.href = "/Lab_3/main";
+		}
+
+	}
+	
+	function errorDeleteSessionAccount(e) {
+		alert("Error trying to delete the account");
+	}
+	
+	function deleteAllTweets() {
+		
+		if (sessionUser != null) {
+		
+			if (confirm("Are you sure?")) {
+	
+			 	var jsonObject = JSON.stringify(sessionUser);
+			 	var parametros = { data: jsonObject, mode: "deleteAllTweets" };
+			 	
+			 	executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+			 					function(response){ succesDeleteAllTweets(response); }, 
+			 					function(e){ errorDeleteAllTweets(e); });
+		 	
+			}
+			
+		}
+		
+	}
+	
+	function succesDeleteAllTweets(response) {
+		
+		console.log(response);
+		
+		var result = response;
+		
+		if (result.errors.length > 0) { 
+			manageErrors(result);
+		} else {
+			alert("All your tweets are deleted !!");
+		}
+
+	}
+	
+	function errorDeleteAllTweets(e) {
+		alert("Error trying to delete the tweets");
+	}
+	
+	function viewFollowers() {
+		alert("not implemented yet");
+	}
+	
+	function viewFollowings() {
+		alert("not implemented yet");
+	}
         
 </script>
 <div id="profilePage" style="witdh: 80%; margin-left:2%; margin-right:2%;">
@@ -324,10 +416,10 @@
     </div>
  
  	<div id="profileMenu" style="width:="30%; float: left;">
-	 	<button id="buttonDeleteAccount" class="btn btn-primary">Delete account</button>
-	 	<button id="buttonDeleteAllTweets" class="btn btn-primary">Delete all tweets</button>
-	 	<button id="buttonDeleteAccount" class="btn btn-primary">View followers</button>
-	 	<button id="buttonDeleteAccount" class="btn btn-primary">View followings</button>
+	 	<button id="buttonDeleteAccount" class="btn btn-primary" onClick="deleteSessionAccount();">Delete account</button>
+	 	<button id="buttonDeleteAllTweets" class="btn btn-primary" onClick="deleteAllTweets();">Delete all tweets</button>
+	 	<button id="buttonViewFollowers" class="btn btn-primary" onClick="viewFollowers();">View followers</button>
+	 	<button id="buttonViewFollowings" class="btn btn-primary" onClick="viewFollowings();">View followings</button>
  	</div>
  	
  	<div id="profileContent" class="content" style="width:="70%; float: right;">
