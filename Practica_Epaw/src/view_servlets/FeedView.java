@@ -14,30 +14,28 @@ import utils.Servlet;
 @WebServlet("/feed")
 public class FeedView extends Servlet {
 	private static final long serialVersionUID = 1L;
-       
-    public FeedView() {}
-    
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public FeedView() {
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		this.doPost(request, response);
 	}
-	
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = this.getSession(request);			
-		RequestDispatcher dispatcher;
-		
-		
-		if (session.getAttribute("Session_ID") == null) {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		HttpSession session = this.getSession(request);
+		RequestDispatcher dispatcher = null;
+		String session_ID = (String) session.getAttribute("Session_ID");
+		if (session_ID == null) {
+			System.out.println("No session available, returning to main page");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
-			
 		} else {
 			System.out.println("Enter with session: " + session.getAttribute("Session_ID"));
 			dispatcher = request.getRequestDispatcher("/feed.jsp");
 		}
-		
-		
 		dispatcher.forward(request, response);
 	}
 

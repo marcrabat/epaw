@@ -9,57 +9,31 @@
     <script type="text/javascript">
 
         /////////////////////// FUNCTIONS ////////////////////////    
-        
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
-        	if (sessionId != "") {
+        	if (sessionId == "") {
         		redirectToMainPage();
-        	}else{
-        			
+        	} else{
+				TweetsRequest();
+        		
         	}
-        	
         });
         
         function redirectToMainPage(){
         	window.location.href = "/Lab_3/main";
         }
-
-          
-        function jsonRequest(e) {
-        	var jsonObject = JSON.stringify(fillJson());
-  	
-            e.preventDefault();
-			
-            if(hasErrors() == false){
-            	$.ajax({
-                    url: '/Lab_3/checkLoginErrors',
-                    type: 'post',
-                    dataType: 'text',
-                    data: {data: jsonObject },
-                    success: function (data) {
-                    	console.log(data);
-                    	
-                    	var result = JSON.parse(data);
-                    	
-                    	if (result.errors.length > 0) { 
-                    		manageErrors(result);
-                    		$('#validateDanger').html("Check the form errors!");
-                    	} else {
-                    		redirectToPersonalPage();
-                    	}
-                    	
-                    },
-                    error: function(xhr,status,error) { alert("Error: " + error);} });
-            } else{
-            	$('#validateDanger').html("Check the form errors!");
-            }
-            
-            console.log(jsonObject);
+        
+        function TweetsRequest(){
+            $.ajax({
+                type: 'post', //rest Type
+                dataType: 'text', //mispelled
+                url: "/Lab_3/checkFeedErrors",
+                data: "",
+                success: function (data) {
+                    console.log(data);                
+                },
+                error: function(xhr,status,error) { alert("Error: " + error);} });
         }
-
-        $(window).load(function() {        
-
-        });
         
 
     </script>
