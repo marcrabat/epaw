@@ -20,7 +20,7 @@
         
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
-        	if (sessionId == NULL) {
+        	if (sessionId == null) {
         		redirectToMain();
         	} else{
         		jsonRequest();
@@ -31,9 +31,7 @@
         	window.location.href = "/Lab_3/main"
         }        
         
-        function jsonRequest(e) {
-
-            e.preventDefault();
+        function jsonRequest() {
 
             var userJSON = '${sessionScope.userInfo}';
             if (userJSON != "") {
@@ -51,14 +49,17 @@
 							
 							var result = JSON.parse(data);
 							
-				            if(typeof data.errors == "undefined") return;        
+				            /*
+				            if(typeof result.errors == "undefined") return;        
 				            
-				            for (var i = 0; i < data.errors.length; i++) {
-				            	var error = data.errors[i];
+				            for (var i = 0; i < result.errors.length; i++) {
+				            	var error = result.errors[i];
 				            	if(error.name!="followers") continue;			            	
 				            	$('#followers').append(error.error + "\n");
 				            }
-	                   	
+				            */
+				            
+							$('#followers').append(result + "\n");
 	                   },
 	                   error: function(xhr,status,error) { alert("Error: " + error);} });
 	         	

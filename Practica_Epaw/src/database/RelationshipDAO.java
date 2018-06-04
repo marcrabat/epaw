@@ -95,7 +95,7 @@ public class RelationshipDAO {
 		if (this.bd != null) {
 			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_USERA + " = '" + user + "';";
 			
-			System.out.println("------------ RelationshipDAO.java ------------ SQL DELETE: " + sql);
+			System.out.println("------------ RelationshipDAO.java ------------ SQL DELETE USER RELATIONSHIPS: " + sql);
 
 			int result = this.bd.executeSQL(sql);
 			delete = (result == 1) ? true : false;
@@ -116,7 +116,7 @@ public class RelationshipDAO {
 			ResultSet rs = this.bd.getResultSet();
 			try {
 				while(rs.next()) {
-					String follower = rs.getString(COLUMN_USERB);
+					String follower = rs.getString(COLUMN_USERA);
 					followers.add(follower);
 				}
 			} catch (SQLException e) {

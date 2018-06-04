@@ -33,7 +33,8 @@ public class FollowersController extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
 		
-		ErrorMessages errors = new ErrorMessages();
+		//ErrorMessages errors = new ErrorMessages();
+		List<String> list = null;
 		
 		String mode = request.getParameter("mode");
 		
@@ -44,29 +45,30 @@ public class FollowersController extends Servlet {
 			switch(mode) {
 			
 				case "followers":
-					errors.addError(this.followersList(request));
-				break;
+					//errors.addError(this.followersList(request));
+					list = this.followersList(request);
+					break;
 				case "following":
-					errors.addError(this.followingList(request));
+					//errors.addError(this.followingList(request));
 					break;			
 			}
 			
 		}
 
-		sendResponse(request, response, errors);
+		sendResponse(request, response, list);
 	}
 
 	
-	private ErrorMessages followersList(HttpServletRequest request) {
-		
+	private List<String> followersList(HttpServletRequest request) {
+		List<String> followers = null;
 		ErrorMessages errors = new ErrorMessages();
 		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			List<String> followers = relationshipDAO.getFollowers(jsonData);
+			followers = relationshipDAO.getFollowers(jsonData);
 			errors.addError("followers", followers.toString());
 		}
-		return errors;
+		return followers;
 	}
 		
 	private ErrorMessages followingList(HttpServletRequest request) {
@@ -82,10 +84,10 @@ public class FollowersController extends Servlet {
 	}		
 	
 	
-	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors) throws ServletException, IOException {
+	private void sendResponse(HttpServletRequest request, HttpServletResponse response, List<String> list) throws ServletException, IOException {
 		this.setResponseJSONHeader(response);
-		request.setAttribute("errors", errors.getJSON());
-		response.getWriter().print(errors.getJSON());
+		request.setAttribute("errors", JSONUtils.getJSON(list));
+		response.getWriter().print(JSONUtils.getJSON(list));
 	}
 
 }
