@@ -89,24 +89,24 @@ public class ValidationUtils {
 	}
 	
 	public static <T> boolean haveMaxLength(T obj, int length) {
-		boolean haveMinimum = false;
+		boolean haveMax = false;
 		
 		try {
 			if (obj instanceof String) {
-				if (((String) obj).length() >= length) { haveMinimum = true; }
+				if (((String) obj).length() >= length) { haveMax = true; }
 			} else if (obj instanceof List) {
-				if (((List) obj).size() >= length) { haveMinimum = true; }
+				if (((List) obj).size() >= length) { haveMax = true; }
 			} else if (obj instanceof Map) {
-				if (((Map) obj).size() >= length) { haveMinimum = true; }
+				if (((Map) obj).size() >= length) { haveMax = true; }
 			} else if (obj instanceof Number) {
-				if (((Number) obj).floatValue() >= length) { haveMinimum = true; }
+				if (((Number) obj).floatValue() >= length) { haveMax = true; }
 			}
 		} catch (Exception e) {
-			haveMinimum = false;
+			haveMax = false;
 			e.printStackTrace();
 		}
 		
-		return haveMinimum;
+		return haveMax;
 	}
 	
 	public static <T> boolean isBetweenLength(T obj, int lengthA, int lengthB) {

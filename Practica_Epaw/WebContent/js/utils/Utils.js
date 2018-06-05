@@ -19,6 +19,14 @@ function loadScript(url, callback) {
     head.appendChild(script);
 }
 
+function createElement(type, id) {
+	var newElement = document.createElement(type);
+	if (id != "") {
+		newElement.id = id;
+	}
+	return newElement;
+}
+
 function getElement(id) {
 	return document.getElementById(id);
 }

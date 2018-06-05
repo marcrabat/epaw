@@ -35,33 +35,6 @@
 <script type="text/javascript">
 
 	var sessionUser = null;
-
-	/** Funcions que estan en utils, pero no he sapigut fer el import del javascript **/
-	
-	function getElement(id) {
-		return document.getElementById(id);
-	}
-	
-	function createElement(type, id) {
-		var newElement = document.createElement(type);
-		if (id != "") {
-			newElement.id = id;
-		}
-		return newElement;
-	}
-	
-	function executeAjax(parametros, url, method, success, error) {
-		$.ajax({
-			data:  parametros,
-			url:   url,
-			type:  method,
-			success:  function(response) { success(response); },
-			error: function(e) { error(e); }
-		});
-	}
-	
-	/* ****************** FIN *********************** */
-
 	
 	$(document).ready(function() {
 		
