@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -40,11 +41,12 @@ public class FeedController extends Servlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<BeanTweet> tweets = null;
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
 		ErrorMessages errors = new ErrorMessages();
 		RequestDispatcher dispatcher = null;
 		HttpSession session = this.getSession(request);
 		String session_ID = (String) session.getAttribute("Session_ID");
+		String userToLookFeed = (String) session.getAttribute("userToLookFeed");
 
 		if (session_ID == null) {
 			errors.addError("requestError", "Your session is not valid");
@@ -52,17 +54,35 @@ public class FeedController extends Servlet {
 		} else if(session_ID == "anonymous") {
 			System.out.println("TODO: Gestionar acces com a anonymous");
 		} else {
+			if(ValidationUtils.isEmpty(userToLookFeed) == false){
+				//vaig a globalTimeLine
+			}
 			System.out.println("Generar response per usuari loggejat");
+			BeanTweet anonymous = tweetDAO.returnTweet(123);
+			tweets.add(anonymous);
 		}
-
-		sendResponse(request, response, errors);
+		
+		if(errors.haveErrors() == false){
+			sendResponseWithNoErrors(request, response, tweets);
+		} else{
+			sendResponseWithErrors(request, response, errors);
+		}
+		
 	}
 
-	private void sendResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
+	private void sendResponseWithErrors(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
 			throws ServletException, IOException {
 		this.setResponseJSONHeader(response);
 		request.setAttribute("errors", errors.getJSON());
 		response.getWriter().print(errors.getJSON());
 	}
+	
+	private void sendResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response, List<BeanTweet> tweets)
+			throws ServletException, IOException {
+		this.setResponseJSONHeader(response);
+		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
+		response.getWriter().print(JSONUtils.getJSON(tweets));
+	}
+
 
 }

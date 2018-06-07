@@ -54,7 +54,9 @@ public class TweetDAO {
 			
 			this.bd.executeQuery(sql);
 			ResultSet rs = this.bd.getResultSet();
+			tweet = new BeanTweet();
 			GeneralUtils.fillFromResultSet(rs, tweet);
+			
 			
 			this.bd.close();
 		}

@@ -14,8 +14,7 @@
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else{
-				TweetsRequest();
-        		
+				TweetsRequest("anonymous");
         	}
         });
         
@@ -23,14 +22,18 @@
         	window.location.href = "/Lab_3/main";
         }
         
-        function TweetsRequest(){
+        function TweetsRequest(username){
             $.ajax({
                 type: 'post', //rest Type
                 dataType: 'text', //mispelled
                 url: "/Lab_3/checkFeedErrors",
-                data: "",
+                data: username,
                 success: function (data) {
-                    console.log(data);                
+                    console.log(data);
+                    var tweets = JSON.parse(data);
+                    console.log(tweets[0]);
+                    var HTML = "<div id='tweet_' "+ tweets[0].tweetID + "><span>"+ tweets[0].message + "</span></div>";
+                    document.getElementById("content").innerHTML = HTML;
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
         }
@@ -45,6 +48,9 @@
 <body>
 <h1 style='center'> Feed</h1>
 <h2> Your feed</h2>
+<div id="content">
+
+</div>
 
 </body>
 </html>

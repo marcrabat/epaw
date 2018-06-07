@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import utils.Servlet;
+import utils.ValidationUtils;
 
 @WebServlet("/feed")
 public class FeedView extends Servlet {
@@ -34,6 +35,10 @@ public class FeedView extends Servlet {
 			dispatcher = request.getRequestDispatcher("/main.jsp");
 		} else {
 			System.out.println("Enter with session: " + session.getAttribute("Session_ID"));
+			String userToLookFeed = (String) request.getParameter("userToLookFeed");
+			if(ValidationUtils.isEmpty(userToLookFeed) == false) {
+				session.setAttribute("userTolookFeed", userToLookFeed);
+			}
 			dispatcher = request.getRequestDispatcher("/feed.jsp");
 		}
 		dispatcher.forward(request, response);
