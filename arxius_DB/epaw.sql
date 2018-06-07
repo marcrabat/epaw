@@ -106,3 +106,9 @@ INSERT INTO users (user, name, surname, birthDate, password, gender, mail)
 
 INSERT INTO relationship (userA, userB) VALUES ('test', 'test2');
 INSERT INTO relationship (userA, userB) VALUES ('test2', 'test');
+
+INSERT INTO Tweets (author, message, publishDate) VALUES ('test', 'Test of tweet', sysdate());
+INSERT INTO Tweets (author, message, publishDate) VALUES ('test', 'Genaral Utils is working?', sysdate());
+INSERT INTO Tweets (author, message, publishDate) VALUES ('test', 'It looks like yes', sysdate());
+
+INSERT INTO Tweets (author, message, publishDate) VALUES ('test2', 'it still working?', sysdate());
