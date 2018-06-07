@@ -14,7 +14,7 @@
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else{
-				TweetsRequest("anonymous");
+				TweetsRequest("${sessionScope.userToLookFeed}");
         	}
         });
         
@@ -31,12 +31,13 @@
                 success: function (data) {
                     console.log(data);
                     var tweets = JSON.parse(data);
-                    console.log(tweets[0]);
+                    console.log(tweets);
                     var HTML = "<div id='tweet_' "+ tweets[0].tweetID + "><span>"+ tweets[0].message + "</span></div>";
                     document.getElementById("content").innerHTML = HTML;
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
         }
+        
         
 
     </script>

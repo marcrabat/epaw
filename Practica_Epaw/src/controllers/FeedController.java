@@ -41,6 +41,7 @@ public class FeedController extends Servlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
 		ErrorMessages errors = new ErrorMessages();
 		RequestDispatcher dispatcher = null;
@@ -55,11 +56,10 @@ public class FeedController extends Servlet {
 			System.out.println("TODO: Gestionar acces com a anonymous");
 		} else {
 			if(ValidationUtils.isEmpty(userToLookFeed) == false){
-				//vaig a globalTimeLine
+				tweets = tweetDAO.returnGlobalTimeline(20);
 			}
+			tweets = tweetDAO.returnGlobalTimeline(20);
 			System.out.println("Generar response per usuari loggejat");
-			BeanTweet anonymous = tweetDAO.returnTweet(123);
-			tweets.add(anonymous);
 		}
 		
 		if(errors.haveErrors() == false){

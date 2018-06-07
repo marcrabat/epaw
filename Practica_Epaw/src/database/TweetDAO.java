@@ -2,6 +2,7 @@ package database;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -61,6 +62,36 @@ public class TweetDAO {
 			this.bd.close();
 		}
 		return tweet;
+	}
+	
+	public List<BeanTweet> returnGlobalTimeline(int limitNumberOfTweets){
+		
+		if(limitNumberOfTweets < 1){
+			return null;
+		}
+		
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
+		
+		if (this.bd != null) {
+			String sql = "SELECT * FROM " + this.tableName;
+			sql += " WHERE row_count()  <= " + limitNumberOfTweets + ";";
+			
+			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
+			
+			this.bd.executeQuery(sql);
+			
+			
+			ResultSet resultSet = this.bd.getResultSet();
+			tweets = GeneralUtils.getListFromResultSet(resultSet, BeanTweet.class);
+			
+			this.bd.close();
+		}
+		return tweets;
+	}
+		
+	
+	public List<BeanTweet> returnUserFeed(String username){
+		return null;
 	}
 	
 	public boolean existTweet(int tweetID) {
