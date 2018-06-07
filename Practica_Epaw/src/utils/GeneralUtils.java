@@ -209,7 +209,7 @@ public class GeneralUtils {
 		List<T> listFilled = new ArrayList<T>();
 		try {
 			while(resultSet.next()) {
-				//resultSet.previous();
+				resultSet.previous();
 				T obj = genericClass.newInstance();
 				fillFromResultSet(resultSet, obj);
 				listFilled.add(obj);
@@ -231,7 +231,7 @@ public class GeneralUtils {
 			Class c = Class.forName(obj.getClass().getName());
 			Field[] fields = c.getDeclaredFields();
 			
-			while(rs.next()) {
+			if(rs.next() == true) {
 			
 				for(Field field : fields){
 					
