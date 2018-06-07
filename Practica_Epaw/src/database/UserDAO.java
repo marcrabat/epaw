@@ -148,7 +148,6 @@ public class UserDAO {
 	public boolean deleteUser(String fieldName, String toDelete) {
 		boolean delete = false;
 		if ((this.bd != null) && (GeneralUtils.existObjectInList(Arrays.asList(this.fields), fieldName)) == true) {
-
 			String sql = "DELETE FROM " + this.tableName + " WHERE " + fieldName + " LIKE '" + toDelete + "';";
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
 

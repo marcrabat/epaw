@@ -10,6 +10,7 @@ package utils;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -204,19 +205,23 @@ public class GeneralUtils {
 		return concat;
 	}
 	
-	public static <T> List<T> fillFromListOfResultSet(List<ResultSet> listOfResultSet, Class<T> genericClass) {
+	public static <T> List<T> getListFromResultSet(ResultSet resultSet, Class<T> genericClass) {
 		List<T> listFilled = new ArrayList<T>();
-		for (ResultSet resultSet : listOfResultSet) {
-			try {
+		try {
+			while(resultSet.next()) {
+				resultSet.previous();
 				T obj = genericClass.newInstance();
 				fillFromResultSet(resultSet, obj);
 				listFilled.add(obj);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
 			}
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
 		return listFilled;
 	}
 	
