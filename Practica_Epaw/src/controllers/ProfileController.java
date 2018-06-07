@@ -156,6 +156,7 @@ public class ProfileController extends Servlet {
 	private ErrorMessages deleteAccount(HttpServletRequest request) {
 		ErrorMessages errors = new ErrorMessages();
 		UserDAO userDAO = new UserDAO();
+		TweetDAO tweetDAO = new TweetDAO();
 		BeanUser userToDelete = null;
 		String jsonData = request.getParameter("data");
 		
@@ -167,11 +168,8 @@ public class ProfileController extends Servlet {
 		
 		if (userToDelete != null) {
 			
-			if (ValidationUtils.isEmpty(userToDelete.getMail()) == false) {
-				userDeleted = userDAO.deleteUser(UserDAO.COLUMN_MAIL, userToDelete.getMail());
-			} else if (ValidationUtils.isEmpty(userToDelete.getUser()) == false) {
-				userDeleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete.getUser());
-			}
+			tweetDAO.deleteAllTweets(userToDelete.getUser());
+			userDeleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete.getUser());
 			
 			if (userDeleted == false) {
 				errors.addError("delete", "Account can not be deleted, sorry");

@@ -166,8 +166,8 @@
             <div class="row">    
                 <div class="col">
                     <div class="form-group">
-                        <label for="mail">Username / E-mail Address</label>
-                        <input type="text" class="form-control" id="user" placeholder="example@domain.com">
+                        <label for="user">Username / E-mail Address</label>
+                        <input type="text" class="form-control" id="user" placeholder="example@domain.com" value="test">
                         <span class="text-danger" id="userDanger"></span>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password">
+                        <input type="password" class="form-control" id="password" value="testtest">
                         <span class="text-danger" id="passwordDanger"></span>
                     </div>
                 </div>
