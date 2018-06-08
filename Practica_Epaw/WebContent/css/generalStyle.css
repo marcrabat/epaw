@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	background-image: url("../images/gaming_pattern_blue-.jpg");
+}
+
+.displayBlock {
+   	display: block;
+}
+
+.displayNone {
+   	display: none;
+}
+
+.textWhite {
+	color: #ffffff;
+}
+
+.lila {
+	background-color: #77517f;
+}

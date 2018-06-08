@@ -1,0 +1,28 @@
+@CHARSET "ISO-8859-1";
+
+#profileMenu {
+	width: 15%;
+    position: relative;
+    float: left;
+    border-width: 4px;
+    border-color: black;
+    border-style: outset;
+    margin-left: 2%;
+    padding: 10px;
+}
+   
+#profileMenu button {
+	align: center;
+	margin-top: 2%;
+}
+
+#profileContent {
+   	position: relative;
+    float: right;
+   	width: 70%;
+   	margin-right: 2%;
+   	
+   	border-width: 4px;
+    border-color: black;
+    border-style: outset;
+}

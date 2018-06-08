@@ -1,12 +1,27 @@
+var sessionJsonTweet = null;
+
 function generateDivPublishTweet(tweetID) {
 	var parametros = {tweetID: tweetID};
-	executeAjax(parametros, "/Lab_3/TweetInformationView", "POST", 
+	executeAjax(parametros, "/Lab_3/tweetInformation", "POST", 
 					function(response) { successFillDivPublishTweet(response); },
 					function(e) { errorPublishTweet(e); });
 }
 
-function succesFillDivPublishTweet(response) {
+function successFillDivPublishTweet(response) {
 	
+	// TODO Pasar las variables de session a la jsp, y rellenar una variable global.
+	
+	var jsonTweet = "${sessionScope.Session_ID}";
+	if (jsonTweet != "") {
+		var tweet = JSON.parse(tweet);
+		createDivPublishTweet(tweet);
+		fillDivPublishTweet(tweet);
+	} else {
+		var tweet = "";
+		createDivPublishTweet(tweet);
+	}
+	
+	/*
 	console.log(response);
 	
 	var result = JSON.parse(response);
@@ -21,6 +36,7 @@ function succesFillDivPublishTweet(response) {
 			fillDivPublishTweet(tweet);
 		}
 	}
+	*/
 
 }
 
@@ -72,7 +88,7 @@ function publishTweet(tweet) {
 					function(e) { errorPublishTweet(e); });
 }
 
-function succesPublishTweet(response) {
+function successPublishTweet(response) {
 	
 	console.log(response);
 	

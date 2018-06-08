@@ -33,7 +33,9 @@ public class TweetInformationView extends Servlet {
 	
 	private TweetDAO tweetDAO;
 	
-	public TweetInformationView() {}
+	public TweetInformationView() {
+		this.tweetDAO = new TweetDAO();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
