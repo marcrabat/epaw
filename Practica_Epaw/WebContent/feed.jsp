@@ -2,6 +2,10 @@
 
 <head>
     <title>Feed</title>
+    
+    <%@ include file='includes.jsp' %>
+	<%@ include file='navbar.jsp' %>
+    
     <style>
 	.mybtn {
 	    background-color: DodgerBlue; 
@@ -104,6 +108,8 @@
 <div id="content">
 
 </div>
+
+<%@ include file='footer_provisional.jsp' %>
 
 </body>
 </html>
