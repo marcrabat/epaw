@@ -41,25 +41,32 @@ public class FeedController extends Servlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		RequestDispatcher dispatcher = null;
 		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
 		ErrorMessages errors = new ErrorMessages();
-		RequestDispatcher dispatcher = null;
 		HttpSession session = this.getSession(request);
 		String session_ID = (String) session.getAttribute("Session_ID");
-		String userToLookFeed = (String) session.getAttribute("userToLookFeed");
-
+		String userToLook = (String) session.getAttribute("userToLook");
+		String mode = request.getParameter("mode");
+		System.out.println(mode);
 		if (session_ID == null) {
 			errors.addError("requestError", "Your session is not valid");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
 		} else if(session_ID == "anonymous") {
 			System.out.println("TODO: Gestionar acces com a anonymous");
 		} else {
-			if(ValidationUtils.isEmpty(userToLookFeed) == false){
-				tweets = tweetDAO.returnGlobalTimeline(20);
+
+			switch(mode){
+				case "retrieveFeedbackForTweet":
+					System.out.println("Retrieving feedback");
+					break;
+				case "retrieveListOfTweetsForUser":
+					if(ValidationUtils.isEmpty(userToLook) == false){
+						tweets = tweetDAO.returnGlobalTimeline(20);
+					}
+					tweets = tweetDAO.returnGlobalTimeline(20);
+					break;
 			}
-			tweets = tweetDAO.returnGlobalTimeline(20);
-			System.out.println("Generar response per usuari loggejat");
 		}
 		
 		if(errors.haveErrors() == false){

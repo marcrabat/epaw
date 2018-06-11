@@ -34,7 +34,7 @@
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else{
-				TweetsRequest("${sessionScope.userToLookFeed}");
+				TweetsRequest("${sessionScope.userToLook}");
         	}
         });
         
@@ -43,11 +43,15 @@
         }
         
         function TweetsRequest(username){
+        	var parametros = {
+        			data : username,
+        			mode : "retrieveListOfTweetsForUser"
+        		};
             $.ajax({
                 type: 'post', //rest Type
                 dataType: 'text', //mispelled
                 url: "/Lab_3/checkFeedErrors",
-                data: username,
+                data: parametros,
                 success: function (data) {
                     console.log(data);
                     var tweets = JSON.parse(data);
@@ -86,15 +90,51 @@
         	HTML += myButtons;
         	HTML += "<button class='mybtn'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
-            HTML += "<button class='mybtn'><i class='fa fa-eye'>" + " view feedback </i></button>"
+            HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
 			return HTML;
         }
+		
+       
+        function viewFeedbackForTweet(tweetID){
+        	
+    		var parametros = {
+    			data : tweetID,
+    			mode : "retrieveFeedbackForTweet"
+    		};
+    		
+    		console.log(parametros);
+    		alert(parametros.mode);
+    		
+        	$.ajax({
+                type: 'post', //rest Type
+                dataType: 'text', //mispelled
+                url: "/Lab_3/checkFeedErrors",
+                data: parametros,
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function(xhr,status,error) { alert("Error: " + error);} });
+    		
+        }
+        
+        function successRetrieveFeedbackForTweet(response) {
 
-        
-        
-        
-        
+        	console.log(response);
+
+        	var result = response;
+
+        	if (result.errors.length > 0) {
+        		alert("There are some errors")
+        	} else {
+        		console.log("Need to implement insertion of feedback.");
+        	}
+
+        }
+
+        function errorRetrieveFeedbackForTweet(e) {
+        	alert("Error when loading the feed for this tweet.");
+        }
 
     </script>
 
