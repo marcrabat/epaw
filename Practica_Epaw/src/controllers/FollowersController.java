@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,7 +35,9 @@ public class FollowersController extends Servlet {
 							throws ServletException, IOException {
 		
 		//ErrorMessages errors = new ErrorMessages();
-		List<String> list = null;
+		List<String> list = new ArrayList<String>();
+		List<String> followers = null;
+		List<String> following = null;
 		
 		String mode = request.getParameter("mode");
 		
@@ -45,11 +48,28 @@ public class FollowersController extends Servlet {
 			switch(mode) {
 			
 				case "followers":
-					//errors.addError(this.followersList(request));
-					list = this.followersList(request);
+					followers = this.followersList(request);
+					following = this.followingList(request);
+					//list = followers;
+					
+					for(int i=0; i<followers.size(); i++) {
+						String actual = followers.get(i);
+						String now_following = new String("-1");
+						
+						if(following.contains(actual)) {
+							now_following = "1";
+						} else {
+							now_following = "0";
+						}
+						list.add(actual+","+now_following);
+					}
 					break;
 				case "following":
-					//errors.addError(this.followingList(request));
+					following = this.followingList(request);
+					for(int i=0; i<following.size(); i++) {
+						String actual = following.get(i);
+						list.add(actual+",1");
+					}	
 					break;			
 			}
 			
@@ -71,16 +91,16 @@ public class FollowersController extends Servlet {
 		return followers;
 	}
 		
-	private ErrorMessages followingList(HttpServletRequest request) {
-		
+	private List<String> followingList(HttpServletRequest request) {
+		List<String> following = null;
 		ErrorMessages errors = new ErrorMessages();
 		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			List<String> following = relationshipDAO.getFollowing(jsonData);
+			following = relationshipDAO.getFollowing(jsonData);
 			errors.addError("following", following.toString());
 		}
-		return errors;
+		return following;
 	}		
 	
 	
