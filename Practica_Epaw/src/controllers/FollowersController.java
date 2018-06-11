@@ -65,7 +65,11 @@ public class FollowersController extends Servlet {
 					}
 					break;
 				case "following":
-					list = this.followingList(request);
+					following = this.followingList(request);
+					for(int i=0; i<following.size(); i++) {
+						String actual = following.get(i);
+						list.add(actual+",1");
+					}	
 					break;			
 			}
 			
