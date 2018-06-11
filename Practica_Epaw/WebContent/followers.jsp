@@ -37,7 +37,7 @@
             if (userJSON != "") {
             	
 			 	sessionUser = JSON.parse(userJSON);
-			 	var parametros = { data: sessionUser.user+"", mode: "followers" };
+			 	var parametros = { data: sessionUser.user, mode: "followers" };
 			 	
 	           	$.ajax({
 	                   url: '/Lab_3/checkFollowers',
@@ -49,23 +49,44 @@
 							
 							var result = JSON.parse(data);
 							
-				            /*
-				            if(typeof result.errors == "undefined") return;        
+				            if(!result.length) return;
 				            
-				            for (var i = 0; i < result.errors.length; i++) {
-				            	var error = result.errors[i];
-				            	if(error.name!="followers") continue;			            	
-				            	$('#followers').append(error.error + "\n");
+				            for (var i = 0; i < result.length; i++) {		            
+				            	var result_parts = result[i].split(',');
+				            	if(result_parts[1]==0){
+					            	$('#followers').append('<li class="list-group-item">'+result_parts[0]+'<button type="button" id=' +"'"+result_parts[0]+"'"+ ' class="btn btn-light" style="margin-left: 70%;" onclick="changeRelation('+"'"+result_parts[0]+"'"+","+"'"+"insert"+"'"+')">Follow</button></li>');
+				            	} else if (result_parts[1]==1) {
+					            	$('#followers').append('<li class="list-group-item">'+result_parts[0]+'<button type="button" class="btn btn-secondary" style="margin-left: 70%;" onclick="changeRelation('+"'"+result_parts[0]+"'"+","+"'"+"delete"+"'"+')">Following</button></li>');
+				            	}
 				            }
-				            */
-				            
-							$('#followers').append(result + "\n");
 	                   },
 	                   error: function(xhr,status,error) { alert("Error: " + error);} });
-	         	
             }
                         
         }
+        
+        function changeRelation(userB_, mode_){
+        	
+            var userJSON = '${sessionScope.userInfo}';
+            if (userJSON != "") {
+            	
+			 	sessionUser = JSON.parse(userJSON);
+			 	var parametros = { userA: sessionUser.user, userB: userB_, mode: mode_ };
+        		console.log(parametros);
+        		
+	           	$.ajax({
+	                url: '/Lab_3/changeRelation',
+	                type: 'post',
+	                dataType: 'text',
+	                data: parametros,
+	                success: function (data) {
+							console.log(data);
+							location.reload();
+	                },
+	                error: function(xhr,status,error) { alert("Error: " + error);} });     
+        	}
+        }
+        
         //////////////////////////////////////////////////////////        
 
     </script>
@@ -77,12 +98,18 @@
 <body>
     <div class="container">
 		<div class="row top-buffer">
-	              <div class="col">
-	                  <h2>Login</h2>
-	                  <hr>
-	                  <span id="followers"></span>
-	              </div>
+	        <div class="col">
+	            <h2>Login</h2>
+	            <hr>
+	        </div>
 	    </div>
+		<div class="row">
+	        <div class="col">
+				<ul class="list-group" id="followers">
+					
+				</ul>
+	        </div>
+	    </div>	      
     </div>
 </body>
 </html>
