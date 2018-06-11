@@ -195,7 +195,7 @@ public class TweetDAO {
 			
 			sql = sql.substring(0, (sql.length() - ", ".length()));
 			
-			sql += " WHERE " + COLUMN_TWEET_ID + " = '" + tweet.getTweetID() + ";";
+			sql += " WHERE " + COLUMN_TWEET_ID + " = " + tweet.getTweetID() + ";";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL UPDATE: " + sql);
 

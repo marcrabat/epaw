@@ -85,7 +85,7 @@ public class PublishTweetController extends Servlet {
 	
 	private BeanTweet getTweet(HttpServletRequest request) {
 		BeanTweet tweet = null;
-		String jsonData = request.getParameter("data");
+ 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
 			tweet = JSONUtils.returnJSONObject(jsonData, BeanTweet.class);
 		}
@@ -94,13 +94,13 @@ public class PublishTweetController extends Servlet {
 	
 	private ErrorMessages insertOrUpdateTweet(BeanTweet tweet) {
 		ErrorMessages errors = new ErrorMessages();
-		boolean existUser = this.userDAO.existUser(UserDAO.COLUMN_USER, tweet.getAuthor());
+		boolean existUser = this.userDAO.existUserSelectingField(UserDAO.COLUMN_USER, tweet.getAuthor());
 		
 		if (existUser == true) {
 			
 			boolean existTweet = this.tweetDAO.existTweet(tweet.getTweetID());
 			
-			if (existTweet == true) {
+			if (existTweet == false) {
 				errors.addError(this.insertTweet(tweet));
 			} else {
 				errors.addError(this.updateTweet(tweet));

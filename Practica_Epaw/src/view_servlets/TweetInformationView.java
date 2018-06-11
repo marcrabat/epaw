@@ -33,7 +33,9 @@ public class TweetInformationView extends Servlet {
 	
 	private TweetDAO tweetDAO;
 	
-	public TweetInformationView() {}
+	public TweetInformationView() {
+		this.tweetDAO = new TweetDAO();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -43,15 +45,26 @@ public class TweetInformationView extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
 
-		HttpSession session = this.getSession(request);
 		int tweetID = Integer.valueOf((String) request.getParameter("tweetID"));
 		
 		BeanTweet tweetBD = this.tweetDAO.returnTweet(tweetID);
 		
-		if (ValidationUtils.isNull(tweetBD) == false) {
-			session.setAttribute("tweetInfo", JSONUtils.getJSON(tweetBD));
+		sendResponse(request, response, tweetBD);
+		
+	}
+	
+	private void sendResponse(HttpServletRequest request, HttpServletResponse response, BeanTweet tweet)
+																		throws ServletException, IOException {
+		this.setResponseJSONHeader(response);
+		HttpSession session = this.getSession(request);
+		
+		if (ValidationUtils.isNull(tweet) == false) {
+			session.setAttribute("tweetInfo", JSONUtils.getJSON(tweet));
+		} else {
+			tweet = new BeanTweet();
 		}
 		
+		response.getWriter().print(JSONUtils.getJSON(tweet, "dd/MM/yyyy hh:mm:ss"));
 	}
 
 }

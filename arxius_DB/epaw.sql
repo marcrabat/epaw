@@ -95,17 +95,17 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-INSERT INTO users (user, name, surname, birthDate, password, gender, mail)
+INSERT INTO Users (user, name, surname, birthDate, password, gender, mail)
 	VALUES ('test', 'test', 'test', '1992-12-12', 'testtest', 'male', 'test@test.com');
 
-INSERT INTO users (user, name, surname, birthDate, password, gender, mail)
+INSERT INTO Users (user, name, surname, birthDate, password, gender, mail)
 	VALUES ('test2', 'test', 'test', '1992-12-12', 'testtest', 'male', 'test2@test.com');
     
-INSERT INTO users (user, name, surname, birthDate, password, gender, mail)
+INSERT INTO Users (user, name, surname, birthDate, password, gender, mail)
 	VALUES ('test3', 'test', 'test', '1992-12-12', 'testtest', 'male', 'test3@test.com');
 
-INSERT INTO relationship (userA, userB) VALUES ('test', 'test2');
-INSERT INTO relationship (userA, userB) VALUES ('test2', 'test');
+INSERT INTO Relationship (userA, userB) VALUES ('test', 'test2');
+INSERT INTO Relationship (userA, userB) VALUES ('test2', 'test');
 
 INSERT INTO Tweets (author, message, publishDate) VALUES ('test', 'Test of tweet', sysdate());
 INSERT INTO Tweets (author, message, publishDate) VALUES ('test', 'Genaral Utils is working?', sysdate());
