@@ -56,7 +56,7 @@ public class ProfileController extends Servlet {
 			
 				case "editProfile":
 					errors.addError(this.editProfile(request));
-				break;
+					break;
 				case "deleteAccount":
 					errors.addError(this.deleteAccount(request));
 					break;
@@ -100,13 +100,14 @@ public class ProfileController extends Servlet {
 			
 			System.out.println("No Errors For Edit");
 			BeanUser sessionUser = SessionUtils.getSessionUser(request);
+			String userToLook = SessionUtils.getSessionUserToLook(request);
 			
 			if (sessionUser == null) {
 				errors.addError("session", "you don't have session!");
 			}
 			
 			if (errors.haveErrors() == false) {
-				boolean existUser = userDAO.existUser(sessionUser.getUser(), sessionUser.getMail());
+				boolean existUser = userDAO.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
 	
 				if (existUser == true) {
 					

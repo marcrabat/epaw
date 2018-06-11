@@ -22,4 +22,19 @@ public class SessionUtils {
 		return sessionUser;
 	}
 	
+	public static String getString(HttpServletRequest request, String param) {
+		String value = "";
+		HttpSession session = request.getSession();
+		
+		if (session != null) {
+			value = (String) session.getAttribute(param);
+		}
+		
+		return value;
+	}
+	
+	public static String getSessionUserToLook(HttpServletRequest request) {
+		return getString(request ,"userToLook");
+	}
+	
 }
