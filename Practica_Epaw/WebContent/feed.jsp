@@ -67,12 +67,24 @@
         	var JSONData = '${sessionScope.userInfo}';
         	var user = JSON.parse(JSONData);
         	for (i = 0; i < tweets.length; i++) {
-        		HTML += generateHTML(tweets[i], user);
+        		HTML += generateHTML(tweets[i], user, false);
                 document.getElementById("content").innerHTML = HTML;
         	}	
         }
         
-        function generateHTML(currentTweet, user){
+        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
+        	var i;
+        	var HTML = "";
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	for (i = 0; i < tweets.length; i++) {
+        		HTML += generateHTML(tweets[i], user, true);
+                document.getElementById("feedback_" + tweetToInsertFeedback).innerHTML = HTML;
+        	}
+        	
+        }
+        
+        function generateHTML(currentTweet, user, isFeedback){
         	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
@@ -81,7 +93,7 @@
         	}
 			
         	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_'" + currentTweet.tweetID + "style='width: 18rem;'>";
+        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width: 18rem;'>";
         	HTML += "<div class='card-body'>";
         	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
@@ -92,6 +104,11 @@
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
+            if(isFeedback == false){ //
+            	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
+    			HTML += "</div>"	
+            }
+            
 			return HTML;
         }
 		
@@ -113,6 +130,11 @@
                 data: parametros,
                 success: function (data) {
                     console.log(data);
+                    var feedbackTweets = JSON.parse(data);
+                    console.log(feedbackTweets);
+                    var tweet = '${sessionScope.tweetFeedback}';
+                    feedbackIntoDivs(feedbackTweets, tweet);
+                    
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
     		
@@ -149,7 +171,8 @@
 
 </div>
 
-<%@ include file='footer_provisional.jsp' %>
+
+<!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->
 
 </body>
 </html>

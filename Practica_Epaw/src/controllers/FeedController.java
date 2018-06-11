@@ -60,24 +60,24 @@ public class FeedController extends Servlet {
 		} else if (session_ID == "anonymous") {
 			System.out.println("TODO: Gestionar acces com a anonymous");
 		} else {
-
 			switch (mode) {
 			case "retrieveFeedbackForTweet":
 				System.out.println("Retrieving feedback");
 				int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
 				
 				// TEST
-				//feedbackDAO.associateTweet(1, 2); //associo tweetID 2 com a resposta d'1
+				//feedbackDAO.associateTweet(1, 2);
+				//feedbackDAO.associateTweet(1, 3);
 				List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
 				if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
-					
-					//Recorro llista d'ids a retornar i els afegeixo al feedback
+
 					for(Integer tweetID : feedbackTweetsID) {
 						BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
-						System.out.print(tweetToReturn.toString());
 						feedback.add(tweetToReturn);
 					}
+					session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
 				} else {
+					//TODO: Decidir com volem mostrar que un tweet no té missatges.
 					System.out.println("No messages available");
 				}
 				if (errors.haveErrors() == false) {
@@ -85,7 +85,6 @@ public class FeedController extends Servlet {
 				} else {
 					sendResponseWithErrors(request, response, errors);
 				}
-
 				break;
 			
 			case "retrieveListOfTweetsForUser":
@@ -117,5 +116,13 @@ public class FeedController extends Servlet {
 		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
 		response.getWriter().print(JSONUtils.getJSON(tweets));
 	}
+	
+	private void sendFeedbackResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
+			List<BeanTweet> tweets, int tweetIDtoInsertFeedback) throws ServletException, IOException {
+		this.setResponseJSONHeader(response);
+		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
+		response.getWriter().print(JSONUtils.getJSON(tweets));
+	}
+	
 
 }
