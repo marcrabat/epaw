@@ -79,7 +79,10 @@
         	var user = JSON.parse(JSONData);
         	for (i = 0; i < tweets.length; i++) {
         		HTML += generateHTML(tweets[i], user, true);
-                document.getElementById("feedback_" + tweetToInsertFeedback).innerHTML = HTML;
+        		var existFeedback = document.getElementById("feedback_" + tweetToInsertFeedback); 
+                if(existFeedback != null && existFeedback != 'undefined'){
+                	existFeedback.innerHTML = HTML;	
+                } 
         	}
         	
         }
@@ -92,8 +95,15 @@
                 myButtons += "<button class='mybtn'><i class='fa fa-close'> delete </i></button>";
         	}
 			
+			var width = 0;
+			if(isFeedback == false){ //
+            	width = 50;
+            } else{
+            	width = 30;
+            }
+			
         	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width: 18rem;'>";
+        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width:" + width + "rem;'>";
         	HTML += "<div class='card-body'>";
         	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
@@ -104,6 +114,7 @@
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
+            
             if(isFeedback == false){ //
             	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
     			HTML += "</div>"	
