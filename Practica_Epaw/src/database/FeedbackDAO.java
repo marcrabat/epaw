@@ -63,7 +63,7 @@ public class FeedbackDAO {
 	public boolean associateTweet(int tweetID, int relatedTweetID) {
 		
 		boolean insert = false;
-		if (this.bd != null) {
+		if (this.existFeedback(tweetID, relatedTweetID) == false) {
 
 			String sql = "INSERT INTO " + this.tableName + " (" + GeneralUtils.concatArrayOfString(fields, ",") + ")";
 			sql += " VALUES (" + String.valueOf(tweetID) + ", " + String.valueOf(relatedTweetID) + ");";

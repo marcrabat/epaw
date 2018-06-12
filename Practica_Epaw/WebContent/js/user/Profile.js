@@ -1,3 +1,6 @@
+var userToLook = null;
+var sessionId = null;
+
 function changeVisibility(id) {
 	var element = $("#" + id);
 	if (element.hasClass("displayNone") == true) {
@@ -68,8 +71,7 @@ function fillProfileForm(user) {
 function createAdminButtons(user) {
 	if (user.isAdmin == true) {
 		var profileMenu = getElement("profileMenu");
-		var buttonDeleteUserAccount = createElement("button",
-				"buttonDeleteUserAccount");
+		var buttonDeleteUserAccount = createElement("button", "buttonDeleteUserAccount");
 		buttonDeleteUserAccount.innerText = "Delete user account";
 		buttonDeleteUserAccount.className = "btn btn-primary";
 		profileMenu.appendChild(buttonDeleteUserAccount);
@@ -124,15 +126,17 @@ function disableInputs() {
 }
 
 function changeEditOrView() {
-	if (getElement("editOrView").innerHTML == "View") {
-		disableInputs();
-		getElement("profileButtons").style = "display: none;";
-		getElement("editOrView").innerHTML = "Edit";
-	} else {
-		enableInputs();
-		getElement("profileButtons").style = "display: block;";
-		getElement("editOrView").innerHTML = "View";
-
+	if (sessionId == userToLookFeed) {
+		if (getElement("editOrView").innerHTML == "View") {
+			disableInputs();
+			getElement("profileButtons").style = "display: none;";
+			getElement("editOrView").innerHTML = "Edit";
+		} else {
+			enableInputs();
+			getElement("profileButtons").style = "display: block;";
+			getElement("editOrView").innerHTML = "View";
+	
+		}
 	}
 }
 
