@@ -126,7 +126,7 @@ function disableInputs() {
 }
 
 function changeEditOrView() {
-	if (sessionId == userToLookFeed) {
+	if (sessionId == userToLook) {
 		if (getElement("editOrView").innerHTML == "View") {
 			disableInputs();
 			getElement("profileButtons").style = "display: none;";
@@ -135,7 +135,6 @@ function changeEditOrView() {
 			enableInputs();
 			getElement("profileButtons").style = "display: block;";
 			getElement("editOrView").innerHTML = "View";
-	
 		}
 	}
 }

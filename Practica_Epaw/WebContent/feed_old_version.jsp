@@ -6,63 +6,27 @@
     <%@ include file='includes.jsp' %>
 	<%@ include file='navbar.jsp' %>
     
-    <script src="js/user/Profile.js"></script>
-    
-    <script type="text/javascript">
-		
-		var sessionUser = null;
-		
-		$(document).ready(function() {
-			
-			sessionId = "${sessionScope.Session_ID}";
-			userToLook = "${sessionScope.userToLook}";
-			
-			if (sessionId == "") {
-				window.location.href = "/Lab_3/main";
-			} else {
-			
-				clear();
-				
-				changeVisibility("gamerInfo");
-				changeVisibility("socialNetwork");
-				changeVisibility("profilePassword");
-		
-				disableInputs();
-				//var userJSON = '{"userConsoles": []}';
-				var userJSON = '${sessionScope.userInfo}';
-				if (userJSON != "") {
-					sessionUser = JSON.parse(userJSON);
-					console.log(sessionUser);
-					fillProfileForm(sessionUser);
-					createAdminButtons(sessionUser);
-				}
-				
-				//if (userToLook == "") {
-					//changeVisibility("profileMenu");
-					//changeVisibility("profilePage");
-				//}
-	
-			}
-			
-		});
-	        
-	</script>
-    
     <style>
-		.mybtn {
-		    background-color: DodgerBlue; 
-		    border: none; 
-		    color: white; 
-		    padding: 12px 16px; 
-		    font-size: 16px; 
-		    cursor: pointer; 
-			}
-	
-		.mybtn:hover {
-		    background-color: RoyalBlue;
+	.mybtn {
+	    background-color: DodgerBlue; 
+	    border: none; 
+	    color: white; 
+	    padding: 12px 16px; 
+	    font-size: 16px; 
+	    cursor: pointer; 
 		}
+
+	.mybtn:hover {
+	    background-color: RoyalBlue;
+	}
 	</style>
-	<script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
 	
         /////////////////////// FUNCTIONS ////////////////////////    
         $(document).ready( function() {
@@ -104,7 +68,7 @@
         	var user = JSON.parse(JSONData);
         	for (i = 0; i < tweets.length; i++) {
         		HTML += generateHTML(tweets[i], user, false);
-                document.getElementById("feedContent").innerHTML = HTML;
+                document.getElementById("content").innerHTML = HTML;
         	}	
         }
         
@@ -115,7 +79,10 @@
         	var user = JSON.parse(JSONData);
         	for (i = 0; i < tweets.length; i++) {
         		HTML += generateHTML(tweets[i], user, true);
-                document.getElementById("feedback_" + tweetToInsertFeedback).innerHTML = HTML;
+        		var existFeedback = document.getElementById("feedback_" + tweetToInsertFeedback); 
+                if(existFeedback != null && existFeedback != 'undefined'){
+                	existFeedback.innerHTML = HTML;	
+                } 
         	}
         	
         }
@@ -124,12 +91,21 @@
         	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
-        		myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'> edit </i></button>";
-                myButtons += "<button class='mybtn'><i class='fa fa-close'> delete </i></button>";
+        		myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
+        		myButtons += "onClick='openModalPublishTweet(" + currentTweet.tweetID+ ");'> edit </i></button>";
+                
+        		myButtons += "<button class='mybtn'><i class='fa fa-close'> delete </i></button>";
         	}
 			
+			var width = 0;
+			if(isFeedback == false){ //
+            	width = 50;
+            } else{
+            	width = 30;
+            }
+			
         	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width: 18rem;'>";
+        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width:" + width + "rem;'>";
         	HTML += "<div class='card-body'>";
         	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
@@ -140,6 +116,7 @@
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
+            
             if(isFeedback == false){ //
             	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
     			HTML += "</div>"	
@@ -201,24 +178,11 @@
 </head>
 
 <body>
-	<h1 style='center'> Feed</h1>
-	<h2> Your feed</h2>
-	<div id="content">
-		
-		
-		<div id="profilePage" style="width:20%; float:left; position:relative;">
-			<%@ include file='profile.jsp' %>
-		</div>
+<h1 style='center'> Feed</h1>
+<h2> Your feed</h2>
+<div id="content">
 
-		<div id="feedContent" style="width:40%; float:left"></div>
-
-		<div id="profileMenu" style="position:relative; width:25%; float: right;">
-			<button id="buttonDeleteAccount" class="btn btn-primary" onClick="deleteSessionAccount();">Delete account</button>
-			<button id="buttonDeleteAllTweets" class="btn btn-primary" onClick="deleteAllTweets();">Delete all tweets</button>
-			<button id="buttonViewFollowers" class="btn btn-primary" onClick="viewFollowers();">View followers</button>
-			<button id="buttonViewFollowings" class="btn btn-primary" onClick="viewFollowings();">View followings</button>
-		</div>
-	</div>
+</div>
 
 
 <!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->

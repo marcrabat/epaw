@@ -1,5 +1,6 @@
  	
  	<div id="profileContent" class="content" style="width:="70%; float: right;">
+ 		<div id="serverErrors"> <span id="serverSideDanger" class="text-danger"></span> </div>
  		<div id="profileForm" class="rosa">
 
 			<div style="position:relative; float:rigth;">
@@ -127,7 +128,7 @@
 	        
 	        <br/>
 	        
-	        <span onClick="changeVisibility('profilePassword')"> Do you Want to change the Password? </span>
+	        <span id="newPassword" onClick="changeVisibility('profilePassword')"> Do you Want to change the Password? </span>
 	        <div id="profilePassword">
 		        <div class="row">    
 	                <div class="col">
