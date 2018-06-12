@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 
 import database.FeedbackDAO;
+import database.LikeDAO;
 import database.TweetDAO;
 import models.BeanTweet;
 import utils.BD;
@@ -92,13 +93,33 @@ public class FeedController extends Servlet {
 					tweets = tweetDAO.returnGlobalTimeline(20);
 				}
 				tweets = tweetDAO.returnGlobalTimeline(20);
+				LikeDAO likeDao = new LikeDAO();
+				for(int i=0; i<tweets.size();i++) {
+					BeanTweet tweet = tweets.get(i);
+					tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
+					tweets.set(i, tweet);			
+				}
 				if (errors.haveErrors() == false) {
 					sendResponseWithNoErrors(request, response, tweets);
 				} else {
 					sendResponseWithErrors(request, response, errors);
 				}
 				break;
-			}
+			
+			case "retrieveLikesForTweet":
+
+				/*int numLikes = 0;
+				LikeDAO likeDao = new LikeDAO();
+				numLikes = likeDao.countTweetLikes(tweetID);
+				
+				if (errors.haveErrors() == false) {
+					sendLikesResponseWithNoErrors(request, response, numLikes);
+				} else {
+					sendResponseWithErrors(request, response, errors);
+				}*/
+				break;
+			}			
+			
 		}
 
 	}
@@ -117,12 +138,11 @@ public class FeedController extends Servlet {
 		response.getWriter().print(JSONUtils.getJSON(tweets));
 	}
 	
-	private void sendFeedbackResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
-			List<BeanTweet> tweets, int tweetIDtoInsertFeedback) throws ServletException, IOException {
+	private void sendLikesResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
+			int numLikes) throws ServletException, IOException {
 		this.setResponseJSONHeader(response);
-		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
-		response.getWriter().print(JSONUtils.getJSON(tweets));
-	}
-	
+		request.setAttribute("tweets", JSONUtils.getJSON(numLikes));
+		response.getWriter().print(JSONUtils.getJSON(numLikes));
+	}	
 
 }
