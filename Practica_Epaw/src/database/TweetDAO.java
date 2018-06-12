@@ -20,14 +20,13 @@ public class TweetDAO {
 	// ---- COLUMS OF TABLE IN DATABSE -----
 	public static final String COLUMN_TWEET_ID = "tweetID";
 	public static final String COLUMN_AUTHOR = "author";
-	public static final String COLUMN_LIKES = "likes";
 	public static final String COLUMN_MESSAGE = "message";
 	public static final String COLUMN_PUBLISH_DATE = "publishDate";
 	// ----- END COLUMS OF TABLE IN DATABASE ----
 	
 	private String tableName;
 	private BD bd;
-	private String[] fields = { COLUMN_TWEET_ID, COLUMN_AUTHOR, COLUMN_LIKES,
+	private String[] fields = { COLUMN_TWEET_ID, COLUMN_AUTHOR,
 								COLUMN_MESSAGE, COLUMN_PUBLISH_DATE };
 	
 	//private Statement statement;
@@ -125,9 +124,9 @@ public class TweetDAO {
 			SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			Date date = Calendar.getInstance().getTime();
 
-			String sql = "INSERT INTO " + this.tableName + " (" + COLUMN_AUTHOR + ", " + COLUMN_LIKES + ", ";
+			String sql = "INSERT INTO " + this.tableName + " (" + COLUMN_AUTHOR + ", ";
 			sql += COLUMN_MESSAGE + ", " + COLUMN_PUBLISH_DATE +")";
-			sql += " VALUES ('" + tweet.getAuthor() + "', 0, ";
+			sql += " VALUES ('" + tweet.getAuthor() + "',";
 			sql += "'" + tweet.getMessage() + "', '" + formatDate.format(date) + "');";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL INSERT: " + sql);
@@ -176,12 +175,7 @@ public class TweetDAO {
 				sql += COLUMN_AUTHOR + " = '" + tweet.getAuthor() + "', ";
 				allValuesNull = false;
 			}
-			
-			if (ValidationUtils.isEmpty(tweet.getLikes()) == false) {
-				sql += COLUMN_LIKES + " = " + tweet.getLikes() + ", ";
-				allValuesNull = false;
-			}
-			
+						
 			if (ValidationUtils.isEmpty(tweet.getPublishDate()) == false) {
 				tweet.setPublishDate(tweet.getPublishDate());
 				sql += COLUMN_PUBLISH_DATE + " = '" + tweet.getPublishDate() + "', ";
