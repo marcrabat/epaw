@@ -52,20 +52,25 @@ function publishTweet() {
 	var tweetID = getValue("hiddenTweetId");
 	var message = getValue("modalTweetMessage");
 	
-	var tweet = {
+	if (message.length <= 255) {
+	
+		var tweet = {
 					tweetID: tweetID,
 					message: message,
 					author: sessionUser.user
 				};
 	
-	alert(tweet);
 	
-	jsonTweet = JSON.stringify(tweet);
-	
-	var parametros = {data: jsonTweet};
-	executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
-					function(response) { successPublishTweet(response); },
-					function(e) { errorPublishTweet(e); });
+		jsonTweet = JSON.stringify(tweet);
+		
+		var parametros = {data: jsonTweet};
+		executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
+						function(response) { successPublishTweet(response); },
+						function(e) { errorPublishTweet(e); });
+		
+	} else {
+		alert("This message is to long!");
+	}
 }
 
 function successPublishTweet(response) {
@@ -101,4 +106,17 @@ function showErrors(errors) {
 
 function errorPublishTweet(e) {
 	alert("Error Publishing Tweet .....");
+}
+
+function messageLength() {
+	var message = getValue("modalTweetMessage");
+	var messageLength = getElement("messageLength");
+	var length = message.length;
+	setValue("messageLength", length);
+	
+	if (length > 255) {
+		messageLength.style.color = 'red';
+	} else {
+		messageLength.style.color = 'black';
+	}
 }

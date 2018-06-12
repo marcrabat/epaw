@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import database.FeedbackDAO;
 import database.TweetDAO;
 import models.BeanTweet;
 import utils.BD;
@@ -27,11 +28,13 @@ import utils.Servlet;
 @WebServlet("/checkFeedErrors")
 public class FeedController extends Servlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private TweetDAO tweetDAO;
-	
+	private FeedbackDAO feedbackDAO;
+
 	public FeedController() {
 		this.tweetDAO = new TweetDAO();
+		this.feedbackDAO = new FeedbackDAO();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,33 +44,63 @@ public class FeedController extends Servlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
-		ErrorMessages errors = new ErrorMessages();
 		RequestDispatcher dispatcher = null;
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
+		List<BeanTweet> feedback = new ArrayList<BeanTweet>();
+
+		ErrorMessages errors = new ErrorMessages();
 		HttpSession session = this.getSession(request);
 		String session_ID = (String) session.getAttribute("Session_ID");
-		String userToLookFeed = (String) session.getAttribute("userToLookFeed");
+		String userToLook = (String) session.getAttribute("userToLook");
+		String mode = request.getParameter("mode");
 
 		if (session_ID == null) {
 			errors.addError("requestError", "Your session is not valid");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
-		} else if(session_ID == "anonymous") {
+		} else if (session_ID == "anonymous") {
 			System.out.println("TODO: Gestionar acces com a anonymous");
 		} else {
-			if(ValidationUtils.isEmpty(userToLookFeed) == false){
+			switch (mode) {
+			case "retrieveFeedbackForTweet":
+				System.out.println("Retrieving feedback");
+				int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
+				
+				// TEST
+				//feedbackDAO.associateTweet(1, 2);
+				//feedbackDAO.associateTweet(1, 3);
+				List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
+				if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
+
+					for(Integer tweetID : feedbackTweetsID) {
+						BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
+						feedback.add(tweetToReturn);
+					}
+					session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
+				} else {
+					//TODO: Decidir com volem mostrar que un tweet no té missatges.
+					System.out.println("No messages available");
+				}
+				if (errors.haveErrors() == false) {
+					sendResponseWithNoErrors(request, response, feedback);
+				} else {
+					sendResponseWithErrors(request, response, errors);
+				}
+				break;
+			
+			case "retrieveListOfTweetsForUser":
+				if (ValidationUtils.isEmpty(userToLook) == false) {
+					tweets = tweetDAO.returnGlobalTimeline(20);
+				}
 				tweets = tweetDAO.returnGlobalTimeline(20);
+				if (errors.haveErrors() == false) {
+					sendResponseWithNoErrors(request, response, tweets);
+				} else {
+					sendResponseWithErrors(request, response, errors);
+				}
+				break;
 			}
-			tweets = tweetDAO.returnGlobalTimeline(20);
-			System.out.println("Generar response per usuari loggejat");
 		}
-		
-		if(errors.haveErrors() == false){
-			sendResponseWithNoErrors(request, response, tweets);
-		} else{
-			sendResponseWithErrors(request, response, errors);
-		}
-		
+
 	}
 
 	private void sendResponseWithErrors(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
@@ -76,13 +109,20 @@ public class FeedController extends Servlet {
 		request.setAttribute("errors", errors.getJSON());
 		response.getWriter().print(errors.getJSON());
 	}
-	
-	private void sendResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response, List<BeanTweet> tweets)
-			throws ServletException, IOException {
+
+	private void sendResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
+			List<BeanTweet> tweets) throws ServletException, IOException {
 		this.setResponseJSONHeader(response);
 		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
 		response.getWriter().print(JSONUtils.getJSON(tweets));
 	}
-
+	
+	private void sendFeedbackResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
+			List<BeanTweet> tweets, int tweetIDtoInsertFeedback) throws ServletException, IOException {
+		this.setResponseJSONHeader(response);
+		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
+		response.getWriter().print(JSONUtils.getJSON(tweets));
+	}
+	
 
 }

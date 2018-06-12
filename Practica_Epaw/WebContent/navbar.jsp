@@ -7,8 +7,6 @@
 		sessionUser = '${sessionScope.Session_ID}';
 		sessionJsonTweet = '${sessionScope.tweetInfo}';
 		
-		console.log("Xupa " + sessionJsonTweet);
-		
 		/*
 		$("#buttonPublishTweet").click(function(){
 	        $("#dialogPublishTweet").modal();
@@ -48,7 +46,8 @@
 		          <h4 class="modal-title">Write your Tweet</h4>
 		        </div>
 		        <div class="modal-body">
-		          <textarea id="modalTweetMessage"></textarea>
+		          <textarea id="modalTweetMessage" onKeyPressDown="messageLength();"></textarea>
+		          <span id="messageLength"></span>
 		        </div>
 		        <div class="modal-footer">
 					<button type="button" class="btn btn-default" Onclick="publishTweet()">Publish</button>

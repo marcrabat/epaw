@@ -34,7 +34,7 @@
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else{
-				TweetsRequest("${sessionScope.userToLookFeed}");
+				TweetsRequest("${sessionScope.userToLook}");
         	}
         });
         
@@ -43,11 +43,15 @@
         }
         
         function TweetsRequest(username){
+        	var parametros = {
+        			data : username,
+        			mode : "retrieveListOfTweetsForUser"
+        		};
             $.ajax({
                 type: 'post', //rest Type
                 dataType: 'text', //mispelled
                 url: "/Lab_3/checkFeedErrors",
-                data: username,
+                data: parametros,
                 success: function (data) {
                     console.log(data);
                     var tweets = JSON.parse(data);
@@ -63,12 +67,27 @@
         	var JSONData = '${sessionScope.userInfo}';
         	var user = JSON.parse(JSONData);
         	for (i = 0; i < tweets.length; i++) {
-        		HTML += generateHTML(tweets[i], user);
+        		HTML += generateHTML(tweets[i], user, false);
                 document.getElementById("content").innerHTML = HTML;
         	}	
         }
         
-        function generateHTML(currentTweet, user){
+        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
+        	var i;
+        	var HTML = "";
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	for (i = 0; i < tweets.length; i++) {
+        		HTML += generateHTML(tweets[i], user, true);
+        		var existFeedback = document.getElementById("feedback_" + tweetToInsertFeedback); 
+                if(existFeedback != null && existFeedback != 'undefined'){
+                	existFeedback.innerHTML = HTML;	
+                } 
+        	}
+        	
+        }
+        
+        function generateHTML(currentTweet, user, isFeedback){
         	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
@@ -77,7 +96,7 @@
         	}
 			
         	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_'" + currentTweet.tweetID + "style='width: 18rem;'>";
+        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width: 50rem;'>";
         	HTML += "<div class='card-body'>";
         	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
@@ -86,15 +105,62 @@
         	HTML += myButtons;
         	HTML += "<button class='mybtn'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
-            HTML += "<button class='mybtn'><i class='fa fa-eye'>" + " view feedback </i></button>"
+            HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
+            
+            if(isFeedback == false){ //
+            	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
+    			HTML += "</div>"	
+            }
+            
 			return HTML;
         }
+		
+       
+        function viewFeedbackForTweet(tweetID){
+        	
+    		var parametros = {
+    			data : tweetID,
+    			mode : "retrieveFeedbackForTweet"
+    		};
+    		
+    		console.log(parametros);
+    		alert(parametros.mode);
+    		
+        	$.ajax({
+                type: 'post', //rest Type
+                dataType: 'text', //mispelled
+                url: "/Lab_3/checkFeedErrors",
+                data: parametros,
+                success: function (data) {
+                    console.log(data);
+                    var feedbackTweets = JSON.parse(data);
+                    console.log(feedbackTweets);
+                    var tweet = '${sessionScope.tweetFeedback}';
+                    feedbackIntoDivs(feedbackTweets, tweet);
+                    
+                },
+                error: function(xhr,status,error) { alert("Error: " + error);} });
+    		
+        }
+        
+        function successRetrieveFeedbackForTweet(response) {
 
-        
-        
-        
-        
+        	console.log(response);
+
+        	var result = response;
+
+        	if (result.errors.length > 0) {
+        		alert("There are some errors")
+        	} else {
+        		console.log("Need to implement insertion of feedback.");
+        	}
+
+        }
+
+        function errorRetrieveFeedbackForTweet(e) {
+        	alert("Error when loading the feed for this tweet.");
+        }
 
     </script>
 
@@ -109,7 +175,8 @@
 
 </div>
 
-<%@ include file='footer_provisional.jsp' %>
+
+<!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->
 
 </body>
 </html>
