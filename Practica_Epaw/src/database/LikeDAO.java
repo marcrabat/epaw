@@ -48,7 +48,7 @@ public class LikeDAO {
 		try {
 			if (this.bd != null) {
 				String sql = "SELECT COUNT(*) AS numberOfLikes FROM " + this.tableName;
-				sql += " WHERE " + COLUMN_TWEET_ID + " = '" + tweetID + "';";
+				sql += " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + ";";
 				
 				System.out.println("------------ LikeDAO.java ------------ SQL EXIST: " + sql);
 				
