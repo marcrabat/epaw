@@ -23,7 +23,7 @@
  
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a id="buttonPublishTweet" class="nav-link" href="#" style="color: #ffffff;" onClick="openModalPublishTweet(-1)">
+                <a id="buttonPublishTweet" class="nav-link" style="color: #ffffff;" onClick="openModalPublishTweet(-1)">
                 	Publish
                 </a>
             </li>
@@ -46,7 +46,7 @@
 		          <h4 class="modal-title">Write your Tweet</h4>
 		        </div>
 		        <div class="modal-body">
-		          <textarea id="modalTweetMessage" onKeyPressDown="messageLength();"></textarea>
+		          <textarea id="modalTweetMessage" onKeyUp="messageLength();"></textarea>
 		          <span id="messageLength"></span>
 		        </div>
 		        <div class="modal-footer">
@@ -55,6 +55,7 @@
 	    		</div>
 	    		
 	    		<input type="hidden" id="hiddenTweetId" value="">
+	    		<input type="hidden" id="hiddenCommentTweetId" value="">
 	    		
 	    	</div>
 		      

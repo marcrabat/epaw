@@ -102,6 +102,10 @@ public class ProfileController extends Servlet {
 			BeanUser sessionUser = SessionUtils.getSessionUser(request);
 			String userToLook = SessionUtils.getSessionUserToLook(request);
 			
+			if (ValidationUtils.isNull(userToLook) == true) {
+				userToLook = sessionUser.getUser();
+			}
+			
 			if (sessionUser == null) {
 				errors.addError("session", "you don't have session!");
 			}

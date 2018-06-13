@@ -234,49 +234,13 @@ public class GeneralUtils {
 			if(rs.next() == true) {
 			
 				for(Field field : fields){
-					
-					String name = field.getName();
+
 					field.setAccessible(true);
 					
 					if (field.getName().equals("serialVersionUID") == false) {
-					
-						if (rs.getObject(name) != null) {
-							if(field.getType().isAssignableFrom(Boolean.TYPE)){
-								
-								boolean value = rs.getBoolean(name);
-					            field.set(obj, value);
-					            
-							} else if(field.getType().isAssignableFrom(String.class)){
-								
-								String value = rs.getString(name).trim();
-					            field.set(obj, value);
-					            
-							} else if (field.getType().isAssignableFrom(Integer.TYPE)){
-								
-								Integer value = rs.getInt(name);
-					            field.set(obj, value);
-					            
-							} else if(field.getType().isAssignableFrom(Double.TYPE)){
-								
-								double value = rs.getDouble(name);
-					            field.set(obj, value);
-					            
-							} else if(field.getType().isAssignableFrom(Float.TYPE)){
-								
-								float value = rs.getFloat(name);
-					            field.set(obj, value);
-					            
-							} else if(field.getType().isAssignableFrom(Date.class)){
-								
-								Date value = rs.getDate(name);
-					            field.set(obj, value);
-			
-							} else if (field.getType().isAssignableFrom(List.class)) {
-								String value = rs.getString(name).trim();
-								List<String> list = splitList(value, ",");
-					            field.set(obj, list);
-							}
-						}
+						
+						setFieldValueFromResultSet(obj, field, rs);
+
 					}
 					
 				}
@@ -288,6 +252,55 @@ public class GeneralUtils {
 			filled = false;
 		}
 		return filled;
+	}
+	
+	private static <T> void setFieldValueFromResultSet(T obj, Field field, ResultSet rs) {
+		
+		String name = field.getName();
+		
+		try {
+			
+			if (rs.getObject(name) != null) {
+				if(field.getType().isAssignableFrom(Boolean.TYPE)){
+					
+					boolean value = rs.getBoolean(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(String.class)){
+					
+					String value = rs.getString(name).trim();
+		            field.set(obj, value);
+		            
+				} else if (field.getType().isAssignableFrom(Integer.TYPE)){
+					
+					Integer value = rs.getInt(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(Double.TYPE)){
+					
+					double value = rs.getDouble(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(Float.TYPE)){
+					
+					float value = rs.getFloat(name);
+		            field.set(obj, value);
+		            
+				} else if(field.getType().isAssignableFrom(Date.class)){
+					
+					Date value = rs.getDate(name);
+		            field.set(obj, value);
+
+				} else if (field.getType().isAssignableFrom(List.class)) {
+					String value = rs.getString(name).trim();
+					List<String> list = splitList(value, ",");
+		            field.set(obj, list);
+				}
+			}
+			
+		} catch (SQLException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
