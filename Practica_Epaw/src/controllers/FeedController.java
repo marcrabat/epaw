@@ -54,6 +54,7 @@ public class FeedController extends Servlet {
 		String session_ID = (String) session.getAttribute("Session_ID");
 		String userToLook = (String) session.getAttribute("userToLook");
 		String mode = request.getParameter("mode");
+		LikeDAO likeDao = new LikeDAO();
 
 		if (session_ID == null) {
 			errors.addError("requestError", "Your session is not valid");
@@ -93,7 +94,6 @@ public class FeedController extends Servlet {
 					tweets = tweetDAO.returnGlobalTimeline(20);
 				}
 				tweets = tweetDAO.returnGlobalTimeline(20);
-				LikeDAO likeDao = new LikeDAO();
 				for(int i=0; i<tweets.size();i++) {
 					BeanTweet tweet = tweets.get(i);
 					tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
@@ -106,17 +106,20 @@ public class FeedController extends Servlet {
 				}
 				break;
 			
-			case "retrieveLikesForTweet":
+			case "insertLikeForTweet":
 
-				/*int numLikes = 0;
-				LikeDAO likeDao = new LikeDAO();
-				numLikes = likeDao.countTweetLikes(tweetID);
+				int numLikes = 0;
+				int tweetID = Integer.parseInt((String) request.getParameter("tweetID"));
+				String username = (String) request.getParameter("username");
+				
+				if(!likeDao.checkUserLike(tweetID, username)) likeDao.insertUserLike(tweetID, username);
+				else likeDao.deleteUserLike(tweetID, username);
 				
 				if (errors.haveErrors() == false) {
 					sendLikesResponseWithNoErrors(request, response, numLikes);
 				} else {
 					sendResponseWithErrors(request, response, errors);
-				}*/
+				}
 				break;
 			}			
 			

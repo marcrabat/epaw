@@ -70,7 +70,7 @@ public class LikeDAO {
 		try {
 			if (this.bd != null) {
 				String sql = "SELECT COUNT(*) AS numberOfLikes FROM " + this.tableName;
-				sql += " WHERE " + COLUMN_TWEET_ID + " = '" + tweetID + " AND " + COLUMN_USER + " = '" + username + "';";
+				sql += " WHERE " + COLUMN_TWEET_ID + " = '" + tweetID + "' AND " + COLUMN_USER + " = '" + username + "';";
 				
 				System.out.println("------------ LikeDAO.java ------------ SQL EXIST: " + sql);
 				
@@ -111,7 +111,7 @@ public class LikeDAO {
 		boolean delete = false;
 		if (this.bd != null) {
 
-			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + " AND " + COLUMN_USER + " = " + username + ";";
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_TWEET_ID + " = " + tweetID + " AND " + COLUMN_USER + " = '" + username + "';";
 			
 			System.out.println("------------ LikeDAO.java ------------ SQL DELETE: " + sql);
 

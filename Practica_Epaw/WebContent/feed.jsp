@@ -108,7 +108,7 @@
         	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
         	HTML += "<p class='card-text'>" + currentTweet.message +"</p>";
-        	HTML += "<button class='mybtn'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
+        	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+currentTweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
         	HTML += myButtons;
         	HTML += "<button class='mybtn'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
@@ -169,6 +169,27 @@
         	alert("Error when loading the feed for this tweet.");
         }
 
+        
+        function insertLikeTweet(tweetID){
+        	
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	
+        	var parametros = {
+        			tweetID : tweetID,
+        			username : user.user,
+        			mode : "insertLikeForTweet"
+        		};
+            $.ajax({
+                type: 'post', //rest Type
+                dataType: 'text', //mispelled
+                url: "/Lab_3/checkFeedErrors",
+                data: parametros,
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function(xhr,status,error) { alert("Error: " + error);} });
+        }
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
