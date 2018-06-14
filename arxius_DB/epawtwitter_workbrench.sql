@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 3.5.1
 -- http://www.phpmyadmin.net
 --
@@ -151,7 +151,7 @@ ALTER TABLE `tweets`
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES
 ('test', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test@test.com', b'0'),
 ('test2', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test2@test.com', b'0'),
 ('test3', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test3@test.com', b'0'),
@@ -165,7 +165,7 @@ INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `descri
 -- Volcado de datos para la tabla `tweets`
 --
 
-INSERT INTO `tweets` (`tweetID`, `author`, `message`, `publishDate`, `likes`) VALUES
+INSERT INTO `tweets` (`TweetID`, `author`, `message`, `publishDate`, `likes`) VALUES
 (1, 'test', 'Test of tweet', '2018-06-08 10:14:57', NULL),
 (2, 'test', 'Genaral Utils is working?', '2018-06-08 10:14:57', NULL),
 (3, 'test', 'It looks like yes', '2018-06-08 10:14:57', NULL),
@@ -175,7 +175,7 @@ INSERT INTO `tweets` (`tweetID`, `author`, `message`, `publishDate`, `likes`) VA
 -- Volcado de datos para la tabla `relationship`
 --
 
-INSERT INTO `relationship` (`userA`, `userB`) VALUES
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES
 ('test2', 'test'),
 ('test3', 'test'),
 ('test4', 'test'),
@@ -188,6 +188,6 @@ INSERT INTO `relationship` (`userA`, `userB`) VALUES
 -- Volcado de datos para la tabla `likes`
 --
 
-INSERT INTO `likes` (`user`, `tweetID`) VALUES
+INSERT INTO `Likes` (`user`, `tweetID`) VALUES
 ('test', 1),
 ('test', 3);

@@ -153,7 +153,7 @@
         	HTML += "<p class='card-text'>" + currentTweet.message +"</p>";
         	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+currentTweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
         	HTML += myButtons;
-        	HTML += "<button class='mybtn'><i class='fa fa-comment-o'>" + " comment </i></button>"
+        	HTML += "<button class='mybtn' onClick='comment("+currentTweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
@@ -166,6 +166,26 @@
 			return HTML;
         }
 		
+        function comment(tweetID){
+        	var parametros = {
+        			data : tweetID,
+        			mode : "comment"
+        		};
+        		
+        		console.log(parametros);
+        		alert(parametros.mode);
+        		
+            	$.ajax({
+                    type: 'post', //rest Type
+                    dataType: 'text', //mispelled
+                    url: "/Lab_3/checkFeedErrors",
+                    data: parametros,
+                    success: function (data) {
+                        console.log(data);
+                        
+                    },
+                    error: function(xhr,status,error) { alert("Error: " + error);} });
+        }
        
         function viewFeedbackForTweet(tweetID){
         	

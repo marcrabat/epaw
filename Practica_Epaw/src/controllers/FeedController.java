@@ -121,6 +121,10 @@ public class FeedController extends Servlet {
 					sendResponseWithErrors(request, response, errors);
 				}
 				break;
+				
+			case "comment":
+				System.out.println("commenting");
+				break;
 			}			
 			
 		}
