@@ -123,6 +123,18 @@ function redirect(targetWindow, url) {
 	targetWindow.location.href = encodeURIComponent(url);
 }
 
+function showErrorsInAlert(errors) {
+	var message = "";
+
+	for (var i = 0; i < errors.length; i++) {
+		message += errors[i].error + "\n";
+	}
+
+	if (message != "") {
+		alert(message);
+	}
+}
+
 // ASYNC / AWAIT
 /* Aixo t'ho deixo per a tu Marc Alcaraz.
 async function getProcessedData(url) {

@@ -54,8 +54,8 @@
 					<button type="button" class="btn btn-default" Onclick="closePublishModal()">Close</button>
 	    		</div>
 	    		
-	    		<input type="hidden" id="hiddenTweetId" value="">
-	    		<input type="hidden" id="hiddenCommentTweetId" value="">
+	    		<input type="hidden" id="hiddenTweetId" value="-1">
+	    		<input type="hidden" id="hiddenCommentTweetId" value="-1">
 	    		
 	    	</div>
 		      

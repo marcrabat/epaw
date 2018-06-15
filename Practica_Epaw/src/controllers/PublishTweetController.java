@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import database.FeedbackDAO;
 import database.TweetDAO;
 import database.UserDAO;
 import models.BeanTweet;
@@ -64,20 +65,16 @@ public class PublishTweetController extends Servlet {
 			errors = this.validateTweetInformation(tweet);
 
 			if (errors.haveErrors() == false) {
-				errors.addError(this.insertOrUpdateTweet(tweet));
+				
+				int commentTweetId = Integer.valueOf((String) request.getParameter("commentTweetId"));
+				
+				if (ValidationUtils.isNull(commentTweetId) == true || commentTweetId == -1) {
+					errors.addError(this.insertOrUpdateTweet(tweet));
+				} else {
+					errors.addError(this.commentTweet(tweet, commentTweetId));
+				}
+				
 			}
-		}
-		
-		return errors;
-	}
-	
-	private ErrorMessages validateTweetInformation(BeanTweet tweet) {
-		ErrorMessages errors = new ErrorMessages();
-		
-		if(ValidationUtils.isEmpty(tweet.getMessage()) == true) {
-			errors.addError("tweet", "Tweet can not be empty");
-		} else if (ValidationUtils.haveMaxLength(tweet.getMessage(), 226) == true){
-			errors.addError("tweet", "Your tweet is to long, only accepts 225 characters");
 		}
 		
 		return errors;
@@ -90,6 +87,18 @@ public class PublishTweetController extends Servlet {
 			tweet = JSONUtils.returnJSONObject(jsonData, BeanTweet.class);
 		}
 		return tweet;
+	}
+	
+	private ErrorMessages validateTweetInformation(BeanTweet tweet) {
+		ErrorMessages errors = new ErrorMessages();
+		
+		if(ValidationUtils.isEmpty(tweet.getMessage()) == true) {
+			errors.addError("tweet", "Tweet can not be empty");
+		} else if (ValidationUtils.haveMaxLength(tweet.getMessage(), 226) == true){
+			errors.addError("tweet", "Your tweet is to long, only accepts 225 characters");
+		}
+		
+		return errors;
 	}
 	
 	private ErrorMessages insertOrUpdateTweet(BeanTweet tweet) {
@@ -116,7 +125,7 @@ public class PublishTweetController extends Servlet {
 	private ErrorMessages insertTweet(BeanTweet tweet) {
 		ErrorMessages errors = new ErrorMessages();
 		
-		boolean insertTweet = this.tweetDAO.insertTweet(tweet);
+		boolean insertTweet = this.tweetDAO.insertTweetAndPutHisId(tweet);
 		
 		if (insertTweet == false) {
 			errors.addError("tweet", "Tweet can not be inserted");
@@ -132,6 +141,26 @@ public class PublishTweetController extends Servlet {
 		
 		if (updateTweet == false) {
 			errors.addError("tweet", "Tweet can not be edited");
+		}
+		
+		return errors;
+	}
+	
+	private ErrorMessages commentTweet(BeanTweet commentTweet, int tweetId) {
+		ErrorMessages errors = new ErrorMessages();
+		FeedbackDAO feedbackDAO = new FeedbackDAO();
+		
+		errors = this.insertTweet(commentTweet);
+		
+		if (errors.haveErrors() == false) {
+			
+			boolean insertFeedback = feedbackDAO.associateTweet(tweetId, commentTweet.getTweetID());
+			
+			if (insertFeedback == false) {
+				errors.addError("tweet", "Tweet can not be commented");
+				this.tweetDAO.deleteTweet(commentTweet.getTweetID());
+			}
+			
 		}
 		
 		return errors;

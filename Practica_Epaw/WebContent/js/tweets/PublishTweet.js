@@ -20,9 +20,9 @@ function successFillDivPublishTweet(response) {
 		
 		if (tweet.tweetID > -1) {
 			fillDivPublishTweet(tweet);
+			setValue("hiddenCommentTweetId", -1);
 		} else {
 			setValue("hiddenTweetId", -1);
-			setValue("hiddenCommentTweetId", -1);
 		}
 		showPublishModal();
 	}
@@ -45,8 +45,10 @@ function showPublishModal() {
 
 function closePublishModal() {
 	var modal = getElement('modalPublishTweet');
-	setValue("modalTweetMessage", "");
 	modal.style.display = "none";
+	setValue("hiddenTweetId", -1);
+	setValue("hiddenCommentTweetId", -1);
+	setValue("modalTweetMessage", "");
 }
 
 function publishTweet() {
@@ -65,7 +67,7 @@ function publishTweet() {
 	
 		jsonTweet = JSON.stringify(tweet);
 		
-		var parametros = {data: jsonTweet, commentId: commentTweetId};
+		var parametros = {data: jsonTweet, commentTweetId: commentTweetId};
 		executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
 						function(response) { successPublishTweet(response); },
 						function(e) { errorPublishTweet(e); });
@@ -86,24 +88,12 @@ function successPublishTweet(response) {
 	} catch (e) {}
 	
 	if (result.errors.length > 0) { 
-		showErrors(result.errors);
+		showErrorsInAlert(result.errors);
 	} else {
 		closePublishModal();
 		window.location.href = window.location.href;
 	}
 
-}
-
-function showErrors(errors) {
-	var message = "";
-
-	for (var i = 0; i < errors.length; i++) {
-		message += errors[i].error + "\n";
-	}
-
-	if (message != "") {
-		alert(message);
-	}
 }
 
 function errorPublishTweet(e) {

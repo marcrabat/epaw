@@ -248,6 +248,47 @@ public class TweetDAO {
 		return numberOfTweets;
 	}
 	
+	public int getLastTweetIdWritenByAuthor(String author) {
+		int lastTweetId = 0;
+		
+		try {
+			if (this.bd != null) {
+				String sql = "SELECT MAX(tweetID) as lastTweetId FROM " + this.tableName;
+				sql += " WHERE " + COLUMN_AUTHOR + " = '" + author + "';";
+				
+				System.out.println("------------ TweetDAO.java ------------ SQL Last Tweet: " + sql);
+				
+				this.bd.executeQuery(sql);
+				
+				if (this.bd.getResultSet().next() == true) {
+					lastTweetId = this.bd.getResultSet().getInt("lastTweetId");
+				}
+
+				this.bd.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			lastTweetId = -1;
+		}
+		
+		return lastTweetId;
+	}
+	
+	public boolean insertTweetAndPutHisId(BeanTweet tweet) {
+		boolean result = false;
+		boolean insert = this.insertTweet(tweet);
+		
+		if (insert == true) {
+			int tweetId = this.getLastTweetIdWritenByAuthor(tweet.getAuthor());
+			if (tweetId > -1) {
+				tweet.setTweetID(tweetId);
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
 	
 	
 }

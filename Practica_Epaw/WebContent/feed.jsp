@@ -133,13 +133,14 @@
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
 				myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
-        		myButtons += "onClick='openModalPublishTweet(" + currentTweet.tweetID+ ");'> edit </i></button>";
+        		myButtons += "onClick='openModalPublishTweet(" + currentTweet.tweetID + ");'> edit </i></button>";
                 
-        		myButtons += "<button class='mybtn'><i class='fa fa-close'> delete </i></button>";
+        		myButtons += "<button class='mybtn'><i class='fa fa-close'";
+        		myButtons += "onClick='deleteTweet(" + currentTweet.tweetID + ");'> delete </i></button>";
         	}
 			
 			var width = 0;
-			if(isFeedback == false){ //
+			if(isFeedback == false){
             	width = 50;
             } else{
             	width = 30;
@@ -153,7 +154,7 @@
         	HTML += "<p class='card-text'>" + currentTweet.message +"</p>";
         	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+currentTweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
         	HTML += myButtons;
-        	HTML += "<button class='mybtn' onClick='comment("+currentTweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
+        	HTML += "<button class='mybtn' onClick='commentTweet("+currentTweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
@@ -166,7 +167,12 @@
 			return HTML;
         }
 		
-        function comment(tweetID){
+        function commentTweet(tweetID){
+        	
+        	setValue("hiddenCommentTweetId", tweetID);
+        	openModalPublishTweet(-1);
+        	
+        	/*
         	var parametros = {
         			data : tweetID,
         			mode : "comment"
@@ -185,6 +191,7 @@
                         
                     },
                     error: function(xhr,status,error) { alert("Error: " + error);} });
+            */
         }
        
         function viewFeedbackForTweet(tweetID){
@@ -253,6 +260,41 @@
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
         }
+        
+		function deleteTweet(tweetID){
+
+        	var parametros = {
+        			data : tweetID,
+        			mode : "deleteTweet"
+        		};
+        		
+        	executeAjax(parametros, "/Lab_3/checkFeedErrors", "POST", 
+					function(response) { successDeleteTweet(response); },
+					function(e) { errorDeleteTweet(e); });
+        }
+		
+		function successDeleteTweet(response) {
+		
+			console.log(response);
+			
+			var result = response;
+			
+			try {
+				result = JSON.parse(response);
+			} catch (e) {}
+			
+			if (result.errors.length > 0) { 
+				showErrorsInAlert(result.errors);
+			} else {
+				alert("The tweet was deleted");
+				window.location.href = window.location.href;
+			}
+		}
+		
+		function errorDeleteTweet(e) {
+			alert("Error Deleting Tweet .....");
+		}
+        
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
