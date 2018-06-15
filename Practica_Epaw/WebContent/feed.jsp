@@ -113,23 +113,10 @@
         	}	
         }
         
-        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
-        	var i;
-        	var HTML = "";
-        	var JSONData = '${sessionScope.userInfo}';
-        	var user = JSON.parse(JSONData);
-        	for (i = 0; i < tweets.length; i++) {
-        		HTML += generateHTML(tweets[i], user, true);
-        		var existFeedback = document.getElementById("feedback_" + tweetToInsertFeedback); 
-                if(existFeedback != null && existFeedback != 'undefined'){
-                	existFeedback.innerHTML = HTML;	
-                } 
-        	}
-        }
+        
         
         function generateHTML(currentTweet, user, isFeedback){
-        	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
-        	
+        	var HTML = "";
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
 				myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
@@ -138,8 +125,15 @@
         		myButtons += "<button class='mybtn'><i class='fa fa-close'";
         		myButtons += "onClick='deleteTweet(" + currentTweet.tweetID + ");'> delete </i></button>";
         	}
-			
-        	var HTML = ""; 
+        	if(isFeedback == true){
+        		var HTML = "";
+            	HTML += "<div id='"+tweetID+"'>";
+            	HTML += generateTweetCard(tweet, userButtons);
+            	HTML += "<div id='feedback_" + currentTweet.tweetID +"_" + "'> </div>";
+            	HTML += "</div>";
+        		return HTML;
+        	}
+        	
         	HTML = generateTweetDiv(currentTweet, currentTweet.tweetID, myButtons);
 			return HTML;
         }
@@ -148,6 +142,7 @@
         	var HTML = "";
         	HTML += "<div id='"+tweetID+"'>";
         	HTML += generateTweetCard(tweet, userButtons);
+        	HTML += "<div id='feedback_" + tweetID + "'> </div>";
         	HTML += "</div>";
             return HTML;
         }
@@ -172,27 +167,6 @@
         	
         	setValue("hiddenCommentTweetId", tweetID);
         	openModalPublishTweet(-1);
-        	
-        	/*
-        	var parametros = {
-        			data : tweetID,
-        			mode : "comment"
-        		};
-        		
-        		console.log(parametros);
-        		alert(parametros.mode);
-        		
-            	$.ajax({
-                    type: 'post', //rest Type
-                    dataType: 'text', //mispelled
-                    url: "/Lab_3/checkFeedErrors",
-                    data: parametros,
-                    success: function (data) {
-                        console.log(data);
-                        
-                    },
-                    error: function(xhr,status,error) { alert("Error: " + error);} });
-            */
         }
        
         function viewFeedbackForTweet(tweetID){
@@ -222,23 +196,25 @@
     		
         }
         
-        
-        function successRetrieveFeedbackForTweet(response) {
-
-        	console.log(response);
-
-        	var result = response;
-
-        	if (result.errors.length > 0) {
-        		alert("There are some errors")
-        	} else {
-        		console.log("Need to implement insertion of feedback.");
+        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
+        	var i;
+        	var HTML = "";
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	
+        	var divFeedbackId = "feedback_" + tweetToInsertFeedback;
+        	
+        	for (i = 0; i < tweets.length; i++) {
+        		//HTML += generateHTML(tweets[i], user, true);
+        		var newId = tweetToInsertFeedback + "_" + tweets[i].tweetID;
+        		alert(newId);
+        		HTML += generateTweetDiv(tweets[i],newId, "");
         	}
-
-        }
-
-        function errorRetrieveFeedbackForTweet(e) {
-        	alert("Error when loading the feed for this tweet.");
+        	var feedbackId = divFeedbackId; // + "_" + tweets[i].twwetID;
+     		var insertFeedback = document.getElementById(feedbackId);
+     		console.log(insertFeedback);
+     		alert(insertFeedback);
+     		insertFeedback.innerHTML = HTML;
         }
 
         
