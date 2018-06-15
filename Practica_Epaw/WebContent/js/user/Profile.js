@@ -259,11 +259,8 @@ function deleteSessionAccount() {
 			};
 
 			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST",
-					function(response) {
-						succesDeleteSessionAccount(response);
-					}, function(e) {
-						errorDeleteSessionAccount(e);
-					});
+					function(response) { succesDeleteSessionAccount(response); }, 
+					function(e) { errorDeleteSessionAccount(e); });
 
 		}
 
