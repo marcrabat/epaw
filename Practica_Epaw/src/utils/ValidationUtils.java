@@ -37,6 +37,10 @@ public class ValidationUtils {
 		return result;
 	}
 	
+	public static <T> boolean isNotNaN(T obj) {
+		return !isNaN(obj);
+	}
+	
 	public static <T> boolean isNull(T obj) {
 		boolean result = true;
 		try {
@@ -45,6 +49,10 @@ public class ValidationUtils {
 			result = true;
 		}
 		return result;
+	}
+	
+	public static <T> boolean isNotNull(T obj) {
+		return !isNull(obj);
 	}
 	
 	public static <T> boolean isEmpty(T obj) {
@@ -156,7 +164,9 @@ public class ValidationUtils {
 			Class c = Class.forName(obj.getClass().getName());
 			Field[] fields = c.getDeclaredFields();
 
-			for(Field field : fields) {
+			for(int i = 0; (i < fields.length) && (isEmpty == false); i++) {
+				
+				Field field = fields[i];
 				
 				if ((field.get(obj) instanceof String)
 						|| (field.get(obj) instanceof List) || (field.get(obj) instanceof Map)) {
@@ -164,13 +174,11 @@ public class ValidationUtils {
 					if ((ValidationUtils.isNull(field.get(obj)) == true) 
 							|| (ValidationUtils.isEmpty(obj)) == true) {
 						isEmpty = true;
-						break;
 					}
 					
 				} else {
 					if (ValidationUtils.isNull(field.get(obj)) == true) {
 						isEmpty = true;
-						break;
 					}
 				}
 			}

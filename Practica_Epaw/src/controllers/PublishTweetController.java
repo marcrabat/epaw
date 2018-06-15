@@ -66,7 +66,7 @@ public class PublishTweetController extends Servlet {
 
 			if (errors.haveErrors() == false) {
 				
-				int commentTweetId = Integer.valueOf((String) request.getParameter("commentTweetId"));
+				int commentTweetId = Integer.valueOf(request.getParameter("commentTweetId"));
 				
 				if (ValidationUtils.isNull(commentTweetId) == true || commentTweetId == -1) {
 					errors.addError(this.insertOrUpdateTweet(tweet));
