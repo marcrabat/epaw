@@ -2,7 +2,7 @@ var sessionId = null;
 
 function redirectToPersonalPage() {
 	if (sessionId != null) {
-		seeUserFeed(sessionId);
+		seeUserFeed("");
 	} else {
 		window.location.href = "Lab_3/main";
 	}
