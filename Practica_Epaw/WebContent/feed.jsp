@@ -125,11 +125,11 @@
                 	existFeedback.innerHTML = HTML;	
                 } 
         	}
-        	
         }
         
         function generateHTML(currentTweet, user, isFeedback){
         	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
+        	
         	var myButtons = "";
 			if(currentTweet.author == user.user || user.isAdmin == true){
 				myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
@@ -139,32 +139,33 @@
         		myButtons += "onClick='deleteTweet(" + currentTweet.tweetID + ");'> delete </i></button>";
         	}
 			
-			var width = 0;
-			if(isFeedback == false){
-            	width = 50;
-            } else{
-            	width = 30;
-            }
-			
         	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width:" + width + "rem;'>";
-        	HTML += "<div class='card-body'>";
-        	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
-        	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
-        	HTML += "<p class='card-text'>" + currentTweet.message +"</p>";
-        	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+currentTweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
-        	HTML += myButtons;
-        	HTML += "<button class='mybtn' onClick='commentTweet("+currentTweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
-            HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
-            HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
-            HTML += "</div></div>";
-            
-            if(isFeedback == false){ //
-            	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
-    			HTML += "</div>"	
-            }
-            
+        	HTML = generateTweetDiv(currentTweet, currentTweet.tweetID, myButtons);
 			return HTML;
+        }
+        
+        function generateTweetDiv(tweet, tweetID, userButtons){
+        	var HTML = "";
+        	HTML += "<div id='"+tweetID+"'>";
+        	HTML += generateTweetCard(tweet, userButtons);
+        	HTML += "</div>";
+            return HTML;
+        }
+        
+        function generateTweetCard(tweet, userButtons){
+        	var HTML = "";
+        	HTML += "<div class='card' style='width:30rem;'>";
+        	HTML += "<div class='card-body'>";
+        	HTML += "<h5 class='card-title'>" + tweet.author + "</h5>";
+        	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + tweet.publishDate  + "</h6>";
+        	HTML += "<p class='card-text'>" + tweet.message +"</p>";
+        	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+tweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + tweet.likes +"</i></button>";
+        	HTML += userButtons;
+        	HTML += "<button class='mybtn' onClick='commentTweet("+tweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
+            HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
+            HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+tweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
+            HTML += "</div></div>";
+            return HTML;
         }
 		
         function commentTweet(tweetID){
@@ -220,6 +221,7 @@
                 error: function(xhr,status,error) { alert("Error: " + error);} });
     		
         }
+        
         
         function successRetrieveFeedbackForTweet(response) {
 
