@@ -36,7 +36,7 @@ public class FeedView extends Servlet {
 		} else {
 			System.out.println("Enter with session: " + session.getAttribute("Session_ID"));
 			String userToLook = request.getParameter("userToLook");
-			if(ValidationUtils.isEmpty(userToLook) == false) {
+			if(ValidationUtils.isNotNull(userToLook) == true) {
 				session.setAttribute("userToLook", userToLook);
 			}
 			dispatcher = request.getRequestDispatcher("/feed.jsp");
