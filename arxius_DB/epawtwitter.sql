@@ -7,38 +7,38 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 
-CREATE TABLE IF NOT EXISTS `feedback` (
+CREATE TABLE IF NOT EXISTS `Feedback` (
   `tweet1` int(11) NOT NULL,
   `tweet2` int(11) NOT NULL,
   PRIMARY KEY (`tweet1`,`tweet2`),
   KEY `FK_Feedback_tweet2` (`tweet2`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `likes` (
+CREATE TABLE IF NOT EXISTS `Likes` (
   `user` varchar(255) NOT NULL,
   `tweetID` int(11) NOT NULL,
   PRIMARY KEY (`user`,`tweetID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `likes` (`user`, `tweetID`) VALUES('test', 1);
-INSERT INTO `likes` (`user`, `tweetID`) VALUES('test', 3);
+INSERT INTO `Likes` (`user`, `tweetID`) VALUES('test', 1);
+INSERT INTO `Likes` (`user`, `tweetID`) VALUES('test', 3);
 
-CREATE TABLE IF NOT EXISTS `relationship` (
+CREATE TABLE IF NOT EXISTS `Relationship` (
   `userA` varchar(255) NOT NULL,
   `userB` varchar(255) NOT NULL,
   PRIMARY KEY (`userA`,`userB`),
   KEY `FK_Relationship_userB` (`userB`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test2', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test3', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test4', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test5', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test6', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test7', 'test');
-INSERT INTO `relationship` (`userA`, `userB`) VALUES('test8', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test2', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test3', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test4', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test5', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test6', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test7', 'test');
+INSERT INTO `Relationship` (`userA`, `userB`) VALUES('test8', 'test');
 
-CREATE TABLE IF NOT EXISTS `tweets` (
+CREATE TABLE IF NOT EXISTS `Tweets` (
   `tweetID` int(11) NOT NULL AUTO_INCREMENT,
   `author` varchar(255) NOT NULL,
   `message` varchar(255) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `tweets` (
   KEY `originalAuthor_5` (`originalAuthor`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE IF NOT EXISTS `Users` (
   `user` varchar(255) NOT NULL,
   `name` varchar(45) NOT NULL,
   `surname` varchar(45) NOT NULL,
@@ -72,26 +72,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`user`,`mail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test2', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test2@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test3', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test3@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test4', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test4@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test5', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test5@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test6', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test6@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test7', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test7@test.com', b'0');
-INSERT INTO `users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test8', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test8@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test2', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test2@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test3', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test3@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test4', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test4@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test5', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test5@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test6', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test6@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test7', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test7@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test8', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test8@test.com', b'0');
 
 
-ALTER TABLE `feedback`
-  ADD CONSTRAINT `FK_Feedback_tweet1` FOREIGN KEY (`tweet1`) REFERENCES `tweets` (`tweetID`),
-  ADD CONSTRAINT `FK_Feedback_tweet2` FOREIGN KEY (`tweet2`) REFERENCES `tweets` (`tweetID`);
+ALTER TABLE `Feedback`
+  ADD CONSTRAINT `FK_Feedback_tweet1` FOREIGN KEY (`tweet1`) REFERENCES `Tweets` (`tweetID`),
+  ADD CONSTRAINT `FK_Feedback_tweet2` FOREIGN KEY (`tweet2`) REFERENCES `Tweets` (`tweetID`);
 
-ALTER TABLE `relationship`
-  ADD CONSTRAINT `FK_Relationship_userA` FOREIGN KEY (`userA`) REFERENCES `users` (`user`),
-  ADD CONSTRAINT `FK_Relationship_userB` FOREIGN KEY (`userB`) REFERENCES `users` (`user`);
+ALTER TABLE `Relationship`
+  ADD CONSTRAINT `FK_Relationship_userA` FOREIGN KEY (`userA`) REFERENCES `Users` (`user`),
+  ADD CONSTRAINT `FK_Relationship_userB` FOREIGN KEY (`userB`) REFERENCES `Users` (`user`);
 
-ALTER TABLE `tweets`
-  ADD CONSTRAINT `FK_Tweets_author` FOREIGN KEY (`author`) REFERENCES `users` (`user`);
+ALTER TABLE `Tweets`
+  ADD CONSTRAINT `FK_Tweets_author` FOREIGN KEY (`author`) REFERENCES `Users` (`user`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

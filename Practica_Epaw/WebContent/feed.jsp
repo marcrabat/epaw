@@ -77,6 +77,8 @@
 
         	if (sessionId == "") {
         		redirectToMainPage();
+        	} else if(sessionId == "anonymous"){
+        		anonymousTweetsRequest();
         	}
         	else{
 				TweetsRequest("${sessionScope.userToLook}");
@@ -85,6 +87,10 @@
         
         function redirectToMainPage(){
         	window.location.href = "/Lab_3/main";
+        }
+        
+        function anonymousTweetsRequest(){
+        	alert("Implement anonymous feed");
         }
         
         function TweetsRequest(username){
