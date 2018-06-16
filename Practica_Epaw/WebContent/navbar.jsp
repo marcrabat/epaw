@@ -7,6 +7,16 @@
 		sessionUser = '${sessionScope.Session_ID}';
 		sessionJsonTweet = '${sessionScope.tweetInfo}';
 		
+		if(sessionUser == "anonymous"){
+			var publishButton = document.getElementById('buttonPublishTweet');
+			publishButton.style.display='none';
+			var profileButton = document.getElementById('profileButton');
+			profileButton.style.display='none';
+			var logoutButton = document.getElementById('logoutButton');
+			$('#logoutButton').text('Main Page');
+		}
+		
+		
 		/*
 		$("#buttonPublishTweet").click(function(){
 	        $("#dialogPublishTweet").modal();
@@ -28,12 +38,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('${sessionScope.Session_ID}');">
+                <a id="profileButton" class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('${sessionScope.Session_ID}');">
                 	Profile
                	</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="logout" style="color: #ffffff;">Logout</a>
+                <a id="logoutButton" class="nav-link" href="logout" style="color: #ffffff;">Logout</a>
             </li>
         </ul>
         
