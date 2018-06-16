@@ -17,13 +17,10 @@
         /////////////////////// FUNCTIONS ////////////////////////    
 
 		$(document).ready(function() {
-			var sessionId = "${sessionScope.Session_ID}";
+			sessionId = "${sessionScope.Session_ID}";
 			if (sessionId != "") {
-				alert(sessionId);
-				x = sessionId;
-				redirectToPersonalPage();
 				
-				alert(x);
+				seeUserFeed(sessionId);
 			}
 		});
 

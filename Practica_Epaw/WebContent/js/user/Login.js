@@ -1,8 +1,11 @@
-
-var x = null;
+var sessionId = null;
 
 function redirectToPersonalPage() {
-	window.location.href = "/Lab_3/feed"
+	if (sessionId != null) {
+		seeUserFeed("");
+	} else {
+		window.location.href = "Lab_3/main";
+	}
 }
 
 function clear() {

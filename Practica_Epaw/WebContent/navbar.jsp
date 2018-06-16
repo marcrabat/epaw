@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #77517f;">
 
         <div class="navbar-header pull-left">
-            <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;">Gamitter</a>
+            <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;" onClick="seeUserFeed('');">Gamitter</a>
         </div>
  
         <ul class="navbar-nav">
@@ -28,10 +28,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="profile.jsp" style="color: #ffffff;">Profile</a>
+                <a class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('${sessionScope.Session_ID}');">
+                	Profile
+               	</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" style="color: #ffffff;">Link 3</a>
+                <a class="nav-link" href="logout" style="color: #ffffff;">Logout</a>
             </li>
         </ul>
         

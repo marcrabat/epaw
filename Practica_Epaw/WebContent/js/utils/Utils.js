@@ -39,6 +39,14 @@ function getValue(id) {
 	return value;
 }
 
+function getHtml(id) {
+	var html = null;
+	if ((document.getElementById(id) != null) && (document.getElementById(id) != undefined)) {
+		html = document.getElementById(id).innerHTML;
+	}
+	return html;
+}
+
 function getSelectValue(id) {
 	var value = null;
 	if ((document.getElementById(id) != null) && (document.getElementById(id) != undefined)) {
@@ -69,6 +77,12 @@ function removeOptionInSelect(selectId, optionPos) {
 function setValue(id, value) {
 	if ((document.getElementById(id) != null) && (document.getElementById(id) != undefined)) {
 		document.getElementById(id).value = value;
+	}
+}
+
+function setHtml(id, html) {
+	if ((document.getElementById(id) != null) && (document.getElementById(id) != undefined)) {
+		document.getElementById(id).innerHTML = html;
 	}
 }
 

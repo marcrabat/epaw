@@ -7,6 +7,7 @@
 	<%@ include file='navbar.jsp' %>
     
     <script src="js/user/Profile.js"></script>
+    <script src="js/tweets/Feedback.js"></script>
     
     <script type="text/javascript">
 		
@@ -16,6 +17,7 @@
 			
 			sessionId = '${sessionScope.Session_ID}';
 			userToLook = '${sessionScope.userToLook}';
+			sessionTweetFeedback = '${sessionScope.tweetFeedback}';
 			
 			if (sessionId == "") {
 				window.location.href = "/Lab_3/main";
@@ -72,6 +74,7 @@
         /////////////////////// FUNCTIONS ////////////////////////    
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
+
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else{
@@ -101,7 +104,7 @@
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
         }
-        
+
         function tweetsIntoDivs(tweets){
         	var i;
         	var HTML = "";
@@ -112,88 +115,68 @@
                 document.getElementById("feedContent").innerHTML = HTML;
         	}	
         }
-        
-        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
-        	var i;
+
+        function generateHTML(currentTweet, user, isFeedback){
         	var HTML = "";
-        	var JSONData = '${sessionScope.userInfo}';
-        	var user = JSON.parse(JSONData);
-        	for (i = 0; i < tweets.length; i++) {
-        		HTML += generateHTML(tweets[i], user, true);
-        		var existFeedback = document.getElementById("feedback_" + tweetToInsertFeedback); 
-                if(existFeedback != null && existFeedback != 'undefined'){
-                	existFeedback.innerHTML = HTML;	
-                } 
+        	var myButtons = genereteMyButtonsOfTweet(currentTweet, user);
+			
+        	if(isFeedback == true){
+        		var HTML = "";
+            	HTML += "<div id='"+tweetID+"'>";
+            	HTML += generateTweetCard(tweet, userButtons);
+            	HTML += "<div id='feedback_" + currentTweet.tweetID +"_" + "'> </div>";
+            	HTML += "</div>";
+        		return HTML;
         	}
         	
+        	HTML = generateTweetDiv(currentTweet, currentTweet.tweetID, myButtons);
+			return HTML;
         }
         
-        function generateHTML(currentTweet, user, isFeedback){
-        	/*If the tweet is mine or i'm an admin, total edition, o.w. without edit/delete*/
+        function generateTweetDiv(tweet, tweetID, userButtons){
+        	var HTML = "";
+        	HTML += "<div id='"+tweetID+"'>";
+        	HTML += generateTweetCard(tweet, userButtons);
+        	HTML += "<div id='feedback_" + tweetID + "'> </div>";
+        	HTML += "</div>";
+            return HTML;
+        }
+        
+        function genereteMyButtonsOfTweet(tweet, user) {
         	var myButtons = "";
-			if(currentTweet.author == user.user || user.isAdmin == true){
+        	if(tweet.author == user.user || user.isAdmin == true){
 				myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
-        		myButtons += "onClick='openModalPublishTweet(" + currentTweet.tweetID + ");'> edit </i></button>";
+        		myButtons += "onClick='openModalPublishTweet(" + tweet.tweetID + ");'> edit </i></button>";
                 
         		myButtons += "<button class='mybtn'><i class='fa fa-close'";
-        		myButtons += "onClick='deleteTweet(" + currentTweet.tweetID + ");'> delete </i></button>";
+        		myButtons += "onClick='deleteTweet(" + tweet.tweetID + ");'> delete </i></button>";
         	}
-			
-			var width = 0;
-			if(isFeedback == false){
-            	width = 50;
-            } else{
-            	width = 30;
-            }
-			
-        	var HTML = ""; 
-        	HTML += "<div class='card' " + "id='tweet_" + currentTweet.tweetID + "' style='width:" + width + "rem;'>";
+        	return myButtons;
+        }
+        
+        function generateTweetCard(tweet, userButtons){
+        	var HTML = "";
+        	HTML += "<div class='card' style='width:30rem;'>";
         	HTML += "<div class='card-body'>";
-        	HTML += "<h5 class='card-title'>" + currentTweet.author + "</h5>";
-        	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + currentTweet.publishDate  + "</h6>";
-        	HTML += "<p class='card-text'>" + currentTweet.message +"</p>";
-        	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+currentTweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + currentTweet.likes +"</i></button>";
-        	HTML += myButtons;
-        	HTML += "<button class='mybtn' onClick='commentTweet("+currentTweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
+        	HTML += "<h5 class='card-title' onClick='seeUserFeed(" + tweet.author + ");'>" + tweet.author + "</h5>";
+        	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + tweet.publishDate  + "</h6>";
+        	HTML += "<p class='card-text'>" + tweet.message +"</p>";
+        	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+tweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + tweet.likes +"</i></button>";
+        	HTML += userButtons;
+        	HTML += "<button class='mybtn' onClick='commentTweet("+tweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
             HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
-            HTML += "<button class='mybtn' Onclick='viewFeedbackForTweet("+currentTweet.tweetID+ ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
+            HTML += "<button class='mybtn' Onclick='openModalFeedback("+ JSON.stringify(tweet) + ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
-            
-            if(isFeedback == false){ //
-            	HTML +="<div id='feedback_" + currentTweet.tweetID + "'>";
-    			HTML += "</div>"	
-            }
-            
-			return HTML;
+            return HTML;
         }
 		
         function commentTweet(tweetID){
         	
         	setValue("hiddenCommentTweetId", tweetID);
         	openModalPublishTweet(-1);
-        	
-        	/*
-        	var parametros = {
-        			data : tweetID,
-        			mode : "comment"
-        		};
-        		
-        		console.log(parametros);
-        		alert(parametros.mode);
-        		
-            	$.ajax({
-                    type: 'post', //rest Type
-                    dataType: 'text', //mispelled
-                    url: "/Lab_3/checkFeedErrors",
-                    data: parametros,
-                    success: function (data) {
-                        console.log(data);
-                        
-                    },
-                    error: function(xhr,status,error) { alert("Error: " + error);} });
-            */
         }
-       
+       	
+        /*
         function viewFeedbackForTweet(tweetID){
         	
     		var parametros = {
@@ -221,24 +204,27 @@
     		
         }
         
-        function successRetrieveFeedbackForTweet(response) {
-
-        	console.log(response);
-
-        	var result = response;
-
-        	if (result.errors.length > 0) {
-        		alert("There are some errors")
-        	} else {
-        		console.log("Need to implement insertion of feedback.");
+        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
+        	var i;
+        	var HTML = "";
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	
+        	var divFeedbackId = "feedback_" + tweetToInsertFeedback;
+        	
+        	for (i = 0; i < tweets.length; i++) {
+        		//HTML += generateHTML(tweets[i], user, true);
+        		var newId = tweetToInsertFeedback + "_" + tweets[i].tweetID;
+        		alert(newId);
+        		HTML += generateTweetDiv(tweets[i],newId, "");
         	}
-
+        	var feedbackId = divFeedbackId; // + "_" + tweets[i].twwetID;
+     		var insertFeedback = document.getElementById(feedbackId);
+     		console.log(insertFeedback);
+     		alert(insertFeedback);
+     		insertFeedback.innerHTML = HTML;
         }
-
-        function errorRetrieveFeedbackForTweet(e) {
-        	alert("Error when loading the feed for this tweet.");
-        }
-
+		*/
         
         function insertLikeTweet(tweetID){
         	
@@ -319,6 +305,26 @@
 			<button id="buttonViewFollowers" class="btn btn-primary" onClick="viewFollowers();">View followers</button>
 			<button id="buttonViewFollowings" class="btn btn-primary" onClick="viewFollowings();">View followings</button>
 		</div>
+	</div>
+	
+	<div id="modalFeedbackTweet" class="modal" role="dialog">
+	    <div class="modal-dialog">
+	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+		        <div class="modal-header">
+		          <div id="TweetContentModal"></div>
+		        </div>
+		        <div class="modal-body">
+		          <div id="feedbackContentModal"></div>
+		        </div>
+		        <div class="modal-footer">
+					<button type="button" class="btn btn-default" Onclick="closeFeedbackModal()">Close</button>
+	    		</div>
+	    		
+	    	</div>
+		      
+	    </div>
 	</div>
 
 

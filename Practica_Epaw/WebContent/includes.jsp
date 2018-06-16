@@ -7,3 +7,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="js/utils/Utils.js"></script>
 <script src="js/utils/Validations.js"></script>
+<script src="js/user/SeeUser.js"></script>
