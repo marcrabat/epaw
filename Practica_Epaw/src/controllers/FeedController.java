@@ -60,7 +60,20 @@ public class FeedController extends Servlet {
 			errors.addError("requestError", "Your session is not valid");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
 		} else if (session_ID == "anonymous") {
+			int numberOfTweetsForAnonymous = 2; 
 			System.out.println("TODO: Gestionar acces com a anonymous");
+			
+			tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
+			for(int i=0; i<tweets.size();i++) {
+				BeanTweet tweet = tweets.get(i);
+				tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
+				tweets.set(i, tweet);			
+			}
+			if (errors.haveErrors() == false) {
+				sendResponseWithNoErrors(request, response, tweets);
+			} else {
+				sendResponseWithErrors(request, response, errors);
+			}
 		} else {
 			switch (mode) {
 				case "retrieveFeedbackForTweet":

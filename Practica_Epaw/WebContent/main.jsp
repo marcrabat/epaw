@@ -25,6 +25,10 @@
         function goToLogin() {
             window.location.href = "/Lab_3/login";
         }
+        
+        function proceedAsAnonymous(){
+        	window.location.href = "/Lab_3/anonymous";
+        }
 
     </script>
 	
@@ -58,7 +62,7 @@
                 <div class="col-sm-4" align="center">
                     <h2>I'm a world traveller</h2>
                     <img src="images/anonymous.png" style="margin:auto; width:200px;display:block" />
-                    <button id="anonymous" type="button" class="btn btn-outline-primary">Proceed as Anonymous</button> 
+                    <button id="anonymous" onClick = "proceedAsAnonymous();"type="button"class="btn btn-outline-primary">Proceed as Anonymous</button> 
                 </div>
                     
             </div> 
