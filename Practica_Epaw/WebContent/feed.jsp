@@ -8,6 +8,7 @@
     
     <script src="js/user/Profile.js"></script>
     <script src="js/tweets/Feedback.js"></script>
+    <script src="js/tweets/PublishTweet.js"></script>
     
     <script type="text/javascript">
 		
@@ -144,9 +145,11 @@
         
         function genereteMyButtonsOfTweet(tweet, user) {
         	var myButtons = "";
-        	if(tweet.author == user.user || user.isAdmin == true){
-				myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
-        		myButtons += "onClick='openModalPublishTweet(" + tweet.tweetID + ");'> edit </i></button>";
+        	if((tweet.author == user.user) || user.isAdmin == true){
+				if(tweet.originalAuthor == user.user){
+        			myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
+        			myButtons += "onClick='openModalPublishTweet(" + tweet.tweetID + ");'> edit </i></button>";
+				}	
                 
         		myButtons += "<button class='mybtn'><i class='fa fa-close'";
         		myButtons += "onClick='deleteTweet(" + tweet.tweetID + ");'> delete </i></button>";
@@ -155,16 +158,22 @@
         }
         
         function generateTweetCard(tweet, userButtons){
+        	
+        	if(tweet.author==tweet.originalAuthor) 
+        		tweet.originalID = tweet.tweetID;
+        	
         	var HTML = "";
         	HTML += "<div class='card' style='width:30rem;'>";
         	HTML += "<div class='card-body'>";
         	HTML += "<h5 class='card-title' onClick='seeUserFeed(" + tweet.author + ");'>" + tweet.author + "</h5>";
+        	if(tweet.author!=tweet.originalAuthor) 
+        		HTML += "<h6 class='card-title' onClick='seeUserFeed(" + tweet.orignalAuthor + ");'>" + "Original Author: " + tweet.originalAuthor + "</h6>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + tweet.publishDate  + "</h6>";
         	HTML += "<p class='card-text'>" + tweet.message +"</p>";
         	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+tweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + tweet.likes +"</i></button>";
         	HTML += userButtons;
         	HTML += "<button class='mybtn' onClick='commentTweet("+tweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
-            HTML += "<button class='mybtn'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
+            HTML += "<button class='mybtn' Onclick='retweet("+JSON.stringify(tweet)+");'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
             HTML += "<button class='mybtn' Onclick='openModalFeedback("+ JSON.stringify(tweet) + ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
             return HTML;
@@ -174,6 +183,35 @@
         	
         	setValue("hiddenCommentTweetId", tweetID);
         	openModalPublishTweet(-1);
+        }
+        
+        function retweet(tweet) {
+
+        	var JSONData = '${sessionScope.userInfo}';
+        	var user = JSON.parse(JSONData);
+        	
+        	/*var tweetParsed;
+        	try {
+        		tweetParsed = JSON.parse(tweet);
+        	} catch(e) {}
+        	
+        	console.log(tweet);*/
+        	var tweet = {
+        				tweetID: -1,
+        				message: tweet.message,
+        				author: user.user,
+        				originalAuthor: tweet.originalAuthor,
+        				originalID: tweet.originalID
+        			};
+
+
+        	jsonTweet = JSON.stringify(tweet);
+        	
+        	var parametros = {data: jsonTweet, commentTweetId:-1 };
+        	executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
+        					function(response) { console.log("Entra"); successPublishTweet(response); },
+        					function(e) { errorPublishTweet(e); });
+
         }
        	
         /*

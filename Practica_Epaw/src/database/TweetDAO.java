@@ -153,6 +153,20 @@ public class TweetDAO {
 		return delete;
 	}
 	
+	public boolean deleteRetweets(int tweetID) {
+		boolean delete = false;
+		if (this.bd != null) {
+
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_TWEET_ID + " IN(SELECT id FROM (SELECT tweetID as id FROM " + this.tableName + " WHERE originalID =  " + tweetID + ") AS c);";
+			
+			System.out.println("------------ TweetDAO.java ------------ SQL DELETE: " + sql);
+
+			int result = this.bd.executeSQL(sql);
+			delete = (result == 1) ? true : false;
+		}
+		return delete;
+	}
+	
 	public boolean deleteAllTweets(String author) {
 		boolean delete = false;
 		if (this.bd != null) {

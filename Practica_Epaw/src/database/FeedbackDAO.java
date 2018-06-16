@@ -120,6 +120,21 @@ public class FeedbackDAO {
 		return delete;
 	}
 	
+	public boolean deleteRetweetsAllAssociations(int tweetID) {
+		boolean delete = false;
+		if (this.bd != null) {
+			String sql = "DELETE FROM " + this.tableName;
+			sql += " WHERE " + COLUMN_TWEET_1 + " IN(SELECT tweetID FROM Tweets WHERE originalID = " + tweetID;
+			sql += ") OR " + COLUMN_TWEET_2 + " IN(SELECT tweetID FROM Tweets WHERE originalID = " + tweetID + ");";
+			
+			System.out.println("------------ FeedbackDAO.java ------------ SQL DELETE ALL ASSOCIATION: " + sql);
+
+			int result = this.bd.executeSQL(sql);
+			delete = (result == 1) ? true : false;
+		}
+		return delete;
+	}
+	
 	public List<Integer> getAssociated(int tweetID) {
 		List<Integer> associated = new ArrayList<Integer>();
 		if (this.bd != null) {

@@ -61,7 +61,8 @@ function publishTweet() {
 		var tweet = {
 					tweetID: tweetId,
 					message: message,
-					author: sessionUser.user
+					author: sessionUser.user,
+					originalAuthor: sessionUser.user
 				};
 	
 	
@@ -75,6 +76,28 @@ function publishTweet() {
 	} else {
 		alert("This message is to long!");
 	}
+}
+
+function retweet(tweetStringyfied) {
+
+	var tweetParsed = JSON.parse(tweetStringyfied);
+	
+	var tweet = {
+				tweetID: -1,
+				message: tweetParsed.message,
+				author: tweetParsed.author,
+				originalAuthor: tweetParsed.originalAuthor,
+				originalID: tweetParsed.originalID
+			};
+
+
+	jsonTweet = JSON.stringify(tweet);
+	
+	var parametros = {data: jsonTweet};
+	executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
+					function(response) { console.log("Entra"); successPublishTweet(response); },
+					function(e) { errorPublishTweet(e); });
+
 }
 
 function successPublishTweet(response) {

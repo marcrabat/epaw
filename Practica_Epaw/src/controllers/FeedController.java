@@ -161,9 +161,13 @@ public class FeedController extends Servlet {
 		if (ValidationUtils.isNotNull(tweetToDelete) == true
 				&& ValidationUtils.isNotNaN(tweetToDelete) == true) {
 			
-			boolean deleteFeedback = this.feedbackDAO.deleteTweetAllAssociations(tweetToDelete);
+			boolean deleteRetweetsFeedback = this.feedbackDAO.deleteRetweetsAllAssociations(tweetToDelete);
+			boolean deleteFeedback = this.feedbackDAO.deleteTweetAllAssociations(tweetToDelete);			
 			
+			boolean deleteRetweet = this.tweetDAO.deleteRetweets(tweetToDelete);
 			boolean deleteTweet = this.tweetDAO.deleteTweet(tweetToDelete);
+			
+			
 			
 			if (deleteTweet == false) {
 				errors.addError("deleteTweet", "The tweet can not be deleted!");
