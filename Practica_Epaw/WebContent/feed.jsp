@@ -18,11 +18,10 @@
 			sessionId = '${sessionScope.Session_ID}';
 			userToLook = '${sessionScope.userToLook}';
 			sessionTweetFeedback = '${sessionScope.tweetFeedback}';
-			
+			console.log(sessionId);
 			if (sessionId == "") {
 				window.location.href = "/Lab_3/main";
 			} else {
-			
 				clear();
 				
 				changeVisibility("gamerInfo");
@@ -77,7 +76,8 @@
 
         	if (sessionId == "") {
         		redirectToMainPage();
-        	} else{
+        	}
+        	else{
 				TweetsRequest("${sessionScope.userToLook}");
         	}
         });
