@@ -22,12 +22,14 @@ public class TweetDAO {
 	public static final String COLUMN_AUTHOR = "author";
 	public static final String COLUMN_MESSAGE = "message";
 	public static final String COLUMN_PUBLISH_DATE = "publishDate";
+	public static final String COLUMN_ORIGINAL_AUTHOR = "originalAuthor";
+	public static final String COLUMN_ORIGINAL_ID = "originalID";
 	// ----- END COLUMS OF TABLE IN DATABASE ----
 	
 	private String tableName;
 	private BD bd;
 	private String[] fields = { COLUMN_TWEET_ID, COLUMN_AUTHOR,
-								COLUMN_MESSAGE, COLUMN_PUBLISH_DATE };
+								COLUMN_MESSAGE, COLUMN_PUBLISH_DATE, COLUMN_ORIGINAL_AUTHOR, COLUMN_ORIGINAL_ID };
 	
 	//private Statement statement;
 
@@ -125,9 +127,9 @@ public class TweetDAO {
 			Date date = Calendar.getInstance().getTime();
 
 			String sql = "INSERT INTO " + this.tableName + " (" + COLUMN_AUTHOR + ", ";
-			sql += COLUMN_MESSAGE + ", " + COLUMN_PUBLISH_DATE +")";
+			sql += COLUMN_MESSAGE + ", " + COLUMN_PUBLISH_DATE + ", " + COLUMN_ORIGINAL_AUTHOR + ", " + COLUMN_ORIGINAL_ID +")";
 			sql += " VALUES ('" + tweet.getAuthor() + "',";
-			sql += "'" + tweet.getMessage() + "', '" + formatDate.format(date) + "');";
+			sql += "'" + tweet.getMessage() + "', '" + formatDate.format(date) + "', '" + tweet.getOriginalAuthor() + "', '" + tweet.getOriginalID() + "');";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL INSERT: " + sql);
 			

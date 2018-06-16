@@ -21,6 +21,8 @@ public class BeanTweet implements Serializable {
 	private int likes;
 	private String message;
 	private String publishDate;
+	private String originalAuthor;
+	private int originalID;
 
 	public BeanTweet() {
 		this.tweetID = -1;
@@ -28,6 +30,8 @@ public class BeanTweet implements Serializable {
 		this.likes = 0;
 		this.message = "";
 		this.publishDate = "";
+		this.originalAuthor = "";
+		this.originalID = -1;
 	}
 
 	/* Getters */
@@ -51,6 +55,15 @@ public class BeanTweet implements Serializable {
 	public String getPublishDate() {
 		return this.publishDate;
 	}
+	
+	public String getOriginalAuthor() {
+		return this.originalAuthor;
+	}
+	
+	public int getOriginalID() {
+		return this.originalID;
+	}
+
 
 	/* Setters */
 	
@@ -68,6 +81,14 @@ public class BeanTweet implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public void setOriginalAuthor(String originalAuthor) {
+		this.originalAuthor = originalAuthor;
+	}
+	
+	public void setOriginalID(int originalID) {
+		this.originalID = originalID;
 	}
 	
 	public void setPublishDate(int year, int month, int day) { 
@@ -93,7 +114,8 @@ public class BeanTweet implements Serializable {
 	public String toString() {
 		String string = "Tweet ID: " + String.valueOf(this.tweetID) + "\n";
 		string += "Author: " + this.author + "\n Likes: " + String.valueOf(this.likes) + "\n";
-		string += "Message: " + this.message + "\n Publish Date: " + this.publishDate;
+		string += "Message: " + this.message + "\n Publish Date: " + this.publishDate + "\n";
+		string += "Original Author" + this.originalAuthor;
 		return string;
 	}
 	
