@@ -151,4 +151,28 @@ public class RelationshipDAO {
 		return following;
 	}
 	
+	
+	public List<String> getAllUsersNotFollowed(String user) {
+		List<String> allUsersNotFollowed = new ArrayList<String>();
+		if (this.bd != null) {
+			String sql = "SELECT DISTINCT user FROM Users WHERE user NOT IN( SELECT " + COLUMN_USERB + " FROM " + this.tableName;
+			sql += " WHERE " + COLUMN_USERA + " = '" + user + "') AND user <> '" + user + "';";
+			
+			System.out.println("------------ RelationshipDAO.java ------------ SQL FOLLOWING: " + sql);
+
+			this.bd.executeQuery(sql);
+			ResultSet rs = this.bd.getResultSet();
+			try {
+				while(rs.next()) {
+					String userId = rs.getString("user");
+					allUsersNotFollowed.add(userId);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			this.bd.close();
+		}
+		return allUsersNotFollowed;
+	}
+	
 }

@@ -38,6 +38,7 @@ public class FollowersController extends Servlet {
 		List<String> list = new ArrayList<String>();
 		List<String> followers = null;
 		List<String> following = null;
+		List<String> allUsersNotFollowed = null;
 		
 		String mode = request.getParameter("mode");
 		
@@ -71,6 +72,14 @@ public class FollowersController extends Servlet {
 						list.add(actual+",1");
 					}	
 					break;			
+					
+				case "allUsersNotFollowedList":
+					allUsersNotFollowed = this.allUsersNotFollowedList(request);
+					for(int i=0; i<allUsersNotFollowed.size(); i++) {
+						String actual = allUsersNotFollowed.get(i);
+						list.add(actual+",0");
+					}	
+					break;		
 			}
 			
 		}
@@ -81,26 +90,32 @@ public class FollowersController extends Servlet {
 	
 	private List<String> followersList(HttpServletRequest request) {
 		List<String> followers = null;
-		ErrorMessages errors = new ErrorMessages();
 		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
 			followers = relationshipDAO.getFollowers(jsonData);
-			errors.addError("followers", followers.toString());
 		}
 		return followers;
 	}
 		
 	private List<String> followingList(HttpServletRequest request) {
 		List<String> following = null;
-		ErrorMessages errors = new ErrorMessages();
 		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
 			following = relationshipDAO.getFollowing(jsonData);
-			errors.addError("following", following.toString());
 		}
 		return following;
+	}		
+	
+	private List<String> allUsersNotFollowedList(HttpServletRequest request) {
+		List<String> allUsersNotFollowed = null;
+		RelationshipDAO relationshipDAO = new RelationshipDAO();
+		String jsonData = request.getParameter("data");
+		if (ValidationUtils.isEmpty(jsonData) == false) {
+			allUsersNotFollowed = relationshipDAO.getAllUsersNotFollowed(jsonData);
+		}
+		return allUsersNotFollowed;
 	}		
 	
 	
