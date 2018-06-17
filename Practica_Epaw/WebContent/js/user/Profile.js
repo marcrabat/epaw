@@ -70,17 +70,11 @@ function fillProfileForm(user) {
 
 function createAdminButtons(user) {
 	if (user.isAdmin == true) {
-		var profileMenu = getElement("profileMenu");
-		var buttonDeleteUserAccount = createElement("button", "buttonDeleteUserAccount");
-		buttonDeleteUserAccount.innerText = "Delete user account";
-		buttonDeleteUserAccount.className = "btn btn-primary";
-		profileMenu.appendChild(buttonDeleteUserAccount);
-
-		/*
-		var buttonDeleteUserAccount = createElement("button", "buttonDeleteUserAccount");
-		buttonDeleteUserAccount.innerText = "Delete user account";
-		profileMenu.appendChild(buttonDeleteUserAccount);
-		 */
+		
+		var html = "<button id='buttonDeleteUserAccount' class='btn btn-primary'";
+		html += "onClick='deleteUserAccount();'> Delete user account </button>";
+		
+		$("#profileMenu").append(html);
 	}
 };
 
@@ -324,6 +318,56 @@ var succesDeleteAllTweets = function (response) {
 
 function errorDeleteAllTweets(e) {
 	alert("Error trying to delete the tweets");
+}
+
+function deleteUserAccount() {
+	
+	if (sessionUser != null && sessionUser.isAdmin == true) {
+
+		var usernameToDelete = prompt("Write the user to delet!", "");
+		
+		alert(usernameToDelete);
+		
+		if (isEmpty(usernameToDelete) == true) {
+			alert("Write a user to delete");
+		} else if (confirm("Are you sure?")) {
+
+			var userToDelete = sessionUser;
+			userToDelete.user = usernameToDelete;
+			
+			var jsonObject = JSON.stringify(userToDelete);
+			
+			var parametros = {
+				data : jsonObject,
+				mode : "deleteAccount"
+			};
+
+			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST",
+					function(response) { succesDeleteUserAccount(response); }, 
+					function(e) { errorDeleteUserAccount(e); });
+
+		}
+
+	}
+
+}
+
+function succesDeleteUserAccount(response) {
+
+	console.log(response);
+
+	var result = response;
+
+	if (result.errors.length > 0) {
+		manageErrors(result);
+	} else {
+		alert("User account deleted succesfully !!");
+	}
+
+}
+
+function errorDeleteUserAccount(e) {
+	alert("Error trying to delete the user account");
 }
 
 function viewFollowers() {

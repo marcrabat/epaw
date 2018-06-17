@@ -18,6 +18,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import database.FeedbackDAO;
+import database.LikeDAO;
+import database.RelationshipDAO;
 import database.TweetDAO;
 import database.UserDAO;
 import models.BeanUser;
@@ -162,6 +165,7 @@ public class ProfileController extends Servlet {
 		ErrorMessages errors = new ErrorMessages();
 		UserDAO userDAO = new UserDAO();
 		TweetDAO tweetDAO = new TweetDAO();
+		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		BeanUser userToDelete = null;
 		String jsonData = request.getParameter("data");
 		
@@ -173,16 +177,21 @@ public class ProfileController extends Servlet {
 		
 		if (userToDelete != null) {
 			
+			relationshipDAO.deleteUserRelationship(userToDelete.getUser());
 			tweetDAO.deleteAllTweets(userToDelete.getUser());
 			userDeleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete.getUser());
 			
 			if (userDeleted == false) {
 				errors.addError("delete", "Account can not be deleted, sorry");
 			} else {
-				HttpSession session = this.getSession(request);
-				session.invalidate();
+				if (userToDelete.getIsAdmin() == false) {
+					HttpSession session = this.getSession(request);
+					session.invalidate();
+				}
 			}
 
+		} else {
+			errors.addError("delete", "Account can not be deletd, sorry");
 		}
 		
 		return errors;

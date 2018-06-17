@@ -6,6 +6,20 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+-- Schema epawTwitter
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `epawTwitter` ;
+
+-- -----------------------------------------------------
+-- Schema epawTwitter
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `epawTwitter` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `epawTwitter` ;
+
+-- -----------------------------------------------------
+-- Drop Tables
+-- -----------------------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS `Feedback` (
   `tweet1` int(11) NOT NULL,
@@ -80,6 +94,7 @@ INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `descri
 INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test6', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test6@test.com', b'0');
 INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test7', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test7@test.com', b'0');
 INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('test8', 'test', 'test', '1992-12-12', 'testtest', NULL, 'male', NULL, NULL, NULL, NULL, 'test8@test.com', b'0');
+INSERT INTO `Users` (`user`, `name`, `surname`, `birthDate`, `password`, `description`, `gender`, `youtubeChannelID`, `twitchChannelID`, `gameGenres`, `userConsoles`, `mail`, `isAdmin`) VALUES('admin', 'admin', 'admin', '1992-12-12', 'adminadmin', NULL, 'male', NULL, NULL, NULL, NULL, 'admin@admin.com', b'1');
 
 
 ALTER TABLE `Feedback`

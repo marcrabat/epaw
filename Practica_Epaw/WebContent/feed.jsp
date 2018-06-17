@@ -152,7 +152,7 @@
         function genereteMyButtonsOfTweet(tweet, user) {
         	var myButtons = "";
         	if((tweet.author == user.user) || user.isAdmin == true){
-				if(tweet.originalAuthor == user.user){
+				if(tweet.originalAuthor == user.user || user.isAdmin == true){
         			myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
         			myButtons += "onClick='openModalPublishTweet(" + tweet.tweetID + ");'> edit </i></button>";
 				}	

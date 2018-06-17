@@ -33,7 +33,7 @@ function existInDOM(param) {
 }
 
 function isEmpty(param) {
-	var result = true;
+	var result = false;
 	try {
 		if ((param == "") || (param.length == 0)){ result = true; }
 	} catch (e) {
