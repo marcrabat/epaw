@@ -19,6 +19,26 @@ function openModalFeedback(jsonTweet) {
 					function(e) { errorFeedbackTweet(e); });
 }
 
+function openModalFeedbackAnonymous(jsonTweet) {
+	
+	var tweet = jsonTweet;
+	try {
+		tweet = JSON.parse(jsonTweet);
+	} catch(e) {}
+	
+	var parametros = {
+			data : tweet.tweetID,
+			mode : "retrieveFeedbackForAnonymousTweets"
+	};
+	
+	sessionFeedbackTweet = tweet;
+
+	executeAjax(parametros, "/Lab_3/checkFeedErrors", "POST", 
+					function(response) { successFillDivFeedbackTweet(response); },
+					function(e) { errorFeedbackTweet(e); });
+}
+
+
 function successFillDivFeedbackTweet(response) {
 
 	if (response != null) {

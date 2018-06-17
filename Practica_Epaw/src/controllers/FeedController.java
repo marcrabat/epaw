@@ -32,10 +32,14 @@ public class FeedController extends Servlet {
 
 	private TweetDAO tweetDAO;
 	private FeedbackDAO feedbackDAO;
+	private LikeDAO likeDao;
+
+	private static final int numberOfTweetsForAnonymous = 2;
 
 	public FeedController() {
 		this.tweetDAO = new TweetDAO();
 		this.feedbackDAO = new FeedbackDAO();
+		this.likeDao = new LikeDAO();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,102 +52,127 @@ public class FeedController extends Servlet {
 		RequestDispatcher dispatcher = null;
 		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
 		List<BeanTweet> feedback = new ArrayList<BeanTweet>();
-
 		ErrorMessages errors = new ErrorMessages();
+		
 		HttpSession session = this.getSession(request);
 		String session_ID = (String) session.getAttribute("Session_ID");
 		String userToLook = (String) session.getAttribute("userToLook");
 		String mode = request.getParameter("mode");
-		LikeDAO likeDao = new LikeDAO();
 
 		if (session_ID == null) {
+
 			errors.addError("requestError", "Your session is not valid");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
+
 		} else if (session_ID == "anonymous") {
-			switch(mode) {
+
+			switch (mode) {
+
 			case "retrieveListOfTweetsForAnonymous":
-				int numberOfTweetsForAnonymous = 2; 
 				tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
-				for(int i=0; i<tweets.size();i++) {
-					BeanTweet tweet = tweets.get(i);
-					tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
-					tweets.set(i, tweet);			
-				}
-				if (errors.haveErrors() == false) {
-					sendResponseWithNoErrors(request, response, tweets);
+				retrieveLikesForListOfTweets(tweets, likeDao);
+				sendTweetsResponse(request, response, tweets, errors);
+				break;
+			
+			case "retrieveFeedbackForAnonymousTweets":
+				
+				int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
+				List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
+				if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
+
+					for (Integer tweetID : feedbackTweetsID) {
+						BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
+						feedback.add(tweetToReturn);
+					}
+					session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
 				} else {
-					sendResponseWithErrors(request, response, errors);
+					System.out.println("No messages available");
 				}
+				sendTweetsResponse(request, response, feedback, errors);
 				break;
 			}
 			
 			
-		} else {
-			switch (mode) {
-				case "retrieveFeedbackForTweet":
-					System.out.println("Retrieving feedback");
-					int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
-					
-					List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
-					if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
-	
-						for(Integer tweetID : feedbackTweetsID) {
-							BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
-							feedback.add(tweetToReturn);
-						}
-						session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
-					} else {
-						//TODO: Decidir com volem mostrar que un tweet no té missatges.
-						System.out.println("No messages available");
-					}
-					if (errors.haveErrors() == false) {
-						sendResponseWithNoErrors(request, response, feedback);
-					} else {
-						sendResponseWithErrors(request, response, errors);
-					}
-					break;
-				
-				case "retrieveListOfTweetsForUser":
-					if (ValidationUtils.isEmpty(userToLook) == false) {
-						tweets = tweetDAO.returnGlobalTimeline(20);
-					}
-					tweets = tweetDAO.returnGlobalTimeline(20);
-					for(int i=0; i<tweets.size();i++) {
-						BeanTweet tweet = tweets.get(i);
-						tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
-						tweets.set(i, tweet);			
-					}
-					if (errors.haveErrors() == false) {
-						sendResponseWithNoErrors(request, response, tweets);
-					} else {
-						sendResponseWithErrors(request, response, errors);
-					}
-					break;
-				
-				case "insertLikeForTweet":
-	
-					int numLikes = 0;
-					int tweetID = Integer.parseInt((String) request.getParameter("tweetID"));
-					String username = (String) request.getParameter("username");
-					
-					if(!likeDao.checkUserLike(tweetID, username)) likeDao.insertUserLike(tweetID, username);
-					else likeDao.deleteUserLike(tweetID, username);
-					
-					if (errors.haveErrors() == false) {
-						sendLikesResponseWithNoErrors(request, response, numLikes);
-					} else {
-						sendResponseWithErrors(request, response, errors);
-					}
-					break;
-					
-				case "deleteTweet":
-					errors.addError(this.deleteTweet(request));
-					sendResponseWithErrors(request, response, errors);
-					break;
-			}
 			
+
+		} else {
+			
+			switch (mode) {
+			
+			case "retrieveFeedbackForTweet":
+				
+				int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
+				List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
+				if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
+
+					for (Integer tweetID : feedbackTweetsID) {
+						BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
+						feedback.add(tweetToReturn);
+					}
+					session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
+				} else {
+					System.out.println("No messages available");
+				}
+				sendTweetsResponse(request, response, feedback, errors);
+				break;
+
+			case "retrieveListOfTweetsForUser":
+				if (ValidationUtils.isEmpty(userToLook) == false) {
+					tweets = tweetDAO.returnGlobalTimeline(20);
+				}
+				tweets = tweetDAO.returnGlobalTimeline(20);
+				retrieveLikesForListOfTweets(tweets, likeDao);
+				sendTweetsResponse(request, response, tweets, errors);
+				break;
+
+			case "insertLikeForTweet":
+
+				int numLikes = 0;
+				int tweetID = Integer.parseInt((String) request.getParameter("tweetID"));
+				String username = (String) request.getParameter("username");
+
+				if (!likeDao.checkUserLike(tweetID, username))
+					likeDao.insertUserLike(tweetID, username);
+				else
+					likeDao.deleteUserLike(tweetID, username);
+
+				sendLikesResponse(request, response, errors, numLikes);
+				break;
+
+			case "deleteTweet":
+				errors.addError(this.deleteTweet(request));
+				sendResponseWithErrors(request, response, errors);
+				break;
+			}
+
 		}
 
+	}
+
+	private void sendLikesResponse(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors,
+			int numLikes) throws ServletException, IOException {
+		if (errors.haveErrors() == false) {
+			sendLikesResponseWithNoErrors(request, response, numLikes);
+		} else {
+			sendResponseWithErrors(request, response, errors);
+		}
+	}
+
+	private void retrieveLikesForListOfTweets(List<BeanTweet> tweets, LikeDAO likeDao) {
+		for (int i = 0; i < tweets.size(); i++) {
+			BeanTweet tweet = tweets.get(i);
+			tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
+			tweets.set(i, tweet);
+		}
+	}
+
+	private void sendTweetsResponse(HttpServletRequest request, HttpServletResponse response, List<BeanTweet> tweets,
+			ErrorMessages errors) throws ServletException, IOException {
+		if (errors.haveErrors() == false) {
+			sendResponseWithNoErrors(request, response, tweets);
+		} else {
+			sendResponseWithErrors(request, response, errors);
+		}
 	}
 
 	private void sendResponseWithErrors(HttpServletRequest request, HttpServletResponse response, ErrorMessages errors)
@@ -159,36 +188,33 @@ public class FeedController extends Servlet {
 		request.setAttribute("tweets", JSONUtils.getJSON(tweets));
 		response.getWriter().print(JSONUtils.getJSON(tweets));
 	}
-	
-	private void sendLikesResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response,
-			int numLikes) throws ServletException, IOException {
+
+	private void sendLikesResponseWithNoErrors(HttpServletRequest request, HttpServletResponse response, int numLikes)
+			throws ServletException, IOException {
 		this.setResponseJSONHeader(response);
 		request.setAttribute("tweets", JSONUtils.getJSON(numLikes));
 		response.getWriter().print(JSONUtils.getJSON(numLikes));
 	}
-	
+
 	private ErrorMessages deleteTweet(HttpServletRequest request) {
 		ErrorMessages errors = new ErrorMessages();
-		
+
 		int tweetToDelete = Integer.valueOf(request.getParameter("data"));
-		
-		if (ValidationUtils.isNotNull(tweetToDelete) == true
-				&& ValidationUtils.isNotNaN(tweetToDelete) == true) {
-			
+
+		if (ValidationUtils.isNotNull(tweetToDelete) == true && ValidationUtils.isNotNaN(tweetToDelete) == true) {
+
 			boolean deleteRetweetsFeedback = this.feedbackDAO.deleteRetweetsAllAssociations(tweetToDelete);
-			boolean deleteFeedback = this.feedbackDAO.deleteTweetAllAssociations(tweetToDelete);			
-			
+			boolean deleteFeedback = this.feedbackDAO.deleteTweetAllAssociations(tweetToDelete);
+
 			boolean deleteRetweet = this.tweetDAO.deleteRetweets(tweetToDelete);
 			boolean deleteTweet = this.tweetDAO.deleteTweet(tweetToDelete);
-			
-			
-			
+
 			if (deleteTweet == false) {
 				errors.addError("deleteTweet", "The tweet can not be deleted!");
 			}
-			
+
 		}
-		
+
 		return errors;
 	}
 
