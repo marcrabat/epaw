@@ -75,12 +75,11 @@ public class TweetDAO {
 		
 		if (this.bd != null) {
 			String sql = "SELECT * FROM " + this.tableName;
-			sql += " WHERE row_count()  <= " + limitNumberOfTweets + ";";
+			sql += " ORDER BY " + this.COLUMN_TWEET_ID + " LIMIT "+ limitNumberOfTweets + ";";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
 			
 			this.bd.executeQuery(sql);
-			
 			
 			ResultSet resultSet = this.bd.getResultSet();
 			tweets = GeneralUtils.getListFromResultSet(resultSet, BeanTweet.class);
