@@ -60,29 +60,30 @@ public class FeedController extends Servlet {
 			errors.addError("requestError", "Your session is not valid");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
 		} else if (session_ID == "anonymous") {
-			int numberOfTweetsForAnonymous = 2; 
-			System.out.println("TODO: Gestionar acces com a anonymous");
+			switch(mode) {
+			case "retrieveListOfTweetsForAnonymous":
+				int numberOfTweetsForAnonymous = 2; 
+				tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
+				for(int i=0; i<tweets.size();i++) {
+					BeanTweet tweet = tweets.get(i);
+					tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
+					tweets.set(i, tweet);			
+				}
+				if (errors.haveErrors() == false) {
+					sendResponseWithNoErrors(request, response, tweets);
+				} else {
+					sendResponseWithErrors(request, response, errors);
+				}
+				break;
+			}
 			
-			tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
-			for(int i=0; i<tweets.size();i++) {
-				BeanTweet tweet = tweets.get(i);
-				tweet.setLikes(likeDao.countTweetLikes(tweet.getTweetID()));
-				tweets.set(i, tweet);			
-			}
-			if (errors.haveErrors() == false) {
-				sendResponseWithNoErrors(request, response, tweets);
-			} else {
-				sendResponseWithErrors(request, response, errors);
-			}
+			
 		} else {
 			switch (mode) {
 				case "retrieveFeedbackForTweet":
 					System.out.println("Retrieving feedback");
 					int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
 					
-					// TEST
-					//feedbackDAO.associateTweet(1, 2);
-					//feedbackDAO.associateTweet(1, 3);
 					List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
 					if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
 	
