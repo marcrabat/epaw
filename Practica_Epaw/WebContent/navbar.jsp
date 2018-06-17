@@ -16,13 +16,20 @@
 			$('#logoutButton').text('Main Page');
 		}
 		
-		
 		/*
 		$("#buttonPublishTweet").click(function(){
 	        $("#dialogPublishTweet").modal();
 	    });
 		*/
 	});
+	
+	function seeUsers(mode) {
+		var parametros = {mode: mode};
+		
+		executeAjax(parametros, "followers", "POST",
+				function(response) { window.location.href = "followers" }, 
+				function(e) { alert("errror"); });
+	}
 </script>
 
     <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #77517f;">
@@ -40,6 +47,11 @@
             <li class="nav-item">
                 <a id="profileButton" class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('${sessionScope.Session_ID}');">
                 	Profile
+               	</a>
+            </li>
+            <li class="nav-item">
+                <a id="usersButton" class="nav-link" style="color: #ffffff;" onClick="seeUsers('allUsersNotFollowedList');">
+                	Explore Users
                	</a>
             </li>
             <li class="nav-item">

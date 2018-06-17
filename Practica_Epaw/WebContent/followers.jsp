@@ -37,7 +37,11 @@
             if (userJSON != "") {
             	
 			 	sessionUser = JSON.parse(userJSON);
-			 	var parametros = { data: sessionUser.user, mode: "allUsersNotFollowedList" };
+			 	var mode = '${sessionScope.followersViewMode}';
+			 	console.log(mode);
+			 	if(mode=="") mode = "followers";
+			 	console.log(mode);
+			 	var parametros = { data: sessionUser.user, mode: mode };
 			 	
 	           	$.ajax({
 	                   url: '/Lab_3/checkFollowers',

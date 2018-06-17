@@ -51,6 +51,10 @@ public class FollowersView extends Servlet{
 			//response.sendRedirect(contextPath + "/main");
 		} else {
 			//response.sendRedirect(contextPath + "/profile");
+			String mode = request.getParameter("mode");
+			if(ValidationUtils.isNotNull(mode) == true) {
+				session.setAttribute("followersViewMode", mode);
+			}
 			dispatcher = request.getRequestDispatcher("/followers.jsp");
 		}
 		
