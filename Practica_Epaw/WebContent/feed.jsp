@@ -41,13 +41,13 @@
 				}
 				
 				if (userToLook == "") {
-					changeVisibility("profileMenu");
 					changeVisibility("profilePage");
 				}
 				
 				if (userToLook != sessionId) {
 					changeVisibility("editOrView");
 					changeVisibility("newPassword");
+					changeVisibility("profileMenu");
 				}
 	
 			}
@@ -168,7 +168,7 @@
         	var HTML = "";
         	HTML += "<div class='card' style='width:30rem;'>";
         	HTML += "<div class='card-body'>";
-        	HTML += "<h5 class='card-title' onClick='seeUserFeed(" + tweet.author + ");'>" + tweet.author + "</h5>";
+        	HTML += "<h5 class='card-title' onClick='seeUserFeed(\"" + tweet.author + "\");'>" + tweet.author + "</h5>";
         	if(tweet.author!=tweet.originalAuthor) 
         		HTML += "<h6 class='card-title' onClick='seeUserFeed(" + tweet.orignalAuthor + ");'>" + "Original Author: " + tweet.originalAuthor + "</h6>";
         	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + tweet.publishDate  + "</h6>";
@@ -343,8 +343,8 @@
 		<div id="profileMenu" style="position:relative; width:20%; float: right; margin-right:2%">
 			<button id="buttonDeleteAccount" class="btn btn-primary" onClick="deleteSessionAccount();">Delete account</button>
 			<button id="buttonDeleteAllTweets" class="btn btn-primary" onClick="deleteAllTweets();">Delete all tweets</button>
-			<button id="buttonViewFollowers" class="btn btn-primary" onClick="viewFollowers();">View followers</button>
-			<button id="buttonViewFollowings" class="btn btn-primary" onClick="viewFollowings();">View followings</button>
+			<button id="buttonViewFollowers" class="btn btn-primary" onClick="seeUsers('followers');">View followers</button>
+			<button id="buttonViewFollowings" class="btn btn-primary" onClick="seeUsers('following');">View followings</button>
 		</div>
 	</div>
 	

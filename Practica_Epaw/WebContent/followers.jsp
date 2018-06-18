@@ -1,7 +1,11 @@
 <html>
 
 <head>
-    <title>Login</title>
+    <title>Followers</title>
+    
+    <%@ include file='includes.jsp' %>
+	<%@ include file='navbar.jsp' %>
+    
     <style>
         .top-buffer { margin-top:15px; }
         .json-key { color: brown; }
@@ -9,11 +13,6 @@
         .json-string { color: olive; }
     </style>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
-    <script src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <!-- <script src="./js/user/login.js"></script> -->
     <script type="text/javascript">
 
         /////////////////////// FUNCTIONS ////////////////////////    
@@ -100,20 +99,22 @@
 </head>
 
 <body>
-    <div class="container">
-		<div class="row top-buffer">
-	        <div class="col">
-	            <h2>Login</h2>
-	            <hr>
-	        </div>
-	    </div>
+    <div class="container" style="margin-top:1%;">
 		<div class="row">
 	        <div class="col">
 				<ul class="list-group" id="followers">
 					
 				</ul>
 	        </div>
+	    </div>
+	    <br />
+	    <div id="followersButton">
+	    	<button id="followersClose" class="btn btn-primary" onclick="goBack();">
+	    		Close
+	    	</button>
 	    </div>	      
     </div>
+    
+    <%@ include file='footer.jsp' %>
 </body>
 </html>

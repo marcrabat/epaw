@@ -93,7 +93,9 @@ public class RelationshipDAO {
 	public boolean deleteUserRelationship(String user) {
 		boolean delete = false;
 		if (this.bd != null) {
-			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_USERA + " = '" + user + "';";
+			String sql = "DELETE FROM " + this.tableName;
+			sql += " WHERE " + COLUMN_USERA + " = '" + user + "'";
+			sql += " OR " + COLUMN_USERB + " = '" + user + "';";
 			
 			System.out.println("------------ RelationshipDAO.java ------------ SQL DELETE USER RELATIONSHIPS: " + sql);
 

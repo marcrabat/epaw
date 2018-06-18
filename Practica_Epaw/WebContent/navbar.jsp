@@ -22,14 +22,7 @@
 	    });
 		*/
 	});
-	
-	function seeUsers(mode) {
-		var parametros = {mode: mode};
-		
-		executeAjax(parametros, "followers", "POST",
-				function(response) { window.location.href = "followers" }, 
-				function(e) { alert("errror"); });
-	}
+
 </script>
 
     <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #77517f;">

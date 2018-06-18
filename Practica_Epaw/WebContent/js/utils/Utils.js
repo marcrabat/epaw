@@ -149,6 +149,10 @@ function showErrorsInAlert(errors) {
 	}
 }
 
+function goBack() {
+    window.history.back();
+}
+
 // ASYNC / AWAIT
 /* Aixo t'ho deixo per a tu Marc Alcaraz.
 async function getProcessedData(url) {

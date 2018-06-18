@@ -8,13 +8,13 @@
 	</footer>-->
 
 <!-- Footer -->
-<footer class="page-footer fixed-bottom font-small unique-color-dark mt-4" style="background: rgba(240, 231, 242, 1);">
+<footer class="page-footer bottom font-small unique-color-dark mt-4" style="background: rgba(240, 231, 242, 1);">
 
   <!-- Footer Links -->
   <div class="container text-center text-md-left mt-5">
 
     <!-- Grid row -->
-    <div class="row mt-3">
+    <div class="row mt-3" style="padding-top:1%;">
 
       <!-- Grid column -->
       <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">

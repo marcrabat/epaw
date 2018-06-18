@@ -293,7 +293,8 @@ function deleteAllTweets() {
 				mode : "deleteAllTweets"
 			};
 
-			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", succesDeleteAllTweets(response),
+			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+					function(response) { succesDeleteAllTweets(response) },
 					function(e) { errorDeleteAllTweets(e);});
 
 		}
@@ -312,6 +313,7 @@ var succesDeleteAllTweets = function (response) {
 		manageErrors(result);
 	} else {
 		alert("All your tweets are deleted !!");
+		window.location.href="/Lab_3/feed";
 	}
 
 }
@@ -368,12 +370,4 @@ function succesDeleteUserAccount(response) {
 
 function errorDeleteUserAccount(e) {
 	alert("Error trying to delete the user account");
-}
-
-function viewFollowers() {
-	alert("not implemented yet");
-}
-
-function viewFollowings() {
-	alert("not implemented yet");
 }
