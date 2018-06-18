@@ -12,6 +12,8 @@
 			publishButton.style.display='none';
 			var profileButton = document.getElementById('profileButton');
 			profileButton.style.display='none';
+			var usersButton = document.getElementById('usersButton');
+			usersButton.style.display='none';
 			var logoutButton = document.getElementById('logoutButton');
 			$('#logoutButton').text('Main Page');
 		}

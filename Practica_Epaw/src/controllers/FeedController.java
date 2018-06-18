@@ -91,9 +91,6 @@ public class FeedController extends Servlet {
 				sendTweetsResponse(request, response, feedback, errors);
 				break;
 			}
-			
-			
-			
 
 		} else {
 			
@@ -117,10 +114,12 @@ public class FeedController extends Servlet {
 				break;
 
 			case "retrieveListOfTweetsForUser":
+				
 				if (ValidationUtils.isEmpty(userToLook) == false) {
+					tweets = tweetDAO.returnUserFeed(userToLook);
+				} else {
 					tweets = tweetDAO.returnGlobalTimeline(20);
 				}
-				tweets = tweetDAO.returnGlobalTimeline(20);
 				retrieveLikesForListOfTweets(tweets, likeDao);
 				sendTweetsResponse(request, response, tweets, errors);
 				break;

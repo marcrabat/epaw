@@ -20,7 +20,7 @@
 			sessionId = '${sessionScope.Session_ID}';
 			userToLook = '${sessionScope.userToLook}';
 			sessionTweetFeedback = '${sessionScope.tweetFeedback}';
-			console.log(sessionId);
+			//console.log(sessionId);
 			if (sessionId == "") {
 				window.location.href = "/Lab_3/main";
 			} else {
@@ -45,6 +45,10 @@
 				}
 				
 				if (userToLook != sessionId) {
+					if(userToLook != ""){
+						alert("que es vegi nomes la meva feed");
+						//some stuff per tornar nomes els de userToLook
+					}
 					changeVisibility("editOrView");
 					changeVisibility("newPassword");
 					changeVisibility("profileMenu");

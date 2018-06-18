@@ -91,7 +91,23 @@ public class TweetDAO {
 		
 	
 	public List<BeanTweet> returnUserFeed(String username){
-		return null;
+		
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
+		
+		if (this.bd != null) {
+			String sql = "SELECT * FROM " + this.tableName;
+			sql += " WHERE " + this.COLUMN_AUTHOR + " LIKE "+ "'" + username + "'" + ";";
+			
+			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
+			
+			this.bd.executeQuery(sql);
+			
+			ResultSet resultSet = this.bd.getResultSet();
+			tweets = GeneralUtils.getListFromResultSet(resultSet, BeanTweet.class);
+			
+			this.bd.close();
+		}
+		return tweets;
 	}
 	
 	public boolean existTweet(int tweetID) {
