@@ -85,7 +85,7 @@ public class RelationshipDAO {
 			System.out.println("------------ RelationshipDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -100,7 +100,7 @@ public class RelationshipDAO {
 			System.out.println("------------ RelationshipDAO.java ------------ SQL DELETE USER RELATIONSHIPS: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}

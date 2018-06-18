@@ -163,7 +163,7 @@ public class TweetDAO {
 			System.out.println("------------ TweetDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -177,7 +177,7 @@ public class TweetDAO {
 			System.out.println("------------ TweetDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -191,7 +191,7 @@ public class TweetDAO {
 			System.out.println("------------ TweetDAO.java ------------ SQL DELETE ALL TWEETS: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}

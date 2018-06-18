@@ -163,9 +163,6 @@ public class ProfileController extends Servlet {
 	
 	private ErrorMessages deleteAccount(HttpServletRequest request) {
 		ErrorMessages errors = new ErrorMessages();
-		UserDAO userDAO = new UserDAO();
-		TweetDAO tweetDAO = new TweetDAO();
-		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		BeanUser userToDelete = null;
 		String jsonData = request.getParameter("data");
 		
@@ -173,13 +170,9 @@ public class ProfileController extends Servlet {
 			userToDelete = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
 		}
 		
-		boolean userDeleted = false;
-		
 		if (userToDelete != null) {
 			
-			relationshipDAO.deleteUserRelationship(userToDelete.getUser());
-			tweetDAO.deleteAllTweets(userToDelete.getUser());
-			userDeleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete.getUser());
+			boolean userDeleted = this.deleteAccountInDatabase(userToDelete.getUser());
 			
 			if (userDeleted == false) {
 				errors.addError("delete", "Account can not be deleted, sorry");
@@ -197,6 +190,33 @@ public class ProfileController extends Servlet {
 		return errors;
 	}
 	
+	private boolean deleteAccountInDatabase(String userToDelete) {
+		boolean deleted = false;
+		UserDAO userDAO = new UserDAO();
+		RelationshipDAO relationshipDAO = new RelationshipDAO();
+		
+		this.deleteAccountTweetsInDatabase(userToDelete);
+		
+		relationshipDAO.deleteUserRelationship(userToDelete);
+		deleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete);
+		
+		
+		return deleted;
+	}
+	
+	private boolean deleteAccountTweetsInDatabase(String author) {
+		boolean deleted = false;
+		TweetDAO tweetDAO = new TweetDAO();
+		FeedbackDAO feedbackDAO = new FeedbackDAO();
+		LikeDAO likeDAO = new LikeDAO();
+		
+		likeDAO.deleteAllUserLikes(author);
+		feedbackDAO.deleteAllFeedbackReletedToUser(author);
+		deleted = tweetDAO.deleteAllTweets(author);
+		
+		return deleted;
+	}
+	
 	private ErrorMessages deleteAllTweets(HttpServletRequest request) {
 		ErrorMessages errors = new ErrorMessages();
 		TweetDAO tweetDAO = new TweetDAO();
@@ -206,9 +226,7 @@ public class ProfileController extends Servlet {
 		if (ValidationUtils.isEmpty(jsonData) == false) {
 			tweetsAuthor = JSONUtils.returnJSONObject(jsonData, BeanUser.class, "yyyy-MM-dd");
 		}
-		
-		boolean tweetsDeleted = false;
-		
+
 		if (tweetsAuthor != null) {
 			
 			String author = tweetsAuthor.getUser();
@@ -217,7 +235,7 @@ public class ProfileController extends Servlet {
 			
 			if (numberOfTweets > 0) {
 			
-				tweetsDeleted = tweetDAO.deleteAllTweets(author);
+				boolean tweetsDeleted = this.deleteAccountTweetsInDatabase(author);
 				
 				if (tweetsDeleted == false) {
 					errors.addError("delete", "Tweets can not be deleted, sorry");

@@ -19,7 +19,7 @@
         
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
-        	if (sessionId == null) {
+        	if (sessionId == "") {
         		redirectToMain();
         	} else{
         		jsonRequest();
@@ -114,7 +114,7 @@
 	    	</button>
 	    </div>	      
     </div>
-    
-    <%@ include file='footer.jsp' %>
+	<%@ include file='footer.jsp' %>
 </body>
+
 </html>

@@ -18,8 +18,6 @@ public class FeedbackDAO {
 	private String tableName;
 	private BD bd;
 	private String[] fields = { COLUMN_TWEET_1, COLUMN_TWEET_2 };
-	
-	//private Statement statement;
 
 	public FeedbackDAO() {
 		this.tableName = "Feedback";
@@ -86,7 +84,7 @@ public class FeedbackDAO {
 			System.out.println("------------ FeedbackDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -115,7 +113,7 @@ public class FeedbackDAO {
 			System.out.println("------------ FeedbackDAO.java ------------ SQL DELETE ALL ASSOCIATION: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -123,14 +121,37 @@ public class FeedbackDAO {
 	public boolean deleteRetweetsAllAssociations(int tweetID) {
 		boolean delete = false;
 		if (this.bd != null) {
+			
+			String subSql = "SELECT " + TweetDAO.COLUMN_TWEET_ID + " FROM Tweets";
+			subSql += " WHERE " + TweetDAO.COLUMN_ORIGINAL_ID + " = " + tweetID;
+			
 			String sql = "DELETE FROM " + this.tableName;
-			sql += " WHERE " + COLUMN_TWEET_1 + " IN(SELECT tweetID FROM Tweets WHERE originalID = " + tweetID;
-			sql += ") OR " + COLUMN_TWEET_2 + " IN(SELECT tweetID FROM Tweets WHERE originalID = " + tweetID + ");";
+			sql += " WHERE " + COLUMN_TWEET_1 + " IN(" + subSql + ")";
+			sql += " OR " + COLUMN_TWEET_2 + " IN(" + subSql + ");";
 			
 			System.out.println("------------ FeedbackDAO.java ------------ SQL DELETE ALL ASSOCIATION: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
+		}
+		return delete;
+	}
+	
+	public boolean deleteAllFeedbackReletedToUser(String user) {
+		boolean delete = false;
+		if (this.bd != null) {
+			
+			String subSql = "SELECT " + TweetDAO.COLUMN_TWEET_ID + " FROM Tweets";
+			subSql += " WHERE " + TweetDAO.COLUMN_AUTHOR + " = '" + user + "'";
+			
+			String sql = "DELETE FROM " + this.tableName;
+			sql += " WHERE " + COLUMN_TWEET_1 + " IN(" + subSql + ")";
+			sql += " OR " + COLUMN_TWEET_2 + " IN(" + subSql + ");";
+			
+			System.out.println("------------ FeedbackDAO.java ------------ SQL DELETE ALL FEEDBACK: " + sql);
+
+			int result = this.bd.executeSQL(sql);
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
@@ -157,5 +178,4 @@ public class FeedbackDAO {
 		}
 		return associated;
 	}
-
 }

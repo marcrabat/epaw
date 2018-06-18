@@ -116,21 +116,21 @@ public class LikeDAO {
 			System.out.println("------------ LikeDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
 	
-	public boolean deleteUserLikes(int tweetID, String username) {
+	public boolean deleteAllUserLikes(String username) {
 		boolean delete = false;
 		if (this.bd != null) {
 
-			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_USER + " = " + username + ";";
+			String sql = "DELETE FROM " + this.tableName + " WHERE " + COLUMN_USER + " = '" + username + "';";
 			
 			System.out.println("------------ LikeDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}

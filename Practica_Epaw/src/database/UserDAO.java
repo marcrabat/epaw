@@ -11,7 +11,7 @@ import utils.ValidationUtils;
 import database.RelationshipDAO;
 
 public class UserDAO {
-	//public static final String TABLE_NAME = "registeredusers"; // "Users";
+	//public static final String TABLE_NAME = "Users";
 	
 	// ---- COLUMS OF TABLE IN DATABSE -----
 	public static final String COLUMN_USER = "user";
@@ -152,7 +152,7 @@ public class UserDAO {
 			System.out.println("------------ UserDAO.java ------------ SQL DELETE: " + sql);
 
 			int result = this.bd.executeSQL(sql);
-			delete = (result == 1) ? true : false;
+			delete = (result >= 1) ? true : false;
 		}
 		return delete;
 	}
