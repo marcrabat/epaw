@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Date;
 
 import models.BeanTweet;
+import models.BeanUser;
 import utils.BD;
 import utils.GeneralUtils;
 import utils.ValidationUtils;
@@ -65,7 +66,7 @@ public class TweetDAO {
 	}
 	
 	public List<BeanTweet> returnGlobalTimeline(int limitNumberOfTweets){
-		
+
 		if(limitNumberOfTweets < 1){
 			return null;
 		}
@@ -74,7 +75,7 @@ public class TweetDAO {
 		
 		if (this.bd != null) {
 			String sql = "SELECT * FROM " + this.tableName;
-			sql += " ORDER BY " + this.COLUMN_PUBLISH_DATE + " DESC " + " LIMIT "+ limitNumberOfTweets + ";";
+			sql += " ORDER BY " + COLUMN_PUBLISH_DATE + " DESC " + " LIMIT "+ limitNumberOfTweets + ";";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
 			
@@ -90,12 +91,11 @@ public class TweetDAO {
 		
 	
 	public List<BeanTweet> returnUserFeed(String username){
-		
 		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
 		
 		if (this.bd != null) {
 			String sql = "SELECT * FROM " + this.tableName;
-			sql += " WHERE " + this.COLUMN_AUTHOR + " LIKE "+ "'" + username + "'" + " ORDER BY " + this.COLUMN_PUBLISH_DATE +" DESC;";
+			sql += " WHERE " + COLUMN_AUTHOR + " LIKE "+ "'" + username + "'" + " ORDER BY " + COLUMN_PUBLISH_DATE +" DESC;";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
 			
@@ -317,6 +317,30 @@ public class TweetDAO {
 		}
 		
 		return result;
+	}
+
+	public List<BeanTweet> returnTweetsOfFollowingUsers(String user) {
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
+		
+		if (this.bd != null) {
+			
+			String subSql = "SELECT " + RelationshipDAO.COLUMN_USERB + " FROM Relationship";
+			subSql += " WHERE " + RelationshipDAO.COLUMN_USERA + " = '" + user + "'";
+			
+			String sql = "SELECT * FROM " + this.tableName;
+			sql += " WHERE " + COLUMN_AUTHOR + " IN(" + subSql + ")";
+			sql += " ORDER BY " + COLUMN_PUBLISH_DATE + " DESC;";
+			
+			System.out.println("------------ TweetDAO.java ------------ SQL FOLLOWING TWEETS: " + sql);
+			
+			this.bd.executeQuery(sql);
+			
+			ResultSet resultSet = this.bd.getResultSet();
+			tweets = GeneralUtils.getListFromResultSet(resultSet, BeanTweet.class);
+			
+			this.bd.close();
+		}
+		return tweets;
 	}
 	
 	

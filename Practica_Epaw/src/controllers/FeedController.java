@@ -14,13 +14,14 @@ import javax.servlet.http.HttpSession;
 import database.FeedbackDAO;
 import database.LikeDAO;
 import database.TweetDAO;
-
+import database.UserDAO;
 import models.BeanTweet;
-
+import models.BeanUser;
 import utils.ErrorMessages;
 import utils.ValidationUtils;
 import utils.JSONUtils;
 import utils.Servlet;
+import utils.SessionUtils;
 
 @WebServlet("/checkFeedErrors")
 public class FeedController extends Servlet {
@@ -28,13 +29,15 @@ public class FeedController extends Servlet {
 	private TweetDAO tweetDAO;
 	private FeedbackDAO feedbackDAO;
 	private LikeDAO likeDao;
-
+	private UserDAO userDao;
+	
 	private static final int numberOfTweetsForAnonymous = 2;
 
 	public FeedController() {
 		this.tweetDAO = new TweetDAO();
 		this.feedbackDAO = new FeedbackDAO();
 		this.likeDao = new LikeDAO();
+		this.userDao = new UserDAO();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,53 +57,73 @@ public class FeedController extends Servlet {
 		String userToLook = (String) session.getAttribute("userToLook");
 		String mode = request.getParameter("mode");
 
-		if (session_ID == null) {
-
-			errors.addError("requestError", "Your session is not valid");
-			dispatcher = request.getRequestDispatcher("/main.jsp");
-			dispatcher.forward(request, response);
-
-		} else if (session_ID == "anonymous") {
-
-			switch (mode) {
-
-			case "retrieveListOfTweetsForAnonymous":
-				tweets = retrieveListOfTweetsForAnonymous(request);
-				sendTweetsResponse(request, response, tweets, errors);
-				break;
-			
-			case "retrieveFeedbackForAnonymousTweets":
-				retrieveFeedbackForTweet(request, feedback, session);
-				sendTweetsResponse(request, response, feedback, errors);
-				break;
+		if (ValidationUtils.isNotEmpty(userToLook) == true) {
+			boolean existUser = this.userDao.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
+			if (existUser == false) {
+				errors.addError("userNotExist", "The user not exist!");
 			}
-
+		}
+		
+		if (errors.haveErrors() == true) {
+			sendResponseWithErrors(request, response, errors);
 		} else {
-			
-			switch (mode) {
-			
-			case "retrieveFeedbackForTweet":
-				retrieveFeedbackForTweet(request, feedback, session);
-				sendTweetsResponse(request, response, feedback, errors);
-				break;
-
-			case "retrieveListOfTweetsForUser":
+		
+			if (session_ID == null) {
+	
+				errors.addError("requestError", "Your session is not valid");
+				dispatcher = request.getRequestDispatcher("/main.jsp");
+				dispatcher.forward(request, response);
+	
+			} else if (session_ID == "anonymous") {
+	
+				switch (mode) {
+	
+				case "retrieveListOfTweetsForAnonymous":
+					tweets = retrieveListOfTweetsForAnonymous(request);
+					sendTweetsResponse(request, response, tweets, errors);
+					break;
 				
-				tweets = retrieveListOfTweetsForUser(userToLook);
-				sendTweetsResponse(request, response, tweets, errors);
-				break;
-
-			case "insertLikeForTweet":
-				int numLikes = insertDeinsertLikes(request);
-				sendLikesResponse(request, response, errors, numLikes);
-				break;
-
-			case "deleteTweet":
-				errors.addError(this.deleteTweet(request));
-				sendResponseWithErrors(request, response, errors);
-				break;
+				case "retrieveFeedbackForAnonymousTweets":
+					retrieveFeedbackForTweet(request, feedback, session);
+					sendTweetsResponse(request, response, feedback, errors);
+					break;
+				}
+	
+			} else {
+				
+				switch (mode) {
+				
+					case "retrieveFeedbackForTweet":
+						retrieveFeedbackForTweet(request, feedback, session);
+						sendTweetsResponse(request, response, feedback, errors);
+						break;
+		
+					case "retrieveListOfTweetsForUser":
+						
+						tweets = retrieveListOfTweetsForUser(userToLook);
+						sendTweetsResponse(request, response, tweets, errors);
+						break;
+		
+					case "insertLikeForTweet":
+						int numLikes = insertDeinsertLikes(request);
+						sendLikesResponse(request, response, errors, numLikes);
+						break;
+		
+					case "deleteTweet":
+						errors.addError(this.deleteTweet(request));
+						sendResponseWithErrors(request, response, errors);
+						break;
+						
+					case "viewFollowingTweets":
+						tweets = this.viewFollowingTweets(request);
+						if (tweets.size() == 0) {
+							errors.addError("tweets", "You not are following anybody!");
+						}
+						sendTweetsResponse(request, response, tweets, errors);
+						break;
+				}
+	
 			}
-
 		}
 
 	}
@@ -220,6 +243,18 @@ public class FeedController extends Servlet {
 		}
 
 		return errors;
+	}
+	
+	private List<BeanTweet> viewFollowingTweets(HttpServletRequest request) {
+		List<BeanTweet> tweets = new ArrayList<BeanTweet>();
+		BeanUser user = SessionUtils.getSessionUser(request);
+		
+		if (ValidationUtils.isNotNull(user) == true) {
+			tweets = this.tweetDAO.returnTweetsOfFollowingUsers(user.getUser());
+			retrieveLikesForListOfTweets(tweets);
+		}
+
+		return tweets;
 	}
 
 }

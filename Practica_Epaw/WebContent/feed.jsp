@@ -74,14 +74,14 @@
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
 			var userToLook = "${sessionScope.userToLook}";
+			var mode = "${sessionScope.modeOfFeed}";
 			
         	if (sessionId == "") {
         		redirectToMainPage();
-        	} else if(sessionId == "anonymous"){
+        	} else if(sessionId == "anonymous") {
         		anonymousTweetsRequest(userToLook);
-        	}
-        	else{
-				TweetsRequest(userToLook);
+        	} else {
+				tweetsRequest(userToLook, mode);
         	}
         });
         
@@ -89,10 +89,10 @@
         	window.location.href = "/Lab_3/main";
         }
                 
-        function TweetsRequest(username){
+        function tweetsRequest(username, mode){
         	var parametros = {
         			data : username,
-        			mode : "retrieveListOfTweetsForUser"
+        			mode : mode
         		};
             $.ajax({
                 type: 'post', 

@@ -38,6 +38,11 @@ public class FeedView extends Servlet {
 				session.setAttribute("userToLook", userToLook);
 			}
 			
+			String mode = request.getParameter("mode");
+			if(ValidationUtils.isNotNull(mode) == true) {
+				session.setAttribute("modeOfFeed", mode);
+			}
+			
 			dispatcher = request.getRequestDispatcher("/feed.jsp");
 		}
 			

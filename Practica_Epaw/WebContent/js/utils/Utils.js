@@ -80,7 +80,6 @@ function addOptionInSelect(selectId, optionId, optionValue) {
 	}
 }
 
-// Funcion que remueve una opcion del select, recibiendo la posicion donde se encuntra este option
 function removeOptionInSelect(selectId, optionPos) {
 	var select = document.getElementById(selectId);
 	if ((select != null) && (select != undefined)) {
@@ -126,22 +125,16 @@ function replaceIllegalCharacters(value, replaceString) {
 	return cleanString;
 }
 
-// Hi ha que provar-la no se si funciona.
 function replaceIllegalCharactersWhitRegEx(value, replaceString, regEx) {
 	var cleanString = value.replace("/[" + regEx + "]/g", replaceString);
 	return cleanString;
 }
 
-// Funcion que envia el formulario, realizando un encoding sobre la URL.
 function formSubmit(form) {
 	form.action = encodeURIComponent(form.action);
 	form.submit();
 }
 
-/** Funcion que envia el formulario a un target recibido por parametro, realizando un encoding sobre la URL.
-@param form - Formulario
-@param target - Ventana objetivo donde se enviara el formulario.
-*/
 function formSubmitOnTarget(form, target) {
 	form.taget = target;
 	formSubmit();
@@ -166,14 +159,3 @@ function showErrorsInAlert(errors) {
 function goBack() {
     window.history.back();
 }
-
-// ASYNC / AWAIT
-/* Aixo t'ho deixo per a tu Marc Alcaraz.
-async function getProcessedData(url) {
-	let result;
-	try {
-		result = await funcio..
-	}
-}
-*/
-

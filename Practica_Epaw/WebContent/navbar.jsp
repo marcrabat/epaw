@@ -31,6 +31,7 @@
 
         <div class="navbar-header pull-left">
             <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;" onClick="seeUserFeed('');">Gamitter</a>
+            <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;" onClick="seeFollowingUsersTweets('');">FOLLOWING</a>
         </div>
  
         <ul class="navbar-nav">

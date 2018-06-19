@@ -1,5 +1,13 @@
 function seeUserFeed(user) {
-	var parametros = {userToLook: user};
+	var parametros = {userToLook: user, mode: "retrieveListOfTweetsForUser"};
+	
+	executeAjax(parametros, "feed", "POST",
+			function(response) { window.location.href = "feed" }, 
+			function(e) { alert("errror"); });
+}
+
+function seeFollowingUsersTweets(user) {
+	var parametros = {userToLook: user, mode: "viewFollowingTweets"};
 	
 	executeAjax(parametros, "feed", "POST",
 			function(response) { window.location.href = "feed" }, 
