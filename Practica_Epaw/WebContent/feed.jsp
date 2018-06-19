@@ -20,7 +20,6 @@
 			sessionId = '${sessionScope.Session_ID}';
 			userToLook = '${sessionScope.userToLook}';
 			sessionTweetFeedback = '${sessionScope.tweetFeedback}';
-			//console.log(sessionId);
 			if (sessionId == "") {
 				window.location.href = "/Lab_3/main";
 			} else {
@@ -34,7 +33,6 @@
 				var userJSON = '${sessionScope.userInfo}';
 				if (userJSON != "") {
 					sessionUser = JSON.parse(userJSON);
-					console.log(sessionUser);
 					fillProfileForm(sessionUser);
 					createAdminButtons(sessionUser);
 				}
@@ -102,9 +100,7 @@
                 url: "/Lab_3/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
-                    console.log(data);
                     var tweets = JSON.parse(data);
-                    console.log(tweets);
                     tweetsIntoDivs(tweets);
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
@@ -196,28 +192,7 @@
         	openModalPublishTweet(-1);
         }
         
-        function retweet(tweet) {
-
-        	var JSONData = '${sessionScope.userInfo}';
-        	var user = JSON.parse(JSONData);
-        	
-        	var tweet = {
-        				tweetID: -1,
-        				message: tweet.message,
-        				author: user.user,
-        				originalAuthor: tweet.originalAuthor,
-        				originalID: tweet.originalID
-        			};
-
-
-        	jsonTweet = JSON.stringify(tweet);
-        	
-        	var parametros = {data: jsonTweet, commentTweetId:-1 };
-        	executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
-        					function(response) { console.log("Entra"); successPublishTweet(response); },
-        					function(e) { errorPublishTweet(e); });
-
-        }
+        
        	
         
         function insertLikeTweet(tweetID){
@@ -236,7 +211,6 @@
                 url: "/Lab_3/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
-                    console.log(data);
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });
         }
@@ -255,7 +229,6 @@
 		
 		function successDeleteTweet(response) {
 		
-			console.log(response);
 			
 			var result = response;
 			

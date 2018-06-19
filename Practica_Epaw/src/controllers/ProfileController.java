@@ -76,7 +76,6 @@ public class ProfileController extends Servlet {
 
 	private ErrorMessages editProfile(HttpServletRequest request) {
 		BeanUser vistaUser = null;
-		boolean editUser = false;
 		ErrorMessages errors = new ErrorMessages();
 		String jsonData = request.getParameter("data");
 		
@@ -88,7 +87,6 @@ public class ProfileController extends Servlet {
 			
 			errors.addError(editUser(vistaUser, request));
 			
-			System.out.println("Errores al editar: " + errors.getJSON());
 
 		}
 		return errors;
@@ -101,7 +99,6 @@ public class ProfileController extends Servlet {
 		
 		if (errors.haveErrors() == false) {
 			
-			System.out.println("No Errors For Edit");
 			BeanUser sessionUser = SessionUtils.getSessionUser(request);
 			String userToLook = SessionUtils.getSessionUserToLook(request);
 			
@@ -124,7 +121,6 @@ public class ProfileController extends Servlet {
 					boolean editUser = userDAO.updateUserAllInfo(editInformation);
 					
 					if (editUser == false) {
-						System.out.println("Errors");
 						errors.addError("userEdit", "sorry, you can't modify your information");
 					} else {
 						BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, sessionUser.getUser());
@@ -134,7 +130,6 @@ public class ProfileController extends Servlet {
 					
 				} else {
 					
-					System.out.println("Not exist");
 					errors.addError("user", "The user not exist!!!");
 				}	
 			}

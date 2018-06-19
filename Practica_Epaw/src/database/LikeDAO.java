@@ -26,7 +26,6 @@ public class LikeDAO {
 	private BD bd;
 	private String[] fields = { COLUMN_USER, COLUMN_TWEET_ID};
 	
-	//private Statement statement;
 
 	public LikeDAO() {
 		this.tableName = "Likes";

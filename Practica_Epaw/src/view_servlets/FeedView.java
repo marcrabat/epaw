@@ -14,7 +14,6 @@ import utils.ValidationUtils;
 
 @WebServlet("/feed")
 public class FeedView extends Servlet {
-	private static final long serialVersionUID = 1L;
 
 	public FeedView() {
 	}
@@ -31,7 +30,6 @@ public class FeedView extends Servlet {
 		RequestDispatcher dispatcher = null;
 		String session_ID = (String) session.getAttribute("Session_ID");
 		if (session_ID == null) {
-			System.out.println("No session available, returning to main page");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
 		} else {
 			

@@ -132,7 +132,6 @@ function jsonRequest(e) {
 				data : jsonObject
 			},
 			success : function(data) {
-				console.log(data);
 
 				var result = JSON.parse(data);
 
@@ -152,7 +151,6 @@ function jsonRequest(e) {
 	} else {
 		$('#validateDanger').html("Check the form errors!");
 	}
-	console.log(jsonObject);
 }
 //////////////////////////////////////////////////////////
 

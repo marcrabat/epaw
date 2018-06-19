@@ -34,7 +34,6 @@ public class FollowersController extends Servlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
 		
-		//ErrorMessages errors = new ErrorMessages();
 		List<String> list = new ArrayList<String>();
 		List<String> followers = null;
 		List<String> following = null;
@@ -51,7 +50,6 @@ public class FollowersController extends Servlet {
 				case "followers":
 					followers = this.followersList(request);
 					following = this.followingList(request);
-					//list = followers;
 					
 					for(int i=0; i<followers.size(); i++) {
 						String actual = followers.get(i);

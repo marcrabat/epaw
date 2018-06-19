@@ -53,13 +53,6 @@ public class RegisterController extends Servlet {
 			
 			errors.addError(registerUser(vistaUser, request));
 			
-			System.out.println(errors.getJSON());
-			
-			//Put the bean into the request as an attribute
-			request.setAttribute("user", vistaUser);
-			request.setAttribute("resultRegister", insertUser);
-			
-
 		}
 
 		sendResponse(request, response, errors);
@@ -104,7 +97,7 @@ public class RegisterController extends Servlet {
 		if (ValidationUtils.isEmpty(user.getUser()) == true) {
 			error.addError("user", "The field is empty.");
 		} else if (ValidationUtils.isBetweenLength(user.getUser(), 4, 30) == false) {
-			error.addError("user", "Invalid length (min: 4, max: 30)."); // TODO ARREGLAR ERRORES;
+			error.addError("user", "Invalid length (min: 4, max: 30)."); 
 		}
 		
 		if (ValidationUtils.isEmpty(user.getPassword()) == true) {
@@ -137,23 +130,18 @@ public class RegisterController extends Servlet {
 		
 		if (errors.haveErrors() == false) {
 			
-			System.out.println("No Errors");
 			
 			boolean existUser = userDAO.existUser(user.getUser(), user.getMail());
 
 			if (existUser == false) {
 				
-				System.out.println("No Exist");
 				boolean insertUser = userDAO.insertUser(user);
 				
 				if (insertUser == false) {
-					System.out.println("Errors");
 					errors.addError("userInsert", "The user can not be inserted in BD");
 				}
 				
 			} else {
-				
-				System.out.println("Exist user");
 				errors.addError("user", "The user already exist!!!");
 			}
 			

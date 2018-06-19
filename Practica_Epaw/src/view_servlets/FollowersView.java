@@ -48,9 +48,7 @@ public class FollowersView extends Servlet{
 		
 		if (session.getAttribute("Session_ID") == null) {
 			dispatcher = request.getRequestDispatcher("/main.jsp");
-			//response.sendRedirect(contextPath + "/main");
 		} else {
-			//response.sendRedirect(contextPath + "/profile");
 			String mode = request.getParameter("mode");
 			if(ValidationUtils.isNotNull(mode) == true) {
 				session.setAttribute("followersViewMode", mode);

@@ -10,7 +10,6 @@ function anonymousTweetsRequest(username){
                 data: parametros,
                 success: function (data) {
                     var tweets = JSON.parse(data);
-                    console.log(tweets);
                     anonymousTweetsIntoDivs(tweets);
                 },
                 error: function(xhr,status,error) { alert("Error: " + error);} });

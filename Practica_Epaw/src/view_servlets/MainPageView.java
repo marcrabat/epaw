@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/main")
 public class MainPageView extends HttpServlet {
-	private static final long serialVersionUID = 1L;
  
     public MainPageView() {}
 

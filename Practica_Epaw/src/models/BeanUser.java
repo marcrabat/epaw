@@ -18,8 +18,8 @@ public class BeanUser implements Serializable {
 	// Mandatory Fields
 	private String name = "";
 	private String surname = "";
-	private String mail = ""; // In our seminar, our email
-	private String user = ""; // In our seminar, our username
+	private String mail = ""; 
+	private String user = ""; 
 	private String password = "";
     private String birthDate = "";
 	
@@ -96,31 +96,25 @@ public class BeanUser implements Serializable {
 	/* Setters */
 
 	public void setName(String name) {
-		System.out.println("Filling name field");
 		this.name = name;
 	}
 
 	public void setSurname(String surname) {
-		System.out.println("Filling surname field");
 		this.surname = surname;
 	}
 
 	public void setMail(String mail) {
-		System.out.println("Filling mail field");
 		this.mail = mail;
 	}
 
 	public void setBirthDate(int year, int month, int day) { 
-		System.out.println("Filling birthDate field");
-		Date date = new Date(year - 1900, month-1, day); //Date constructor set the date to 1900 + year by default!
+		Date date = new Date(year - 1900, month-1, day); 
 		SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String stringDate = ymdFormat.format(date);
-		//System.out.println("My date formatted: " + stringDate);
 		this.birthDate = stringDate;
 	}
 	
 	public void setBirthDate(String date) {
-		System.out.println("Filling birthDate field");
 		String[] splitDate = date.split("/");
 		String year = splitDate[2];
 		String month = splitDate[1];
@@ -130,42 +124,34 @@ public class BeanUser implements Serializable {
 	}
 	
 	public void setUser(String user) {
-		System.out.println("Filling user field");
 		this.user = user;
 	}
 
 	public void setPassword(String password) {
-		System.out.println("Filling password field");
 		this.password = password;
 	}
 
 	public void setDescription(String description) {
-		System.out.println("Filling description field");
 		this.description = description;
 	}
 
 	public void setGender(String gender) {
-		System.out.println("Filling gender field");
 		this.gender = gender;
 	}
 
 	public void setUserConsoles(List<String> userConsoles) {
-		System.out.println("Filling userConsoles field");
 		this.userConsoles = userConsoles;
 	}
 
 	public void setGameGenres(List<String> gameGenres) {
-		System.out.println("Filling gameGenres field");
 		this.gameGenres = gameGenres;
 	}
 
 	public void setYoutubeChannelID(String youtubeChannelID) {
-		System.out.println("Filling youtubeChanneldID field");
 		this.youtubeChannelID = youtubeChannelID;
 	}
 
 	public void setTwitchChannelID(String twitchChannelID) {
-		System.out.println("Filling twitchChannelID field");
 		this.twitchChannelID = twitchChannelID;
 	}
 	

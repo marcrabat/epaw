@@ -46,7 +46,6 @@ public class LoginController extends Servlet {
 							throws ServletException, IOException {
 		
 		BeanUser vistaUser = null;
-		boolean loginUser = false;
 		ErrorMessages errors = new ErrorMessages();
 		
 		HttpSession session = this.getSession(request);

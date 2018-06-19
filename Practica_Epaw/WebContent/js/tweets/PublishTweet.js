@@ -2,22 +2,28 @@ var sessionJsonTweet = null;
 var sessionUser = null;
 
 function openModalPublishTweet(tweetID) {
-	var parametros = {tweetID: tweetID};
-	executeAjax(parametros, "/Lab_3/tweetInformation", "POST", 
-					function(response) { successFillDivPublishTweet(response); },
-					function(e) { errorPublishTweet(e); });
+	var parametros = {
+		tweetID : tweetID
+	};
+	executeAjax(parametros, "/Lab_3/tweetInformation", "POST", function(
+			response) {
+		successFillDivPublishTweet(response);
+	}, function(e) {
+		errorPublishTweet(e);
+	});
 }
 
 function successFillDivPublishTweet(response) {
 
 	if (response != null) {
-		
-		var tweet = response; 
-		
+
+		var tweet = response;
+
 		try {
 			tweet = JSON.parse(response);
-		} catch (e) {}
-		
+		} catch (e) {
+		}
+
 		if (tweet.tweetID > -1) {
 			fillDivPublishTweet(tweet);
 			setValue("hiddenCommentTweetId", -1);
@@ -55,62 +61,75 @@ function publishTweet() {
 	var tweetId = getValue("hiddenTweetId");
 	var commentTweetId = getValue("hiddenCommentTweetId");
 	var message = getValue("modalTweetMessage");
-	
+
 	if (message.length <= 255) {
-	
+
 		var tweet = {
-					tweetID: tweetId,
-					message: message,
-					author: sessionUser.user,
-					originalAuthor: sessionUser.user
-				};
-	
-	
+			tweetID : tweetId,
+			message : message,
+			author : sessionUser.user,
+			originalAuthor : sessionUser.user
+		};
+
 		jsonTweet = JSON.stringify(tweet);
-		
-		var parametros = {data: jsonTweet, commentTweetId: commentTweetId};
-		executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
-						function(response) { successPublishTweet(response); },
-						function(e) { errorPublishTweet(e); });
-		
+
+		var parametros = {
+			data : jsonTweet,
+			commentTweetId : commentTweetId
+		};
+		executeAjax(parametros, "/Lab_3/publishTweet", "POST", function(
+				response) {
+			successPublishTweet(response);
+		}, function(e) {
+			errorPublishTweet(e);
+		});
+
 	} else {
 		alert("This message is to long!");
 	}
 }
 
-function retweet(tweetStringyfied) {
+function retweet(tweet) {
 
-	var tweetParsed = JSON.parse(tweetStringyfied);
-	
+	var user = sessionUser;
+	try {
+		user = JSON.parse(sessionUser);
+	} catch (e) {
+	}
+
 	var tweet = {
-				tweetID: -1,
-				message: tweetParsed.message,
-				author: tweetParsed.author,
-				originalAuthor: tweetParsed.originalAuthor,
-				originalID: tweetParsed.originalID
-			};
-
+		tweetID : -1,
+		message : tweet.message,
+		author : user.user,
+		originalAuthor : tweet.originalAuthor,
+		originalID : tweet.originalID
+	};
 
 	jsonTweet = JSON.stringify(tweet);
-	
-	var parametros = {data: jsonTweet};
-	executeAjax(parametros, "/Lab_3/publishTweet", "POST", 
-					function(response) { console.log("Entra"); successPublishTweet(response); },
-					function(e) { errorPublishTweet(e); });
+
+	var parametros = {
+		data : jsonTweet,
+		commentTweetId : -1
+	};
+	executeAjax(parametros, "/Lab_3/publishTweet", "POST", function(response) {
+		successPublishTweet(response);
+	}, function(e) {
+		errorPublishTweet(e);
+	});
 
 }
 
 function successPublishTweet(response) {
-	
-	console.log(response);
-	
+
+
 	var result = response;
-	
+
 	try {
 		result = JSON.parse(response);
-	} catch (e) {}
-	
-	if (result.errors.length > 0) { 
+	} catch (e) {
+	}
+
+	if (result.errors.length > 0) {
 		showErrorsInAlert(result.errors);
 	} else {
 		closePublishModal();
@@ -128,7 +147,7 @@ function messageLength() {
 	var messageLength = getElement("messageLength");
 	var length = message.length;
 	getElement("messageLength").innerHTML = length;
-	
+
 	if (length > 255) {
 		messageLength.style.color = 'red';
 	} else {

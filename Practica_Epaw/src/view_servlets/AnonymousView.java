@@ -31,8 +31,6 @@ import utils.Servlet;
 @WebServlet("/anonymous")
 public class AnonymousView extends Servlet {
 	
-	private static final long serialVersionUID = 1L;
-
 	public AnonymousView() {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

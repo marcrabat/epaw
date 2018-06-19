@@ -92,16 +92,13 @@ public class BeanTweet implements Serializable {
 	}
 	
 	public void setPublishDate(int year, int month, int day) { 
-		System.out.println("Filling birthDate field");
-		Date date = new Date(year - 1900, month-1, day); //Date constructor set the date to 1900 + year by default!
+		Date date = new Date(year - 1900, month-1, day); 
 		SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String stringDate = ymdFormat.format(date);
-		//System.out.println("My date formatted: " + stringDate);
 		this.publishDate = stringDate;
 	}
 
 	public void setPublishDate(String date) {
-		System.out.println("Filling birthDate field");
 		String[] splitDate = date.split("/");
 		String year = splitDate[2];
 		String month = splitDate[1];

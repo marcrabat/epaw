@@ -224,7 +224,6 @@ function editProfile() {
 
 function succesEditProfile(response) {
 
-	console.log(response);
 
 	var result = response;
 
@@ -232,14 +231,14 @@ function succesEditProfile(response) {
 		manageErrors(result);
 		$('#editDanger').html("Check the form errors!");
 	} else {
-		alert("the edit profile is good!");
+		alert("Profile edited correctly");
 		changeEditOrView();
 	}
 
 }
 
 function errorEditProfile(e) {
-	alert("Error.....");
+	alert("Error editing your profile");
 }
 
 function deleteSessionAccount() {
@@ -266,7 +265,6 @@ function deleteSessionAccount() {
 
 function succesDeleteSessionAccount(response) {
 
-	console.log(response);
 
 	var result = response;
 
@@ -307,7 +305,6 @@ function deleteAllTweets() {
 
 var succesDeleteAllTweets = function (response) {
 
-	console.log(response);
 
 	var result = response;
 
@@ -330,7 +327,6 @@ function deleteUserAccount() {
 
 		var usernameToDelete = prompt("Write the user to delet!", "");
 		
-		alert(usernameToDelete);
 		
 		if (isEmpty(usernameToDelete) == true) {
 			alert("Write a user to delete");
@@ -358,7 +354,6 @@ function deleteUserAccount() {
 
 function succesDeleteUserAccount(response) {
 
-	console.log(response);
 
 	var result = response;
 

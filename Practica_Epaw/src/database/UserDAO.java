@@ -37,7 +37,6 @@ public class UserDAO {
 								COLUMN_YOUTUBE_CHANNEL_ID, COLUMN_TWITCH_CHANNEL_ID,
 								COLUMN_GAME_GENRES, COLUMN_USER_CONSOLES, COLUMN_IS_ADMIN };
 	
-	//private Statement statement;
 
 	public UserDAO() {
 		this.tableName = "Users";
@@ -221,16 +220,6 @@ public class UserDAO {
 			
 			System.out.println("------------ UserDAO.java ------------ SQL UPDATE: " + sql);
 			
-			/* old Version, si estiguesim segurs que les dades no arriven buides o null, no hi hauria problema.
-			sql += " SET name = '" + user.getName() + "', surname = '" + user.getSurname() + "', ";
-			sql += "birthDate = '" + user.getBirthDate() + "', password = '" + user.getPassword() + "', ";
-			sql += "description = '" + user.getDescription() + "', gender = '" + user.getGender() + "', ";
-			sql += "youtubeChannelID = '" + user.getYoutubeChannelID() + "', ";
-			sql += "twitchChannelID = '" + user.getTwitchChannelID() + "', ";
-			sql += "gameGenres = '" + GeneralUtils.concatListOfString(user.getGameGenres(), ",") + "', ";
-			sql += "userConsoles = '" + GeneralUtils.concatListOfString(user.getUserConsoles(), ",") + "'";
-			sql += " WHERE user = '" + user.getUser() + "' and mail = '" + user.getMail() + "';";
-			*/
 			
 			if (allValuesNull == false) {	
 				int result = this.bd.executeSQL(sql);

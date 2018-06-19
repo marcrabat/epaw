@@ -37,9 +37,7 @@
             	
 			 	sessionUser = JSON.parse(userJSON);
 			 	var mode = '${sessionScope.followersViewMode}';
-			 	console.log(mode);
 			 	if(mode=="") mode = "followers";
-			 	console.log(mode);
 			 	var parametros = { data: sessionUser.user, mode: mode };
 			 	
 	           	$.ajax({
@@ -48,7 +46,6 @@
 	                   dataType: 'text',
 	                   data: parametros,
 	                   success: function (data) {
-							console.log(data);
 							
 							var result = JSON.parse(data);
 							
@@ -75,7 +72,6 @@
             	
 			 	sessionUser = JSON.parse(userJSON);
 			 	var parametros = { userA: sessionUser.user, userB: userB_, mode: mode_ };
-        		console.log(parametros);
         		
 	           	$.ajax({
 	                url: '/Lab_3/changeRelation',
@@ -83,8 +79,7 @@
 	                dataType: 'text',
 	                data: parametros,
 	                success: function (data) {
-							console.log(data);
-							location.reload();
+						location.reload();
 	                },
 	                error: function(xhr,status,error) { alert("Error: " + error);} });     
         	}

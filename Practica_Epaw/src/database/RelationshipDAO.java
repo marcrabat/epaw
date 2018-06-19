@@ -19,7 +19,6 @@ public class RelationshipDAO {
 	private BD bd;
 	private String[] fields = { COLUMN_USERA, COLUMN_USERB };
 	
-	//private Statement statement;
 
 	public RelationshipDAO() {
 		this.tableName = "Relationship";

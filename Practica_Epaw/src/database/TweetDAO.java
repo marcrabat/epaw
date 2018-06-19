@@ -31,7 +31,6 @@ public class TweetDAO {
 	private String[] fields = { COLUMN_TWEET_ID, COLUMN_AUTHOR,
 								COLUMN_MESSAGE, COLUMN_PUBLISH_DATE, COLUMN_ORIGINAL_AUTHOR, COLUMN_ORIGINAL_ID };
 	
-	//private Statement statement;
 
 	public TweetDAO() {
 		this.tableName = "Tweets";
