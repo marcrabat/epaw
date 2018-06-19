@@ -75,7 +75,7 @@ public class TweetDAO {
 		
 		if (this.bd != null) {
 			String sql = "SELECT * FROM " + this.tableName;
-			sql += " ORDER BY " + this.COLUMN_TWEET_ID + " LIMIT "+ limitNumberOfTweets + ";";
+			sql += " ORDER BY " + this.COLUMN_PUBLISH_DATE + " DESC " + " LIMIT "+ limitNumberOfTweets + ";";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
 			
@@ -96,7 +96,7 @@ public class TweetDAO {
 		
 		if (this.bd != null) {
 			String sql = "SELECT * FROM " + this.tableName;
-			sql += " WHERE " + this.COLUMN_AUTHOR + " LIKE "+ "'" + username + "'" + ";";
+			sql += " WHERE " + this.COLUMN_AUTHOR + " LIKE "+ "'" + username + "'" + " ORDER BY " + this.COLUMN_PUBLISH_DATE +" DESC;";
 			
 			System.out.println("------------ TweetDAO.java ------------ SQL GLOBALTIMELINE: " + sql);
 			
