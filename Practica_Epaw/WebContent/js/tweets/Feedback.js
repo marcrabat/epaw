@@ -54,13 +54,15 @@ function successFillDivFeedbackTweet(response) {
 			fillDivFeedbackTweet(feedbackTweets);
 			showFeedbackModal();
 		} else {
-			closeFeedbackModal();
-			alert("This tweet not have feedback!");
+			generateNoMessagesAvailable();
+			showFeedbackModal();			
 		}
 		
 	}
 
 }
+
+
 
 function fillDivHeaderTweet() {
 	var tweet = sessionFeedbackTweet;
@@ -82,6 +84,10 @@ function fillDivFeedbackTweet(feedbackTweets) {
 	setHtml("feedbackContentModal", html);
 }
 
+function generateNoMessagesAvailable(){
+	setHtml("feedbackContentModal", "No messages available.");
+}
+
 function showFeedbackModal() {
 	var modal = getElement('modalFeedbackTweet');
 	modal.style.display = "block";
@@ -93,6 +99,7 @@ function closeFeedbackModal() {
 	setHtml("feedbackContentModal", "");
 	setHtml("TweetContentModal", "");
 }
+
 
 function errorFeedbackTweet(e) {
 	alert("Error at showing the feedback!");

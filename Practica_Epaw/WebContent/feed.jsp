@@ -31,7 +31,6 @@
 				changeVisibility("profilePassword");
 		
 				disableInputs();
-				//var userJSON = '{"userConsoles": []}';
 				var userJSON = '${sessionScope.userInfo}';
 				if (userJSON != "") {
 					sessionUser = JSON.parse(userJSON);
@@ -45,10 +44,7 @@
 				}
 				
 				if (userToLook != sessionId) {
-					if(userToLook != ""){
-						alert("que es vegi nomes la meva feed");
-						//some stuff per tornar nomes els de userToLook
-					}
+					
 					changeVisibility("editOrView");
 					changeVisibility("newPassword");
 					changeVisibility("profileMenu");
@@ -100,8 +96,8 @@
         			mode : "retrieveListOfTweetsForUser"
         		};
             $.ajax({
-                type: 'post', //rest Type
-                dataType: 'text', //mispelled
+                type: 'post', 
+                dataType: 'text', 
                 url: "/Lab_3/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
@@ -128,6 +124,8 @@
         	var HTML = "";
         	var myButtons = genereteMyButtonsOfTweet(currentTweet, user);
 			
+        	
+        	
         	if(isFeedback == true){
         		var HTML = "";
             	HTML += "<div id='"+tweetID+"'>";
@@ -152,6 +150,9 @@
         
         function genereteMyButtonsOfTweet(tweet, user) {
         	var myButtons = "";
+        	if(user == "anonymous"){
+				myButtons ="";
+			}
         	if((tweet.author == user.user) || user.isAdmin == true){
 				if(tweet.originalAuthor == user.user || user.isAdmin == true){
         			myButtons = "<button class='mybtn'><i class='fa fa-hand-paper-o'";
@@ -179,8 +180,10 @@
         	HTML += "<p class='card-text'>" + tweet.message +"</p>";
         	HTML += "<button class='mybtn' Onclick='insertLikeTweet("+tweet.tweetID+ ");'><i class='fa fa-heart-o'>"+ " " + tweet.likes +"</i></button>";
         	HTML += userButtons;
-        	HTML += "<button class='mybtn' onClick='commentTweet("+tweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"
-            HTML += "<button class='mybtn' Onclick='retweet("+JSON.stringify(tweet)+");'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>"
+        	if(sessionId != "anonymous"){
+        		HTML += "<button class='mybtn' onClick='commentTweet("+tweet.tweetID+")'><i class='fa fa-comment-o'>" + " comment </i></button>"	
+            	HTML += "<button class='mybtn' Onclick='retweet("+JSON.stringify(tweet)+");'><i class='fa fa-mail-reply-all'>" + " retweet </i></button>";	
+        	}
             HTML += "<button class='mybtn' Onclick='openModalFeedback("+ JSON.stringify(tweet) + ");'><i class='fa fa-eye'>" + " view feedback </i></button>"
             HTML += "</div></div>";
             return HTML;
@@ -197,12 +200,6 @@
         	var JSONData = '${sessionScope.userInfo}';
         	var user = JSON.parse(JSONData);
         	
-        	/*var tweetParsed;
-        	try {
-        		tweetParsed = JSON.parse(tweet);
-        	} catch(e) {}
-        	
-        	console.log(tweet);*/
         	var tweet = {
         				tweetID: -1,
         				message: tweet.message,
@@ -221,55 +218,6 @@
 
         }
        	
-        /*
-        function viewFeedbackForTweet(tweetID){
-        	
-    		var parametros = {
-    			data : tweetID,
-    			mode : "retrieveFeedbackForTweet"
-    		};
-    		
-    		console.log(parametros);
-    		alert(parametros.mode);
-    		
-        	$.ajax({
-                type: 'post', //rest Type
-                dataType: 'text', //mispelled
-                url: "/Lab_3/checkFeedErrors",
-                data: parametros,
-                success: function (data) {
-                    console.log(data);
-                    var feedbackTweets = JSON.parse(data);
-                    console.log(feedbackTweets);
-                    var tweet = '${sessionScope.tweetFeedback}';
-                    feedbackIntoDivs(feedbackTweets, tweet);
-                    
-                },
-                error: function(xhr,status,error) { alert("Error: " + error);} });
-    		
-        }
-        
-        function feedbackIntoDivs(tweets, tweetToInsertFeedback){
-        	var i;
-        	var HTML = "";
-        	var JSONData = '${sessionScope.userInfo}';
-        	var user = JSON.parse(JSONData);
-        	
-        	var divFeedbackId = "feedback_" + tweetToInsertFeedback;
-        	
-        	for (i = 0; i < tweets.length; i++) {
-        		//HTML += generateHTML(tweets[i], user, true);
-        		var newId = tweetToInsertFeedback + "_" + tweets[i].tweetID;
-        		alert(newId);
-        		HTML += generateTweetDiv(tweets[i],newId, "");
-        	}
-        	var feedbackId = divFeedbackId; // + "_" + tweets[i].twwetID;
-     		var insertFeedback = document.getElementById(feedbackId);
-     		console.log(insertFeedback);
-     		alert(insertFeedback);
-     		insertFeedback.innerHTML = HTML;
-        }
-		*/
         
         function insertLikeTweet(tweetID){
         	
@@ -282,8 +230,8 @@
         			mode : "insertLikeForTweet"
         		};
             $.ajax({
-                type: 'post', //rest Type
-                dataType: 'text', //mispelled
+                type: 'post', 
+                dataType: 'text', 
                 url: "/Lab_3/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
@@ -351,29 +299,29 @@
 			<button id="buttonViewFollowings" class="btn btn-primary" onClick="seeUsers('following');">View followings</button>
 		</div>
 	</div>
-	
+
 	<div id="modalFeedbackTweet" class="modal" role="dialog">
-	    <div class="modal-dialog">
-	    
-	      <!-- Modal content-->
-	      <div class="modal-content">
-		        <div class="modal-header">
-		          <div id="TweetContentModal"></div>
-		        </div>
-		        <div class="modal-body">
-		          <div id="feedbackContentModal"></div>
-		        </div>
-		        <div class="modal-footer">
-					<button type="button" class="btn btn-default" Onclick="closeFeedbackModal()">Close</button>
-	    		</div>
-	    		
-	    	</div>
-		      
-	    </div>
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<div id="TweetContentModal"></div>
+				</div>
+				<div class="modal-body">
+					<div id="feedbackContentModal"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						Onclick="closeFeedbackModal()">Close</button>
+				</div>
+			</div>
+	
+		</div>
 	</div>
 
 
-<!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->
+	<!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->
 
 </body>
 </html>
