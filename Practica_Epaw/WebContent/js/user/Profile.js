@@ -179,6 +179,8 @@ function fillJson() {
 
 function manageErrors(data) {
 
+	clear();
+	
 	if (typeof data.errors == "undefined")
 		return;
 

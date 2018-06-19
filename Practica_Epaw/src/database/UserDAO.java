@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -129,13 +130,13 @@ public class UserDAO {
 			// haciendo esto conseguimos un formato correcto para la BD.
 			user.setBirthDate(user.getBirthDate());
 
-			String sql = "INSERT INTO " + this.tableName + " (" + GeneralUtils.concatArrayOfString(fields, ",") + ")";
+			String sql = "INSERT INTO " + this.tableName + " (" + GeneralUtils.concatArrayOfString(this.fields, ",") + ")";
 			sql += " VALUES ('" + user.getUser() + "', '" + user.getMail() + "', '" + user.getName() + "', ";
 			sql += "'" + user.getSurname() + "', '" + user.getBirthDate() + "', '" + user.getPassword() + "', ";
 			sql += "'" + user.getDescription() + "', '" + user.getGender() + "', ";
 			sql += "'" + user.getYoutubeChannelID() + "' , '" + user.getTwitchChannelID() + "', ";
 			sql += "'" + GeneralUtils.concatListOfString(user.getGameGenres(), " ,") + "', ";
-			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), " ,") + "');";
+			sql += "'" + GeneralUtils.concatListOfString(user.getUserConsoles(), " ,") + "', b'0');";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL INSERT: " + sql);
 			

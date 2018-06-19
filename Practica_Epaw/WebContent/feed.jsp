@@ -75,14 +75,15 @@
         /////////////////////// FUNCTIONS ////////////////////////    
         $(document).ready( function() {
         	var sessionId = "${sessionScope.Session_ID}";
-
+			var userToLook = "${sessionScope.userToLook}";
+			
         	if (sessionId == "") {
         		redirectToMainPage();
         	} else if(sessionId == "anonymous"){
-        		anonymousTweetsRequest();
+        		anonymousTweetsRequest(userToLook);
         	}
         	else{
-				TweetsRequest("${sessionScope.userToLook}");
+				TweetsRequest(userToLook);
         	}
         });
         

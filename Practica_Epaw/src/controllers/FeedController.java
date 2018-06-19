@@ -69,7 +69,12 @@ public class FeedController extends Servlet {
 			switch (mode) {
 
 			case "retrieveListOfTweetsForAnonymous":
-				tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
+				String wantUserFeed = request.getParameter("data");
+				if (ValidationUtils.isEmpty(wantUserFeed) == true) {
+					tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
+				} else {
+					tweets = this.tweetDAO.returnUserFeed(wantUserFeed);
+				}
 				retrieveLikesForListOfTweets(tweets, likeDao);
 				sendTweetsResponse(request, response, tweets, errors);
 				break;

@@ -33,17 +33,16 @@ public class FeedView extends Servlet {
 		if (session_ID == null) {
 			System.out.println("No session available, returning to main page");
 			dispatcher = request.getRequestDispatcher("/main.jsp");
-		} else if(session_ID == "anonymous"){
-			System.out.println("Enter as anonymous");
-			dispatcher = request.getRequestDispatcher("/feed.jsp");
 		} else {
-			System.out.println("Enter with session: " + session.getAttribute("Session_ID"));
+			
 			String userToLook = request.getParameter("userToLook");
 			if(ValidationUtils.isNotNull(userToLook) == true) {
 				session.setAttribute("userToLook", userToLook);
 			}
+			
 			dispatcher = request.getRequestDispatcher("/feed.jsp");
 		}
+			
 		dispatcher.forward(request, response);
 	}
 

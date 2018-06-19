@@ -1,6 +1,6 @@
-function anonymousTweetsRequest(){
+function anonymousTweetsRequest(username){
         	var parametros = {
-        			data : "",
+        			data : username,
         			mode : "retrieveListOfTweetsForAnonymous"
         		};
         	$.ajax({
@@ -40,9 +40,9 @@ function generateAnonymousTweetCard(tweet){
 	var HTML = "";
 	HTML += "<div class='card' style='width:30rem;'>";
 	HTML += "<div class='card-body'>";
-	HTML += "<h5 class='card-title' onClick='seeUserFeed(" + tweet.author + ");'>" + tweet.author + "</h5>";
+	HTML += "<h5 class='card-title' onClick='seeUserFeed(\"" + tweet.author + "\");'>" + tweet.author + "</h5>";
 	if(tweet.author!=tweet.originalAuthor) 
-		HTML += "<h6 class='card-title' onClick='seeUserFeed(" + tweet.orignalAuthor + ");'>" + "Original Author: " + tweet.originalAuthor + "</h6>";
+		HTML += "<h6 class='card-title' onClick='seeUserFeed(\"" + tweet.orignalAuthor + "\");'>" + "Original Author: " + tweet.originalAuthor + "</h6>";
 	HTML += "<h6 class='card-subtitle mb-2 text-muted'>" + "at: " + tweet.publishDate  + "</h6>";
 	HTML += "<p class='card-text'>" + tweet.message +"</p>";
 	HTML += "<button class='mybtn'><i class='fa fa-heart-o'>"+ " " + tweet.likes +"</i></button>";

@@ -1,5 +1,19 @@
 /* Arxiu JS que conté utilitats com agafar elements del DOM */
 // Fer import de babel.
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+        return entityMap[s];
+    });
+}
 
 function loadScript(url, callback) {
     // Adding the script tag to the head as suggested before
