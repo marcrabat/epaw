@@ -13,8 +13,6 @@
     
     <script type="text/javascript">
 		
-		var sessionUser = null;
-		
 		$(document).ready(function() {
 			
 			sessionId = '${sessionScope.Session_ID}';
@@ -30,10 +28,12 @@
 				changeVisibility("profilePassword");
 		
 				disableInputs();
+				var userToLookJSON = '${sessionScope.userToLookInfo}';
 				var userJSON = '${sessionScope.userInfo}';
 				if (userJSON != "") {
+					var userToLookInfo = JSON.parse(userToLookJSON);
 					sessionUser = JSON.parse(userJSON);
-					fillProfileForm(sessionUser);
+					fillProfileForm(userToLookInfo);
 					createAdminButtons(sessionUser);
 				}
 				
@@ -42,8 +42,9 @@
 				}
 				
 				if (userToLook != sessionId) {
-					
-					changeVisibility("editOrView");
+					if (sessionUser.isAdmin == false) {
+						changeVisibility("editOrView");
+					}
 					changeVisibility("newPassword");
 					changeVisibility("profileMenu");
 				}

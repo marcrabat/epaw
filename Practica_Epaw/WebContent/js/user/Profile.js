@@ -1,5 +1,6 @@
 var userToLook = null;
 var sessionId = null;
+var sessionUser = null;
 
 function changeVisibility(id) {
 	var element = $("#" + id);
@@ -120,7 +121,7 @@ function disableInputs() {
 }
 
 function changeEditOrView() {
-	if (sessionId == userToLook) {
+	if (sessionId == userToLook || sessionUser.isAdmin == true) {
 		if (getElement("editOrView").innerHTML == "View") {
 			disableInputs();
 			getElement("profileButtons").style = "display: none;";
@@ -166,12 +167,13 @@ function fillJson() {
 	}
 
 	var json = {
-		password : newPassword,
-		description : $('#description').val().trim(),
-		userConsoles : userConsoles,
-		gameGenres : gameGenres,
-		youtubeChannelID : youtubeChannelID,
-		twitchChannelID : twitchChannelID
+			user: userToLook,
+			password : newPassword,
+			description : $('#description').val().trim(),
+			userConsoles : userConsoles,
+			gameGenres : gameGenres,
+			youtubeChannelID : youtubeChannelID,
+			twitchChannelID : twitchChannelID
 	};
 
 	return json;
@@ -224,7 +226,7 @@ function editProfile() {
 
 function succesEditProfile(response) {
 
-
+	clear();
 	var result = response;
 
 	if (result.errors.length > 0) {

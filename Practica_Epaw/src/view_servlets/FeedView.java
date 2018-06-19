@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import database.UserDAO;
+import models.BeanUser;
+import utils.JSONUtils;
 import utils.Servlet;
 import utils.ValidationUtils;
 
@@ -36,6 +40,9 @@ public class FeedView extends Servlet {
 			String userToLook = request.getParameter("userToLook");
 			if(ValidationUtils.isNotNull(userToLook) == true) {
 				session.setAttribute("userToLook", userToLook);
+				UserDAO dao = new UserDAO();
+				BeanUser user = dao.returnUser(UserDAO.COLUMN_USER, userToLook);
+				session.setAttribute("userToLookInfo", JSONUtils.getJSON(user));
 			}
 			
 			String mode = request.getParameter("mode");

@@ -103,7 +103,7 @@ public class ProfileController extends Servlet {
 			String userToLook = SessionUtils.getSessionUserToLook(request);
 			
 			if (ValidationUtils.isNull(userToLook) == true) {
-				userToLook = sessionUser.getUser();
+				userToLook = editInformation.getUser();
 			}
 			
 			if (sessionUser == null) {
@@ -115,17 +115,18 @@ public class ProfileController extends Servlet {
 	
 				if (existUser == true) {
 					
-					editInformation.setUser(sessionUser.getUser());
-					editInformation.setMail(sessionUser.getMail());
+					editInformation.setUser(userToLook);
 
 					boolean editUser = userDAO.updateUserAllInfo(editInformation);
 					
 					if (editUser == false) {
 						errors.addError("userEdit", "sorry, you can't modify your information");
 					} else {
-						BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, sessionUser.getUser());
-						HttpSession session = request.getSession();
-						session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
+						if (ValidationUtils.equals(sessionUser.getUser(), userToLook) == true) {
+							BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, sessionUser.getUser());
+							HttpSession session = request.getSession();
+							session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
+						}
 					}
 					
 				} else {

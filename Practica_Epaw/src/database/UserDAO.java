@@ -162,6 +162,7 @@ public class UserDAO {
 		if (this.bd != null) {
 			boolean allValuesNull = true;
 			String sql = "UPDATE " + this.tableName + " SET ";
+			sql += COLUMN_DESCRIPTION + " = '" + user.getDescription() + "', ";
 			
 			if (ValidationUtils.isEmpty(user.getName()) == false) {
 				sql += COLUMN_NAME + " = '" + user.getName() + "', ";
@@ -180,11 +181,6 @@ public class UserDAO {
 			
 			if (ValidationUtils.isEmpty(user.getPassword()) == false) {
 				sql += COLUMN_PASSWORD + " = '" + user.getPassword() + "', ";
-				allValuesNull = false;
-			}
-			
-			if (ValidationUtils.isEmpty(user.getDescription()) == false) {
-				sql += COLUMN_DESCRIPTION + " = '" + user.getDescription() + "', ";
 				allValuesNull = false;
 			}
 			
@@ -215,8 +211,7 @@ public class UserDAO {
 			
 			sql = sql.substring(0, (sql.length() - ", ".length()));
 			
-			sql += " WHERE " + COLUMN_USER + " = '" + user.getUser() + "'";
-			sql += " AND " + COLUMN_MAIL + " = '" + user.getMail() + "';";
+			sql += " WHERE " + COLUMN_USER + " = '" + user.getUser() + "';";
 			
 			System.out.println("------------ UserDAO.java ------------ SQL UPDATE: " + sql);
 			
