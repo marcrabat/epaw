@@ -2,11 +2,8 @@ var sessionFeedbackTweet = null;
 
 function openModalFeedback(jsonTweet) {
 	
-	var tweet = jsonTweet;
-	try {
-		tweet = JSON.parse(jsonTweet);
-	} catch(e) {}
-	
+	var tweet = parseJSON(jsonTweet);
+
 	var parametros = {
 			data : tweet.tweetID,
 			mode : "retrieveFeedbackForTweet"
@@ -21,11 +18,8 @@ function openModalFeedback(jsonTweet) {
 
 function openModalFeedbackAnonymous(jsonTweet) {
 	
-	var tweet = jsonTweet;
-	try {
-		tweet = JSON.parse(jsonTweet);
-	} catch(e) {}
-	
+	var tweet = parseJSON(jsonTweet);
+
 	var parametros = {
 			data : tweet.tweetID,
 			mode : "retrieveFeedbackForAnonymousTweets"
@@ -43,12 +37,8 @@ function successFillDivFeedbackTweet(response) {
 
 	if (response != null) {
 		
-		var feedbackTweets = response; 
-		
-		try {
-			feedbackTweets = JSON.parse(response);
-		} catch (e) {}
-		
+		var feedbackTweets = parseJSON(response); 
+
 		if (feedbackTweets.length > 0) {
 			fillDivHeaderTweet();
 			fillDivFeedbackTweet(feedbackTweets);

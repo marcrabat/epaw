@@ -61,7 +61,9 @@ function publishTweet() {
 	var tweetId = getValue("hiddenTweetId");
 	var commentTweetId = getValue("hiddenCommentTweetId");
 	var message = getValue("modalTweetMessage");
-
+	
+	message = escapeHtml(message);
+	
 	if (message.length <= 255) {
 
 		var tweet = {

@@ -140,7 +140,7 @@
 	                </div>
 	                
 	                <div class="checkbox">     
-                        <label><input type="checkbox" id="newPassword" name="newPassword"> Yes</label>
+                        <label><input type="checkbox" id="checkNewPassword" name="checkNewPassword"> Yes</label>
                     </div>
 	                
 	            </div>

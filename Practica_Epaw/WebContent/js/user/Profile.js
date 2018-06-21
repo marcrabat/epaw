@@ -2,6 +2,16 @@ var userToLook = null;
 var sessionId = null;
 var sessionUser = null;
 
+function setupProfile() {
+	clear();
+	
+	changeVisibility("gamerInfo");
+	changeVisibility("socialNetwork");
+	changeVisibility("profilePassword");
+
+	disableInputs();
+}
+
 function changeVisibility(id) {
 	var element = $("#" + id);
 	if (element.hasClass("displayNone") == true) {
@@ -96,7 +106,7 @@ function enableInputs() {
 
 	$("#password").prop("disabled", false);
 
-	$("#newPassword").prop("disabled", false);
+	$("#checkNewPassword").prop("disabled", false);
 }
 
 function disableInputs() {
@@ -117,7 +127,7 @@ function disableInputs() {
 
 	$("#password").prop("disabled", true);
 
-	$("#newPassword").prop("disabled", true);
+	$("#checkNewPassword").prop("disabled", true);
 }
 
 function changeEditOrView() {
@@ -150,8 +160,9 @@ function fillJson() {
 	});
 
 	var newPassword = "";
-	if ($("#newPassword").checked == true) {
+	if ($("#checkNewPassword").prop("checked") == true) {
 		newPassword = getValue("password");
+		alert(newPassword);
 	}
 
 	var youtubeChannelID = "";

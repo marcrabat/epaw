@@ -121,13 +121,23 @@ function executeAjaxWithBeforeSend(parametros, url, method, beforeSend, success,
 }
 
 function replaceIllegalCharacters(value, replaceString) {
-	var cleanString = value.replace(/[|&;$%@"<>()+,]/g, replaceString);
+	var cleanString = value.replace(/[|&;$%@"'<>()+,]/g, replaceString);
 	return cleanString;
 }
 
 function replaceIllegalCharactersWhitRegEx(value, replaceString, regEx) {
 	var cleanString = value.replace("/[" + regEx + "]/g", replaceString);
 	return cleanString;
+}
+
+function parseJSON(json) {
+	var jsonParsed = json;
+	try {
+		jsonParsed = JSON.parse(json);
+	} catch (e) {
+		jsonParsed = json;
+	}
+	return jsonParsed;
 }
 
 function formSubmit(form) {

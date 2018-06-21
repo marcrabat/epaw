@@ -1,3 +1,9 @@
+function seeUserSearched() {
+	var userSearched = getValue("searchUser");
+	var userCleaned = escapeHtml(userSearched);
+	seeUserFeed(userSearched);
+}
+
 function seeUserFeed(user) {
 	var parametros = {userToLook: user, mode: "retrieveListOfTweetsForUser"};
 	
