@@ -19,15 +19,15 @@
    
     <script type="text/javascript">
         function goToRegister() {
-            window.location.href = "/Lab_3/register";
+            window.location.href = "/gamitter/register";
         }
 
         function goToLogin() {
-            window.location.href = "/Lab_3/login";
+            window.location.href = "/gamitter/login";
         }
         
         function proceedAsAnonymous(){
-        	window.location.href = "/Lab_3/anonymous";
+        	window.location.href = "/gamitter/anonymous";
         }
 
     </script>

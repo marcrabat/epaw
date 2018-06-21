@@ -5,7 +5,7 @@ function openModalPublishTweet(tweetID) {
 	var parametros = {
 		tweetID : tweetID
 	};
-	executeAjax(parametros, "/Lab_3/tweetInformation", "POST", function(
+	executeAjax(parametros, "/gamitter/tweetInformation", "POST", function(
 			response) {
 		successFillDivPublishTweet(response);
 	}, function(e) {
@@ -77,7 +77,7 @@ function publishTweet() {
 			data : jsonTweet,
 			commentTweetId : commentTweetId
 		};
-		executeAjax(parametros, "/Lab_3/publishTweet", "POST", function(
+		executeAjax(parametros, "/gamitter/publishTweet", "POST", function(
 				response) {
 			successPublishTweet(response);
 		}, function(e) {
@@ -111,7 +111,7 @@ function retweet(tweet) {
 		data : jsonTweet,
 		commentTweetId : -1
 	};
-	executeAjax(parametros, "/Lab_3/publishTweet", "POST", function(response) {
+	executeAjax(parametros, "/gamitter/publishTweet", "POST", function(response) {
 		successPublishTweet(response);
 	}, function(e) {
 		errorPublishTweet(e);

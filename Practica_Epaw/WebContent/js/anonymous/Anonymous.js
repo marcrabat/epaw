@@ -6,7 +6,7 @@ function anonymousTweetsRequest(username){
         	$.ajax({
                 type: 'post', 
                 dataType: 'text', 
-                url: "/Lab_3/checkFeedErrors",
+                url: "/gamitter/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
                     var tweets = JSON.parse(data);

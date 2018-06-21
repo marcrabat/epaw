@@ -4,7 +4,7 @@ function redirectToPersonalPage() {
 	if (sessionId != null) {
 		seeUserFeed("");
 	} else {
-		window.location.href = "Lab_3/main";
+		window.location.href = "gamitter/main";
 	}
 }
 
@@ -74,7 +74,7 @@ function jsonRequest(e) {
 
 	if (hasErrors() == false) {
 		$.ajax({
-			url : '/Lab_3/checkLoginErrors',
+			url : '/gamitter/checkLoginErrors',
 			type : 'post',
 			dataType : 'text',
 			data : {
@@ -114,5 +114,5 @@ $(window).load(function() {
 });
 
 function goToRegister() {
-	window.location.href = "/Lab_3/register";
+	window.location.href = "/gamitter/register";
 }

@@ -19,7 +19,7 @@
 			userToLook = '${sessionScope.userToLook}';
 			sessionTweetFeedback = '${sessionScope.tweetFeedback}';
 			if (sessionId == "") {
-				window.location.href = "/Lab_3/main";
+				window.location.href = "/gamitter/main";
 			} else {
 				clear();
 				
@@ -87,7 +87,7 @@
         });
         
         function redirectToMainPage(){
-        	window.location.href = "/Lab_3/main";
+        	window.location.href = "/gamitter/main";
         }
                 
         function tweetsRequest(username, mode){
@@ -98,7 +98,7 @@
             $.ajax({
                 type: 'post', 
                 dataType: 'text', 
-                url: "/Lab_3/checkFeedErrors",
+                url: "/gamitter/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
                     var tweets = JSON.parse(data);
@@ -209,7 +209,7 @@
             $.ajax({
                 type: 'post', 
                 dataType: 'text', 
-                url: "/Lab_3/checkFeedErrors",
+                url: "/gamitter/checkFeedErrors",
                 data: parametros,
                 success: function (data) {
                 },
@@ -223,7 +223,7 @@
         			mode : "deleteTweet"
         		};
         		
-        	executeAjax(parametros, "/Lab_3/checkFeedErrors", "POST", 
+        	executeAjax(parametros, "/gamitter/checkFeedErrors", "POST", 
 					function(response) { successDeleteTweet(response); },
 					function(e) { errorDeleteTweet(e); });
         }

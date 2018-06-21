@@ -213,7 +213,7 @@ function editProfile() {
 			mode : "editProfile"
 		};
 
-		executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", function(
+		executeAjax(parametros, "/gamitter/checkProfileErrors", "POST", function(
 				response) {
 			succesEditProfile(response);
 		}, function(e) {
@@ -255,7 +255,7 @@ function deleteSessionAccount() {
 				mode : "deleteAccount"
 			};
 
-			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST",
+			executeAjax(parametros, "/gamitter/checkProfileErrors", "POST",
 					function(response) { succesDeleteSessionAccount(response); }, 
 					function(e) { errorDeleteSessionAccount(e); });
 
@@ -274,7 +274,7 @@ function succesDeleteSessionAccount(response) {
 		manageErrors(result);
 	} else {
 		alert("Your account deleted succesfully !!");
-		window.location.href = "/Lab_3/main";
+		window.location.href = "/gamitter/main";
 	}
 
 }
@@ -295,7 +295,7 @@ function deleteAllTweets() {
 				mode : "deleteAllTweets"
 			};
 
-			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST", 
+			executeAjax(parametros, "/gamitter/checkProfileErrors", "POST", 
 					function(response) { succesDeleteAllTweets(response) },
 					function(e) { errorDeleteAllTweets(e);});
 
@@ -314,7 +314,7 @@ var succesDeleteAllTweets = function (response) {
 		manageErrors(result);
 	} else {
 		alert("All your tweets are deleted !!");
-		window.location.href="/Lab_3/feed";
+		window.location.href="/gamitter/feed";
 	}
 
 }
@@ -344,7 +344,7 @@ function deleteUserAccount() {
 				mode : "deleteAccount"
 			};
 
-			executeAjax(parametros, "/Lab_3/checkProfileErrors", "POST",
+			executeAjax(parametros, "/gamitter/checkProfileErrors", "POST",
 					function(response) { succesDeleteUserAccount(response); }, 
 					function(e) { errorDeleteUserAccount(e); });
 

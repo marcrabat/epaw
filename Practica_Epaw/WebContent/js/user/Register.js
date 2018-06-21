@@ -125,7 +125,7 @@ function jsonRequest(e) {
 
 	if (hasErrors() == false) {
 		$.ajax({
-			url : '/Lab_3/checkErrors',
+			url : '/gamitter/checkErrors',
 			type : 'post',
 			dataType : 'text',
 			data : {
@@ -140,7 +140,7 @@ function jsonRequest(e) {
 					$('#validateDanger').html("Check the form errors!");
 				} else {
 					alert("Your registry has been completed successfully");
-					window.location.href = "/Lab_3/main.jsp";
+					window.location.href = "/gamitter/main.jsp";
 				}
 
 			},

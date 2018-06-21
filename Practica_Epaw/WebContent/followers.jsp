@@ -27,7 +27,7 @@
         });
 
         function redirectToMain() {
-        	window.location.href = "/Lab_3/main"
+        	window.location.href = "/gamitter/main"
         }        
         
         function jsonRequest() {
@@ -41,7 +41,7 @@
 			 	var parametros = { data: sessionUser.user, mode: mode };
 			 	
 	           	$.ajax({
-	                   url: '/Lab_3/checkFollowers',
+	                   url: '/gamitter/checkFollowers',
 	                   type: 'post',
 	                   dataType: 'text',
 	                   data: parametros,
@@ -74,7 +74,7 @@
 			 	var parametros = { userA: sessionUser.user, userB: userB_, mode: mode_ };
         		
 	           	$.ajax({
-	                url: '/Lab_3/changeRelation',
+	                url: '/gamitter/changeRelation',
 	                type: 'post',
 	                dataType: 'text',
 	                data: parametros,

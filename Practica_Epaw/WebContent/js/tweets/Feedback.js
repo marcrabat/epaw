@@ -14,7 +14,7 @@ function openModalFeedback(jsonTweet) {
 	
 	sessionFeedbackTweet = tweet;
 
-	executeAjax(parametros, "/Lab_3/checkFeedErrors", "POST", 
+	executeAjax(parametros, "/gamitter/checkFeedErrors", "POST", 
 					function(response) { successFillDivFeedbackTweet(response); },
 					function(e) { errorFeedbackTweet(e); });
 }
@@ -33,7 +33,7 @@ function openModalFeedbackAnonymous(jsonTweet) {
 	
 	sessionFeedbackTweet = tweet;
 
-	executeAjax(parametros, "/Lab_3/checkFeedErrors", "POST", 
+	executeAjax(parametros, "/gamitter/checkFeedErrors", "POST", 
 					function(response) { successFillDivFeedbackTweet(response); },
 					function(e) { errorFeedbackTweet(e); });
 }
