@@ -10,7 +10,6 @@ import java.util.Date;
 
 import models.BeanTweet;
 import models.BeanUser;
-import utils.BD;
 import utils.GeneralUtils;
 import utils.ValidationUtils;
 import database.FeedbackDAO;

@@ -1,18 +1,6 @@
 package database;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Date;
-
-import models.BeanTweet;
-import utils.BD;
-import utils.GeneralUtils;
-import utils.ValidationUtils;
-import database.FeedbackDAO;
 
 public class LikeDAO {
 	//public static final String TABLE_NAME = "Likes";

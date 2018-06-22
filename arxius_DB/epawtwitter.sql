@@ -111,3 +111,9 @@ ALTER TABLE `Tweets`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO Tweets (author, message, publishDate, originalAuthor, originalID) VALUES ('test','2019-01-29 new Kingdom Hearts 3 is available !', '2018-06-22 01:48:44', 'test', '-1');
+INSERT INTO Tweets (author, message, publishDate, originalAuthor, originalID) VALUES ('test2','2019-02-22 new Metro Exodus is available !', '2018-06-22 01:48:44', 'test2', '-1');
+INSERT INTO Tweets (author, message, publishDate, originalAuthor, originalID) VALUES ('test3','For 2019 new Devil May Cry 5 is available !', '2018-06-22 01:48:44', 'test3', '-1');
+INSERT INTO Tweets (author, message, publishDate, originalAuthor, originalID) VALUES ('test4','For 2019 new Tokyo Ogre Gate is available !', '2018-06-22 01:48:44', 'test4', '-1');
+INSERT INTO Tweets (author, message, publishDate, originalAuthor, originalID) VALUES ('test5','2019-01-25 new Resident Evil 2 Remake is available !', '2018-06-22 01:48:44', 'test5', '-1');

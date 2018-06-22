@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import models.BeanUser;
-import utils.BD;
 import utils.GeneralUtils;
 import utils.ValidationUtils;
 import database.RelationshipDAO;
@@ -160,53 +159,44 @@ public class UserDAO {
 	public boolean updateUserAllInfo(BeanUser user) {
 		boolean update = false;
 		if (this.bd != null) {
-			boolean allValuesNull = true;
+			
 			String sql = "UPDATE " + this.tableName + " SET ";
 			sql += COLUMN_DESCRIPTION + " = '" + user.getDescription() + "', ";
-			
+
 			if (ValidationUtils.isEmpty(user.getName()) == false) {
 				sql += COLUMN_NAME + " = '" + user.getName() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getSurname()) == false) {
 				sql += COLUMN_SURNAME + " = '" + user.getSurname() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getBirthDate()) == false) {
 				sql += COLUMN_BIRTH_DATE + " = '" + user.getBirthDate() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getPassword()) == false) {
 				sql += COLUMN_PASSWORD + " = '" + user.getPassword() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getGender()) == false) {
 				sql += COLUMN_GENDER + " = '" + user.getGender() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false) {
 				sql += COLUMN_YOUTUBE_CHANNEL_ID + " = '" + user.getYoutubeChannelID() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getTwitchChannelID()) == false) {
 				sql += COLUMN_TWITCH_CHANNEL_ID + " = '" + user.getTwitchChannelID() + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getGameGenres()) == false) {
 				sql += COLUMN_GAME_GENRES + " = '" + GeneralUtils.concatListOfString(user.getGameGenres(), ",") + "', ";
-				allValuesNull = false;
 			}
 			
 			if (ValidationUtils.isEmpty(user.getUserConsoles()) == false) {
 				sql += COLUMN_USER_CONSOLES + " = '" + GeneralUtils.concatListOfString(user.getUserConsoles(), ",") + "', ";
-				allValuesNull = false;
 			}
 			
 			sql = sql.substring(0, (sql.length() - ", ".length()));
@@ -215,11 +205,9 @@ public class UserDAO {
 			
 			System.out.println("------------ UserDAO.java ------------ SQL UPDATE: " + sql);
 			
-			
-			if (allValuesNull == false) {	
-				int result = this.bd.executeSQL(sql);
-				update = (result == 1) ? true : false;
-			}
+			int result = this.bd.executeSQL(sql);
+			update = (result == 1) ? true : false;
+
 		}
 		return update;
 	}
