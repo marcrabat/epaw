@@ -3,7 +3,7 @@
 <head>
     <title>Followers</title>
     
-    <%@ include file='includes.jsp' %>
+    <%@ include file='includesOldBoot.jsp' %>
 	<%@ include file='navbar.jsp' %>
     
     <style>

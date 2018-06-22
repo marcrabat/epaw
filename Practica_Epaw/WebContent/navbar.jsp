@@ -27,35 +27,39 @@
 
 </script>
 
-    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #77517f;">
-
-        <div class="navbar-header pull-left">
-            <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;" onClick="seeUserFeed('');">Gamitter</a>
-            <a class="navbar-brand navbar-header pull-left" style="color: #ffffff;" onClick="seeFollowingUsersTweets('');">FOLLOWING</a>
-        </div>
- 
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a id="buttonPublishTweet" class="nav-link" style="color: #ffffff;" onClick="openModalPublishTweet(-1)">
-                	Publish
-                </a>
-            </li>
-            <li class="nav-item">
-                <a id="profileButton" class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('${sessionScope.Session_ID}');">
-                	Profile
-               	</a>
-            </li>
-            <li class="nav-item">
-                <a id="usersButton" class="nav-link" style="color: #ffffff;" onClick="seeUsers('allUsersNotFollowedList');">
-                	Explore Users
-               	</a>
-            </li>
-            <li class="nav-item">
-                <a id="logoutButton" class="nav-link" href="logout" style="color: #ffffff;">Logout</a>
-            </li>
-        </ul>
-        
-    </nav>
+	<nav class="navbar navbar-inverse" style="background-color: #77517f;">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>                        
+	      </button>
+	      <a class="navbar-brand" onClick="seeFollowingUsersTweets('${sessionScope.Session_ID}');">Gamitter</a>
+	    </div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav">
+            <li><a id="buttonPublishTweet" class="nav-link" style="color: #ffffff;" onClick="openModalPublishTweet(-1)">Publish</a></li>
+            <li><a id="profileButton" class="nav-link" style="color: #ffffff;" onClick="seeUserFeed('');">Discover Tweets</a></li>
+            <li><a id="usersButton" class="nav-link" style="color: #ffffff;" onClick="seeUsers('allUsersNotFollowedList');">Explore Users</a></li>
+            <li><a id="logoutButton" class="nav-link" href="logout" style="color: #ffffff;">Logout</a></li>
+	      </ul>
+	      <form class="navbar-form navbar-right" role="search">
+	        <div class="form-group input-group">
+	          <input type="text" class="form-control" id="searchUser" placeholder="Search..">
+	          <span class="input-group-btn">
+	            <button class="btn btn-default" type="button">
+	              <span class="glyphicon glyphicon-search"></span>
+	            </button>
+	          </span>        
+	        </div>
+	      </form>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a onClick="seeUserFeed('${sessionScope.Session_ID}');"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
 
    	<div id="modalPublishTweet" class="modal" role="dialog">
 	    <div class="modal-dialog">

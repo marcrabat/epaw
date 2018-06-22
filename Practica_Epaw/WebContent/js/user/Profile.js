@@ -100,9 +100,9 @@ function enableInputs() {
 		$(this).prop("disabled", false);
 	});
 
-	$("input:[type=text]").each(function() {
+	/*$("input:[type=text]").each(function() {
 		$(this).prop("disabled", false);
-	});
+	});*/
 
 	$("#password").prop("disabled", false);
 
@@ -121,9 +121,9 @@ function disableInputs() {
 		$(this).prop("disabled", true);
 	});
 
-	$("input:[type=text]").each(function() {
+	/*$("input:[type=text]").each(function() {
 		$(this).prop("disabled", true);
-	});
+	});*/
 
 	$("#password").prop("disabled", true);
 
