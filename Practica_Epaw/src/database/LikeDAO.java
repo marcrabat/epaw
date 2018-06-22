@@ -15,7 +15,7 @@ import utils.ValidationUtils;
 import database.FeedbackDAO;
 
 public class LikeDAO {
-	//public static final String TABLE_NAME = "Tweets";
+	//public static final String TABLE_NAME = "Likes";
 	
 	// ---- COLUMS OF TABLE IN DATABSE -----
 	public static final String COLUMN_USER = "user";

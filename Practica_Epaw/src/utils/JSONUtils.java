@@ -11,6 +11,10 @@ import com.google.gson.GsonBuilder;
 
 public class JSONUtils {
 
+	public static <T> T returnJSONObject(String json, Class<T> type) {
+		return returnJSONObject(json, type, null);
+	}
+	
 	public static <T> T returnJSONObject(String json, Class<T> type, String dateFormat) {
 		T jsonObject = null;
 		try {
@@ -28,8 +32,8 @@ public class JSONUtils {
 		return jsonObject;
 	}
 	
-	public static <T> T returnJSONObject(String json, Class<T> type) {
-		return returnJSONObject(json, type, null);
+	public static <T> String getJSON(T obj) {
+		return getJSON(obj, null);
 	}
 	
 	public static <T> String getJSON(T obj, String dateFormat) {
@@ -47,10 +51,6 @@ public class JSONUtils {
 			json = "";
 		}
 		return json;
-	}
-	
-	public static <T> String getJSON(T obj) {
-		return getJSON(obj, null);
 	}
 	
 }
