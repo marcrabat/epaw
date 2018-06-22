@@ -28,16 +28,16 @@ public class FeedController extends Servlet {
 
 	private TweetDAO tweetDAO;
 	private FeedbackDAO feedbackDAO;
-	private LikeDAO likeDao;
-	private UserDAO userDao;
+	private LikeDAO likeDAO;
+	private UserDAO userDAO;
 	
 	private static final int numberOfTweetsForAnonymous = 2;
 
 	public FeedController() {
 		this.tweetDAO = new TweetDAO();
 		this.feedbackDAO = new FeedbackDAO();
-		this.likeDao = new LikeDAO();
-		this.userDao = new UserDAO();
+		this.likeDAO = new LikeDAO();
+		this.userDAO = new UserDAO();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +58,7 @@ public class FeedController extends Servlet {
 		String mode = request.getParameter("mode");
 
 		if (ValidationUtils.isNotEmpty(userToLook) == true) {
-			boolean existUser = this.userDao.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
+			boolean existUser = this.userDAO.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
 			if (existUser == false) {
 				errors.addError("userNotExist", "The user not exist!");
 			}
@@ -133,19 +133,19 @@ public class FeedController extends Servlet {
 		int tweetID = Integer.parseInt((String) request.getParameter("tweetID"));
 		String username = (String) request.getParameter("username");
 
-		if (!likeDao.checkUserLike(tweetID, username))
-			likeDao.insertUserLike(tweetID, username);
+		if (!this.likeDAO.checkUserLike(tweetID, username))
+			this.likeDAO.insertUserLike(tweetID, username);
 		else
-			likeDao.deleteUserLike(tweetID, username);
+			this.likeDAO.deleteUserLike(tweetID, username);
 		return numLikes;
 	}
 
 	private List<BeanTweet> retrieveListOfTweetsForUser(String userToLook) {
 		List<BeanTweet> tweets;
 		if (ValidationUtils.isEmpty(userToLook) == false) {
-			tweets = tweetDAO.returnUserFeed(userToLook);
+			tweets = this.tweetDAO.returnUserFeed(userToLook);
 		} else {
-			tweets = tweetDAO.returnGlobalTimeline(20);
+			tweets = this.tweetDAO.returnGlobalTimeline(20);
 		}
 		retrieveLikesForListOfTweets(tweets);
 		return tweets;
@@ -155,7 +155,7 @@ public class FeedController extends Servlet {
 		List<BeanTweet> tweets;
 		String wantUserFeed = request.getParameter("data");
 		if (ValidationUtils.isEmpty(wantUserFeed) == true) {
-			tweets = tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
+			tweets = this.tweetDAO.returnGlobalTimeline(numberOfTweetsForAnonymous);
 		} else {
 			tweets = this.tweetDAO.returnUserFeed(wantUserFeed);
 		}
@@ -165,11 +165,11 @@ public class FeedController extends Servlet {
 
 	private void retrieveFeedbackForTweet(HttpServletRequest request, List<BeanTweet> feedback, HttpSession session) {
 		int tweetToRetrieveFeedback = Integer.parseInt((String) request.getParameter("data"));
-		List<Integer> feedbackTweetsID = feedbackDAO.getAssociated(tweetToRetrieveFeedback);
+		List<Integer> feedbackTweetsID = this.feedbackDAO.getAssociated(tweetToRetrieveFeedback);
 		if (ValidationUtils.isEmpty(feedbackTweetsID) == false) {
 
 			for (Integer tweetID : feedbackTweetsID) {
-				BeanTweet tweetToReturn = tweetDAO.returnTweet(tweetID);
+				BeanTweet tweetToReturn = this.tweetDAO.returnTweet(tweetID);
 				feedback.add(tweetToReturn);
 			}
 			session.setAttribute("tweetFeedback", Integer.toString(tweetToRetrieveFeedback));
@@ -188,7 +188,7 @@ public class FeedController extends Servlet {
 	private void retrieveLikesForListOfTweets(List<BeanTweet> tweets) {
 		for (int i = 0; i < tweets.size(); i++) {
 			BeanTweet tweet = tweets.get(i);
-			tweet.setLikes(this.likeDao.countTweetLikes(tweet.getTweetID()));
+			tweet.setLikes(this.likeDAO.countTweetLikes(tweet.getTweetID()));
 			tweets.set(i, tweet);
 		}
 	}

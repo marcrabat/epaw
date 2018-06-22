@@ -19,7 +19,11 @@ import utils.Servlet;
 @WebServlet("/checkErrors")
 public class RegisterController extends Servlet {
 	
-	public RegisterController() {}
+	private UserDAO userDAO;
+	
+	public RegisterController() {
+		this.userDAO = new UserDAO();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -30,7 +34,6 @@ public class RegisterController extends Servlet {
 							throws ServletException, IOException {
 		
 		BeanUser vistaUser = null;
-		boolean insertUser = false;
 		ErrorMessages errors = new ErrorMessages();
 		String jsonData = request.getParameter("data");
 		
@@ -113,18 +116,16 @@ public class RegisterController extends Servlet {
 	}
 	
 	private ErrorMessages registerUser(BeanUser user, HttpServletRequest request) {
-		
-		UserDAO userDAO = new UserDAO();
+
 		ErrorMessages errors = this.validateUserInformation(user);
 		
 		if (errors.haveErrors() == false) {
-			
-			
-			boolean existUser = userDAO.existUser(user.getUser(), user.getMail());
+
+			boolean existUser = this.userDAO.existUser(user.getUser(), user.getMail());
 
 			if (existUser == false) {
 				
-				boolean insertUser = userDAO.insertUser(user);
+				boolean insertUser = this.userDAO.insertUser(user);
 				
 				if (insertUser == false) {
 					errors.addError("userInsert", "The user can not be inserted in BD");

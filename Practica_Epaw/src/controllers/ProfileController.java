@@ -24,7 +24,20 @@ import utils.Servlet;
 
 public class ProfileController extends Servlet {
 	
-	public ProfileController() {}
+	private UserDAO userDAO;
+	private TweetDAO tweetDAO;
+	private RelationshipDAO relationshipDAO;
+	private FeedbackDAO feedbackDAO;
+	private LikeDAO likeDAO;
+	
+	public ProfileController() {
+		this.userDAO = new UserDAO();
+		this.tweetDAO = new TweetDAO();
+		this.relationshipDAO = new RelationshipDAO();
+		this.feedbackDAO = new FeedbackDAO();
+		this.likeDAO = new LikeDAO();
+		
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -81,7 +94,6 @@ public class ProfileController extends Servlet {
 	
 	private ErrorMessages editUser(BeanUser editInformation, HttpServletRequest request) {
 		
-		UserDAO userDAO = new UserDAO();
 		ErrorMessages errors = this.validateEditInformation(editInformation);
 		
 		if (errors.haveErrors() == false) {
@@ -98,19 +110,19 @@ public class ProfileController extends Servlet {
 			}
 			
 			if (errors.haveErrors() == false) {
-				boolean existUser = userDAO.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
+				boolean existUser = this.userDAO.existUserSelectingField(UserDAO.COLUMN_USER, userToLook);
 	
 				if (existUser == true) {
 					
 					editInformation.setUser(userToLook);
 
-					boolean editUser = userDAO.updateUserAllInfo(editInformation);
+					boolean editUser = this.userDAO.updateUserAllInfo(editInformation);
 					
 					if (editUser == false) {
 						errors.addError("userEdit", "sorry, you can't modify your information");
 					} else {
 						if (ValidationUtils.equals(sessionUser.getUser(), userToLook) == true) {
-							BeanUser userBD = userDAO.returnUser(UserDAO.COLUMN_NAME, sessionUser.getUser());
+							BeanUser userBD = this.userDAO.returnUser(UserDAO.COLUMN_NAME, sessionUser.getUser());
 							HttpSession session = request.getSession();
 							session.setAttribute("userInfo", JSONUtils.getJSON(userBD));
 						}
@@ -175,13 +187,11 @@ public class ProfileController extends Servlet {
 	
 	private boolean deleteAccountInDatabase(String userToDelete) {
 		boolean deleted = false;
-		UserDAO userDAO = new UserDAO();
-		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		
 		this.deleteAccountTweetsInDatabase(userToDelete);
 		
-		relationshipDAO.deleteUserRelationship(userToDelete);
-		deleted = userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete);
+		this.relationshipDAO.deleteUserRelationship(userToDelete);
+		deleted = this.userDAO.deleteUser(UserDAO.COLUMN_USER, userToDelete);
 		
 		
 		return deleted;
@@ -189,20 +199,16 @@ public class ProfileController extends Servlet {
 	
 	private boolean deleteAccountTweetsInDatabase(String author) {
 		boolean deleted = false;
-		TweetDAO tweetDAO = new TweetDAO();
-		FeedbackDAO feedbackDAO = new FeedbackDAO();
-		LikeDAO likeDAO = new LikeDAO();
 		
-		likeDAO.deleteAllUserLikes(author);
-		feedbackDAO.deleteAllFeedbackReletedToUser(author);
-		deleted = tweetDAO.deleteAllTweets(author);
+		this.likeDAO.deleteAllUserLikes(author);
+		this.feedbackDAO.deleteAllFeedbackReletedToUser(author);
+		deleted = this.tweetDAO.deleteAllTweets(author);
 		
 		return deleted;
 	}
 	
 	private ErrorMessages deleteAllTweets(HttpServletRequest request) {
 		ErrorMessages errors = new ErrorMessages();
-		TweetDAO tweetDAO = new TweetDAO();
 		BeanUser tweetsAuthor = null;
 		String jsonData = request.getParameter("data");
 		
@@ -214,7 +220,7 @@ public class ProfileController extends Servlet {
 			
 			String author = tweetsAuthor.getUser();
 			
-			int numberOfTweets = tweetDAO.countAuthorTweets(author);
+			int numberOfTweets = this.tweetDAO.countAuthorTweets(author);
 			
 			if (numberOfTweets > 0) {
 			

@@ -11,20 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import database.RelationshipDAO;
-import database.TweetDAO;
-import database.UserDAO;
-import models.BeanUser;
-import utils.ErrorMessages;
 import utils.JSONUtils;
 import utils.Servlet;
-import utils.SessionUtils;
 import utils.ValidationUtils;
 
 @WebServlet("/checkFollowers")
 
 public class FollowersController extends Servlet {
 	
-	public FollowersController() {}
+	private RelationshipDAO relationshipDAO;
+	
+	public FollowersController() {
+		this.relationshipDAO = new RelationshipDAO();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 							throws ServletException, IOException {
@@ -84,34 +83,30 @@ public class FollowersController extends Servlet {
 
 		sendResponse(request, response, list);
 	}
-
 	
 	private List<String> followersList(HttpServletRequest request) {
 		List<String> followers = null;
-		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			followers = relationshipDAO.getFollowers(jsonData);
+			followers = this.relationshipDAO.getFollowers(jsonData);
 		}
 		return followers;
 	}
 		
 	private List<String> followingList(HttpServletRequest request) {
 		List<String> following = null;
-		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			following = relationshipDAO.getFollowing(jsonData);
+			following = this.relationshipDAO.getFollowing(jsonData);
 		}
 		return following;
 	}		
 	
 	private List<String> allUsersNotFollowedList(HttpServletRequest request) {
 		List<String> allUsersNotFollowed = null;
-		RelationshipDAO relationshipDAO = new RelationshipDAO();
 		String jsonData = request.getParameter("data");
 		if (ValidationUtils.isEmpty(jsonData) == false) {
-			allUsersNotFollowed = relationshipDAO.getAllUsersNotFollowed(jsonData);
+			allUsersNotFollowed = this.relationshipDAO.getAllUsersNotFollowed(jsonData);
 		}
 		return allUsersNotFollowed;
 	}		

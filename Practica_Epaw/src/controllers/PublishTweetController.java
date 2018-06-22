@@ -15,7 +15,6 @@ import models.BeanTweet;
 import models.BeanUser;
 import utils.ErrorMessages;
 import utils.SessionUtils;
-import utils.GeneralUtils;
 import utils.ValidationUtils;
 import utils.JSONUtils;
 import utils.Servlet;
@@ -24,10 +23,13 @@ import utils.Servlet;
 public class PublishTweetController extends Servlet {
 	
 	private TweetDAO tweetDAO;
+	private FeedbackDAO feedbackDAO;
 	private UserDAO userDAO;
+	
 	
 	public PublishTweetController() {
 		this.tweetDAO = new TweetDAO();
+		this.feedbackDAO = new FeedbackDAO();
 		this.userDAO = new UserDAO();
 	}
 
@@ -153,13 +155,13 @@ public class PublishTweetController extends Servlet {
 	
 	private ErrorMessages commentTweet(BeanTweet commentTweet, int tweetId) {
 		ErrorMessages errors = new ErrorMessages();
-		FeedbackDAO feedbackDAO = new FeedbackDAO();
+		
 		
 		errors = this.insertTweet(commentTweet);
 		
 		if (errors.haveErrors() == false) {
 			
-			boolean insertFeedback = feedbackDAO.associateTweet(tweetId, commentTweet.getTweetID());
+			boolean insertFeedback = this.feedbackDAO.associateTweet(tweetId, commentTweet.getTweetID());
 			
 			if (insertFeedback == false) {
 				errors.addError("tweet", "Tweet can not be commented");
