@@ -24,3 +24,22 @@ body {
 	background-color: #e5b1f0;
 	/* background-color: rgba(240, 231, 242, 1); */
 }
+
+a {
+    color: #fff!important;
+}
+
+#div-center{
+  float: none;
+  margin: 0 auto;
+}
+
+.wrapper {
+    min-height: 91%;
+    height: auto;
+    margin: 0 auto -165px;
+    padding-bottom: 165px;
+}
+.footerrr {
+    height: 170px;
+}

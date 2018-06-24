@@ -31,7 +31,7 @@ public class FeedController extends Servlet {
 	private LikeDAO likeDAO;
 	private UserDAO userDAO;
 	
-	private static final int numberOfTweetsForAnonymous = 2;
+	private static final int numberOfTweetsForAnonymous = 20;
 
 	public FeedController() {
 		this.tweetDAO = new TweetDAO();

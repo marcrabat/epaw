@@ -2,7 +2,7 @@ var sessionId = null;
 
 function redirectToPersonalPage() {
 	if (sessionId != null) {
-		seeUserFeed("");
+		seeFollowingUsersTweets(sessionId);
 	} else {
 		window.location.href = "gamitter/main";
 	}

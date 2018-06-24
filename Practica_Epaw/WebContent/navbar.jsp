@@ -14,8 +14,11 @@
 			profileButton.style.display='none';
 			var usersButton = document.getElementById('usersButton');
 			usersButton.style.display='none';
+			var profile = document.getElementById('profile');
+			profile.style.display='none';
 			var logoutButton = document.getElementById('logoutButton');
 			$('#logoutButton').text('Main Page');
+			document.getElementById("titleButton").onclick = function () { seeUserFeed(''); };
 		}
 		
 		/*
@@ -35,7 +38,7 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>                        
 	      </button>
-	      <a class="navbar-brand" onClick="seeFollowingUsersTweets('${sessionScope.Session_ID}');">Gamitter</a>
+	      <a class="navbar-brand" id="titleButton" onClick="seeFollowingUsersTweets('${sessionScope.Session_ID}');">Gamitter</a>
 	    </div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 	      <ul class="nav navbar-nav">
@@ -48,14 +51,14 @@
 	        <div class="form-group input-group">
 	          <input type="text" class="form-control" id="searchUser" placeholder="Search..">
 	          <span class="input-group-btn">
-	            <button class="btn btn-default" type="button">
+	            <button class="btn btn-default" type="button" onClick="seeUserSearched()">
 	              <span class="glyphicon glyphicon-search"></span>
 	            </button>
 	          </span>        
 	        </div>
 	      </form>
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a onClick="seeUserFeed('${sessionScope.Session_ID}');"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+	        <li id="profile"><a onClick="seeUserFeed('${sessionScope.Session_ID}');"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
 	      </ul>
 	    </div>
 	  </div>

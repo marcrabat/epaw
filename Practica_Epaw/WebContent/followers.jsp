@@ -40,20 +40,26 @@
 </head>
 
 <body>
-    <div class="container" style="margin-top:1%;">
+    <div class="container wrapper" style="margin-top:1%;">
 		<div class="row">
-	        <div class="col">
+            <div class="col-sm-3">
+            </div>
+	        <div class="col-sm-6">
 				<ul class="list-group" id="followers">
-					
 				</ul>
+
+                <br />
+                <div id="followersButton">
+                    <button id="followersClose" class="btn btn-primary" onclick="goBack();">
+                        Close
+                    </button>
+                </div>   
+                <br />
+                <br />
 	        </div>
-	    </div>
-	    <br />
-	    <div id="followersButton">
-	    	<button id="followersClose" class="btn btn-primary" onclick="goBack();">
-	    		Close
-	    	</button>
-	    </div>	      
+            <div class="col-sm-3">
+            </div>
+	    </div>     
     </div>
 	<%@ include file='footer.jsp' %>
 </body>

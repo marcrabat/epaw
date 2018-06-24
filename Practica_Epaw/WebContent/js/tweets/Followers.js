@@ -36,13 +36,13 @@ function jsonRequest() {
 						var result_parts = result[i].split(',');
 						if (result_parts[1] == 0) {
 							$('#followers').append(
-											'<li class="list-group-item">'
+											'<li class="list-group-item" style="background-color: #faf5f8;">'
 													+ result_parts[0]
 													+ '<button type="button" id='
 													+ "'"
 													+ result_parts[0]
 													+ "'"
-													+ ' class="btn btn-light" style="margin-left: 70%;" onclick="changeRelation('
+													+ ' class="btn btn-default" style="margin-left: 70%;" onclick="changeRelation('
 													+ "'"
 													+ result_parts[0]
 													+ "'"
@@ -53,9 +53,9 @@ function jsonRequest() {
 													+ ')">Follow</button></li>');
 						} else if (result_parts[1] == 1) {
 							$('#followers').append(
-											'<li class="list-group-item">'
+											'<li class="list-group-item" style="background-color: #faf5f8;">'
 													+ result_parts[0]
-													+ '<button type="button" class="btn btn-secondary" style="margin-left: 70%;" onclick="changeRelation('
+													+ '<button type="button" class="btn btn-default" style="margin-left: 70%;" onclick="changeRelation('
 													+ "'"
 													+ result_parts[0]
 													+ "'"

@@ -100,81 +100,80 @@
 <body>
 
 
-<div class="container text-center">    
-  <div class="row">
+  <div class="container text-center wrapper">    
+    <div class="row">
 
 
-    <div class="col-sm-3">
-        <div id="profilePage">
+      <div class="col-sm-3">
+          <div id="profilePage">
+              <div class="well" style="background-color: #f8f0f5;">
+              	<%@ include file='profile.jsp' %>
+              </div>
+          </div>  
+      </div>
+
+      
+      
+      
+      <div class="col-sm-6" id="feedContent">
+        <div class="row">
+          <div class="col-sm-12">
             <div class="well" style="background-color: #f8f0f5;">
-            	<%@ include file='profile.jsp' %>
+              <p>There are no messages to show.</p>
             </div>
-        </div>  
-    </div>
-
-    
-    
-    
-    <div class="col-sm-6" id="feedContent">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="well">
-            <p>There are no messages to show.</p>
           </div>
-        </div>
-      </div>     
-    </div>
-    
-    
-    
-    
-    <div class="col-sm-3">
-        <div id="profileMenu">
-            <div class="well"  style="background-color: #f8f0f5;">
-              <div class="well" id="buttonDeleteAccount" onClick="deleteSessionAccount();" style="background-color: #faf5f8;">
-                <p>Delete account</p>
-              </div>
-              <div class="well" id="buttonDeleteAllTweets" onClick="deleteAllTweets();" style="background-color: #faf5f8;">
-                <p>Delete all tweets</p>
-              </div>
-              <div class="well" id="buttonViewFollowers" onClick="seeUsers('followers');" style="background-color: #faf5f8;">
-                <p>View followers</p>
-              </div>
-              <div class="well" id="buttonViewFollowings" onClick="seeUsers('following');" style="background-color: #faf5f8;">
-                <p>View followings</p>
-              </div>
-            </div>  
-        </div>
-    </div>
+        </div>     
+      </div>
+      
+      
+      
+      
+      <div class="col-sm-3">
+          <div id="profileMenu">
+              <div class="well"  style="background-color: #f8f0f5;">
+                <div class="well" id="buttonDeleteAccount" onClick="deleteSessionAccount();" style="background-color: #faf5f8;">
+                  <p>Delete account</p>
+                </div>
+                <div class="well" id="buttonDeleteAllTweets" onClick="deleteAllTweets();" style="background-color: #faf5f8;">
+                  <p>Delete all tweets</p>
+                </div>
+                <div class="well" id="buttonViewFollowers" onClick="seeUsers('followers');" style="background-color: #faf5f8;">
+                  <p>View followers</p>
+                </div>
+                <div class="well" id="buttonViewFollowings" onClick="seeUsers('following');" style="background-color: #faf5f8;">
+                  <p>View followings</p>
+                </div>
+              </div>  
+          </div>
+      </div>
 
 
+    </div>
   </div>
-</div>
 
 
-<div id="modalFeedbackTweet" class="modal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-            <div class="modal-header">
-              <div id="TweetContentModal"></div>
-            </div>
-            <div class="modal-body">
-              <div id="feedbackContentModal"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" Onclick="closeFeedbackModal()">Close</button>
-            </div>
+  <div id="modalFeedbackTweet" class="modal" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+              <div class="modal-header">
+                <div id="TweetContentModal"></div>
+              </div>
+              <div class="modal-body">
+                <div id="feedbackContentModal"></div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" Onclick="closeFeedbackModal()">Close</button>
+              </div>
+              
+          </div>
             
-        </div>
-          
-    </div>
-</div>
+      </div>
+  </div>
 
-<footer class="container-fluid text-center" style="background-color: #7E5B7E; color: #fff">
-  <br><p>Gamitter Copyright 2018</p><br>
-</footer>
+
+  <%@ include file='footer.jsp' %>
 
 	<!-- Tornar a afegir footer! tret per debuggar millor amb consola del navegador -->
 
