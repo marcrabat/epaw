@@ -43,7 +43,7 @@ function fillProfileForm(user) {
 
 			var userValue = user.userConsoles[i].trim();
 
-			for (var j = 0; j < consolesCheckbox.size(); j++) {
+			for (var j = 0; j < consolesCheckbox.length; j++) {
 
 				var checkboxValue = consolesCheckbox[j].value.trim();
 
@@ -62,7 +62,7 @@ function fillProfileForm(user) {
 
 			var userValue = user.gameGenres[i].trim();
 
-			for (var j = 0; j < gameGenresCheckbox.size(); j++) {
+			for (var j = 0; j < gameGenresCheckbox.length; j++) {
 
 				var checkboxValue = gameGenresCheckbox[j].value.trim();
 
@@ -100,9 +100,9 @@ function enableInputs() {
 		$(this).prop("disabled", false);
 	});
 
-	/*$("input:[type=text]").each(function() {
+	$("input:text").each(function() {
 		$(this).prop("disabled", false);
-	});*/
+	});
 
 	$("#password").prop("disabled", false);
 
@@ -121,9 +121,9 @@ function disableInputs() {
 		$(this).prop("disabled", true);
 	});
 
-	/*$("input:[type=text]").each(function() {
+	$("input:text").each(function() {
 		$(this).prop("disabled", true);
-	});*/
+	});
 
 	$("#password").prop("disabled", true);
 

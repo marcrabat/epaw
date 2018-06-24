@@ -114,8 +114,12 @@ function generateTweetCard(tweet, userButtons) {
             HTML += "<div class='row'>";
                 HTML += "<div class='card-title lefted' onClick='seeUserFeed(\"" + tweet.author + "\");'>" + "&nbsp;&nbsp;<b>" + tweet.author + "</b> " + "at: " + tweet.publishDate  + "</div>";
 
-                //if(tweet.author!=tweet.originalAuthor) 
-                //    HTML += "<div class='card-title' onClick='seeUserFeed(" + tweet.orignalAuthor + ");'>" + "Original Author: " + tweet.originalAuthor + "</div>";
+                if(tweet.author!=tweet.originalAuthor) {
+                    HTML += "<div class='card-title' onClick='seeUserFeed(\"" + tweet.originalAuthor + "\");'";
+                	HTML += "style='float: left; margin-left: 2%; font-size: 80%; color: grey;'>";
+                    HTML += "<b>Original Author:</b> " + tweet.originalAuthor + "</div>";
+                }
+
             HTML += "    </div>";
             
 
@@ -162,6 +166,7 @@ function insertLikeTweet(tweetID) {
 		url : "/gamitter/checkFeedErrors",
 		data : parametros,
 		success : function(data) {
+			window.location.href = "/gamitter/feed";
 		},
 		error : function(xhr, status, error) {
 			alert("Error: " + error);

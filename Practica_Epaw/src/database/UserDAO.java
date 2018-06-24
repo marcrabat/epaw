@@ -162,6 +162,8 @@ public class UserDAO {
 			
 			String sql = "UPDATE " + this.tableName + " SET ";
 			sql += COLUMN_DESCRIPTION + " = '" + user.getDescription() + "', ";
+			sql += COLUMN_YOUTUBE_CHANNEL_ID + " = '" + user.getYoutubeChannelID() + "', ";
+			sql += COLUMN_TWITCH_CHANNEL_ID + " = '" + user.getTwitchChannelID() + "', ";
 
 			if (ValidationUtils.isEmpty(user.getName()) == false) {
 				sql += COLUMN_NAME + " = '" + user.getName() + "', ";
@@ -181,14 +183,6 @@ public class UserDAO {
 			
 			if (ValidationUtils.isEmpty(user.getGender()) == false) {
 				sql += COLUMN_GENDER + " = '" + user.getGender() + "', ";
-			}
-			
-			if (ValidationUtils.isEmpty(user.getYoutubeChannelID()) == false) {
-				sql += COLUMN_YOUTUBE_CHANNEL_ID + " = '" + user.getYoutubeChannelID() + "', ";
-			}
-			
-			if (ValidationUtils.isEmpty(user.getTwitchChannelID()) == false) {
-				sql += COLUMN_TWITCH_CHANNEL_ID + " = '" + user.getTwitchChannelID() + "', ";
 			}
 			
 			if (ValidationUtils.isEmpty(user.getGameGenres()) == false) {
