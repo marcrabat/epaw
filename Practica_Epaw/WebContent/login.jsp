@@ -20,7 +20,7 @@
 			sessionId = "${sessionScope.Session_ID}";
 			if (sessionId != "") {
 				
-				seeUserFeed(sessionId);
+				seeFollowingUsersTweets(sessionId);
 			}
 		});
 

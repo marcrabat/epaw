@@ -23,16 +23,21 @@ function changeVisibility(id) {
 
 function fillProfileForm(user) {
 
-	if (user != null) {
+	if (user != null && user != "") {
 
 		var youtubeChannel = "https://www.youtube.com/channel/";
 		var twitchChannel = "https://www.twitch.tv/";
 
-		var youtubeChannelID = user.youtubeChannelID.substring(
-				youtubeChannel.length, user.youtubeChannelID.length);
-		var twitchChannelID = user.twitchChannelID.substring(
-				twitchChannel.length, user.twitchChannelID.length);
-
+		var youtubeChannelID = "";
+		if (user.youtubeChannelID != undefined && user.youtubeChannelID != "") {
+			youtubeChannelID = user.youtubeChannelID.substring(youtubeChannel.length, user.youtubeChannelID.length);
+		}
+		
+		var twitchChannelID = "";
+		if (user.twitchChannelID != undefined && user.twitchChannelID != "") {
+			twitchChannelID = user.twitchChannelID.substring(twitchChannel.length, user.twitchChannelID.length);
+		}
+		
 		getElement("description").value = user.description;
 		getElement("youtubeChannelID").value = youtubeChannelID;
 		getElement("twitchChannelID").value = twitchChannelID;
@@ -128,6 +133,8 @@ function disableInputs() {
 	$("#password").prop("disabled", true);
 
 	$("#checkNewPassword").prop("disabled", true);
+	
+	$("#searchUser").prop("disabled", false);
 }
 
 function changeEditOrView() {

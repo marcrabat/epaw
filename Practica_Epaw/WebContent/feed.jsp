@@ -28,9 +28,11 @@
 				var userToLookJSON = '${sessionScope.userToLookInfo}';
 				var userJSON = '${sessionScope.userInfo}';
 				if (userJSON != "") {
-					var userToLookInfo = JSON.parse(userToLookJSON);
+					var userToLookInfo = parseJSON(userToLookJSON);
 					sessionUser = JSON.parse(userJSON);
-					fillProfileForm(userToLookInfo);
+					if (userToLookInfo.user != undefined) {
+						fillProfileForm(userToLookInfo);
+					}
 					createAdminButtons(sessionUser);
 				}
 
@@ -49,18 +51,17 @@
 				}
         
 				if(sessionId == "anonymous") {
-	        anonymousTweetsRequest(userToLook);
-	      } else {
-          
+		        	anonymousTweetsRequest(userToLook);
+		      	} else {
 					tweetsRequest(userToLook, mode);
-	      }
+		      	}
 	
 			}
 		});
 	        
 	  </script>
     
-  <style>
+  	<style>
 		.mybtn {
 		    background-color: DodgerBlue; 
 		    border: none; 
