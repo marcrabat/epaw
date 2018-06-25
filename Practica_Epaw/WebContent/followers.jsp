@@ -13,7 +13,7 @@
         .json-string { color: olive; }
     </style>
 
-	<script src="js/tweets/Followers.js"></script>
+	<script src="js/user/Followers.js"></script>
 
     <script type="text/javascript">
 

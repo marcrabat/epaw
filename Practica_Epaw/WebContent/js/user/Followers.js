@@ -37,7 +37,7 @@ function jsonRequest() {
 						if (result_parts[1] == 0) {
 							$('#followers').append(
 											'<li class="list-group-item" style="background-color: #faf5f8;">'
-													+ result_parts[0]
+													+ "<span onClick='seeUserFeed(\"" + result_parts[0] + "\");'>" +  result_parts[0] + "</span>"
 													+ '<button type="button" id='
 													+ "'"
 													+ result_parts[0]
@@ -54,7 +54,7 @@ function jsonRequest() {
 						} else if (result_parts[1] == 1) {
 							$('#followers').append(
 											'<li class="list-group-item" style="background-color: #faf5f8;">'
-													+ result_parts[0]
+													+ "<span onClick='seeUserFeed(\"" + result_parts[0] + "\");'>" +  result_parts[0] + "</span>"
 													+ '<button type="button" class="btn btn-default" style="margin-left: 70%;" onclick="changeRelation('
 													+ "'"
 													+ result_parts[0]
