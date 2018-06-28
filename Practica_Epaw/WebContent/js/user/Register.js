@@ -113,6 +113,11 @@ function hasErrors() {
 		hasError = true;
 		$('#passwordDanger').html("Password is not equal");
 	}
+	if ($('#password').val().length < 8 || $('#password_conf').val().length < 8) {
+		hasError = true;
+		$('#passwordDanger').html("Password is less than 8 characters");
+	}
+	
 
 	return hasError;
 }
