@@ -27,9 +27,9 @@
 				setupProfile();
 				var userToLookJSON = '${sessionScope.userToLookInfo}';
 				var userJSON = '${sessionScope.userInfo}';
-				if (userJSON != "") {
+				if (userToLookJSON != "") {
 					var userToLookInfo = parseJSON(userToLookJSON);
-					sessionUser = JSON.parse(userJSON);
+					sessionUser = parseJSON(userJSON);
 					if (userToLookInfo.user != undefined) {
 						fillProfileForm(userToLookInfo);
 					}
